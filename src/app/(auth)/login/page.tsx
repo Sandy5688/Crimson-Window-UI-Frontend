@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { api } from "@/lib/api";
-import { saveToken } from "@/lib/auth";
+import { saveToken, getRole } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
@@ -18,7 +18,8 @@ export default function LoginPage() {
     try {
       const res = await api.post("/auth/login", { email, password });
       saveToken(res.data.token);
-      router.push("/channels");
+      const role = getRole();
+      router.push(role === "admin" ? "/admin/dashboard" : "/dashboard");
     } catch (err: any) {
       setError(err?.response?.data?.error || "Login failed");
     } finally {

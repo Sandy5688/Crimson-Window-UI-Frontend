@@ -1,8 +1,10 @@
 "use client";
 import useSWR from "swr";
 import { api } from "@/lib/api";
+import { Skeleton, SkeletonText } from "@/components/ui/Skeleton";
 import BlockIcon from "@mui/icons-material/Block";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import Link from "next/link";
 
 type Row = { id: string; email: string; role: string; status: string; planId?: string | null };
 const fetcher = (url: string) => api.get(url).then((r) => r.data);
@@ -26,7 +28,12 @@ export default function AdminUsersPage() {
           Refresh
         </button>
       </div>
-      {isLoading && <div className="text-sm text-black/60">Loading...</div>}
+      {isLoading && (
+        <div className="space-y-3">
+          <Skeleton className="h-6 w-1/3" />
+          <SkeletonText lines={4} />
+        </div>
+      )}
       {error && <div className="text-sm text-red-600">Failed to load</div>}
       {!isLoading && !error && (
         <div className="bg-white rounded-lg border border-black/5 overflow-hidden">
@@ -57,6 +64,7 @@ export default function AdminUsersPage() {
                         <CheckCircleIcon fontSize="small" /> Reactivate
                       </button>
                     )}
+                    <Link href="/uploads" className="ml-2 inline-flex items-center gap-1 rounded-md border px-2 py-1 hover:bg-black/5">Jobs</Link>
                   </td>
                 </tr>
               ))}

@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import { api } from "@/lib/api";
+import { Skeleton, SkeletonText } from "@/components/ui/Skeleton";
 import { getSocket } from "@/lib/socket";
 
 type Channel = { id: string; displayName: string };
@@ -70,15 +71,31 @@ export default function UploadsPage() {
       <form onSubmit={schedule} className="bg-white rounded-lg border border-black/5 p-4 shadow-sm grid gap-4 md:grid-cols-2">
         <div className="space-y-1">
           <label className="text-sm">Channel</label>
-          <select name="channelId" required className="w-full rounded-md border px-3 py-2">
-            {channelOptions.map((c) => (
-              <option key={c.id} value={c.id}>{c.displayName}</option>
-            ))}
-          </select>
+          {!channels && (
+            <Skeleton className="h-10 w-full" />
+          )}
+          {channels && (
+            <select name="channelId" required className="w-full rounded-md border px-3 py-2">
+              {channelOptions.map((c) => (
+                <option key={c.id} value={c.id}>{c.displayName}</option>
+              ))}
+            </select>
+          )}
         </div>
         <div className="space-y-1">
           <label className="text-sm">Asset URL</label>
-          <input name="assetUrl" type="url" required className="w-full rounded-md border px-3 py-2" />
+          <div className="flex gap-2">
+            <input name="assetUrl" type="url" placeholder="https://... or use Presign" required className="w-full rounded-md border px-3 py-2" />
+            <button type="button" onClick={async () => {
+              const filename = `upload-${Date.now()}.bin`;
+              const contentType = 'application/octet-stream';
+              const { data } = await api.post('/api/v1/upload/presign', { filename, contentType });
+              // For demo, just show the URL in the input
+              const url = data.url as string;
+              const input = document.querySelector("input[name='assetUrl']") as HTMLInputElement | null;
+              if (input) input.value = url;
+            }} className="rounded-md border px-3 py-2 text-sm hover:bg-black/5">Presign</button>
+          </div>
         </div>
         <div className="space-y-1">
           <label className="text-sm">Title</label>
@@ -105,31 +122,32 @@ export default function UploadsPage() {
       <div className="space-y-3">
         <h2 className="text-lg font-medium">Recent Jobs</h2>
         <div className="bg-white rounded-lg border border-black/5 overflow-hidden">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-black/5 text-left">
-                <th className="px-3 py-2">Title</th>
-                <th className="px-3 py-2">Status</th>
-                <th className="px-3 py-2">Progress</th>
-                <th className="px-3 py-2">Scheduled</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((j) => (
-                <tr key={j.id} className="border-t">
-                  <td className="px-3 py-2">{j.title}</td>
-                  <td className="px-3 py-2">{j.status}</td>
-                  <td className="px-3 py-2">{j.progress}%</td>
-                  <td className="px-3 py-2">{new Date(j.scheduledAt).toLocaleString()}</td>
+          {rows.length === 0 ? (
+            <div className="p-6">
+              <SkeletonText lines={3} />
+            </div>
+          ) : (
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-black/5 text-left">
+                  <th className="px-3 py-2">Title</th>
+                  <th className="px-3 py-2">Status</th>
+                  <th className="px-3 py-2">Progress</th>
+                  <th className="px-3 py-2">Scheduled</th>
                 </tr>
-              ))}
-              {rows.length === 0 && (
-                <tr>
-                  <td className="px-3 py-6 text-center text-black/60" colSpan={4}>No jobs yet</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {rows.map((j) => (
+                  <tr key={j.id} className="border-t">
+                    <td className="px-3 py-2">{j.title}</td>
+                    <td className="px-3 py-2">{j.status}</td>
+                    <td className="px-3 py-2">{j.progress}%</td>
+                    <td className="px-3 py-2">{new Date(j.scheduledAt).toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 "use client";
 import useSWR from "swr";
 import { api } from "@/lib/api";
+import { Skeleton } from "@/components/ui/Skeleton";
 
 type Channel = { id: string; provider: string; displayName: string };
 
@@ -28,14 +29,28 @@ export default function ChannelsPage() {
           Refresh
         </button>
       </div>
-      {isLoading && <div className="text-sm text-black/60">Loading...</div>}
+      {isLoading && (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <Skeleton className="h-24" />
+          <Skeleton className="h-24" />
+          <Skeleton className="h-24" />
+        </div>
+      )}
       {error && <div className="text-sm text-red-600">Failed to load</div>}
       {!isLoading && !error && (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {data?.map((c) => (
             <div key={c.id} className="bg-white rounded-lg border border-black/5 p-4 shadow-sm">
-              <div className="text-sm uppercase tracking-wide text-black/50">{c.provider}</div>
-              <div className="text-lg font-medium">{c.displayName}</div>
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <div className="text-sm uppercase tracking-wide text-black/50">{c.provider}</div>
+                  <div className="text-lg font-medium">{c.displayName}</div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button onClick={async () => { await api.post(`/api/v1/channels/${c.id}/refresh`, {}); mutate(); }} className="rounded-md border px-2 py-1 text-xs hover:bg-black/5">Refresh</button>
+                  <button onClick={async () => { await api.delete(`/api/v1/channels/${c.id}`); mutate(); }} className="rounded-md border px-2 py-1 text-xs hover:bg-black/5 text-red-600">Disconnect</button>
+                </div>
+              </div>
             </div>
           ))}
           <div className="col-span-full bg-white rounded-lg border border-black/5 p-6">
