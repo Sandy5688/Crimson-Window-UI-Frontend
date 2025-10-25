@@ -9,6 +9,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DnsIcon from "@mui/icons-material/Dns";
 import PeopleIcon from "@mui/icons-material/People";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ThemeToggle from "@/components/ThemeToggle";
 
 type NavItem = { href: string; label: string; Icon: React.ElementType };
 
@@ -16,7 +17,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
 
-  const [role, setRole] = useState<'admin' | 'user' | null>(null);
+  const [role, setRole] = useState<'admin' | 'admin_viewer' | 'user' | null>(null);
   const [authed, setAuthed] = useState(false);
 
   useEffect(() => {
@@ -31,13 +32,16 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }, []);
 
   const nav = useMemo<NavItem[]>(() => {
-    const items: NavItem[] = [
-      { href: role === 'admin' ? "/admin/dashboard" : "/dashboard", label: "Dashboard", Icon: HomeIcon },
-      { href: "/channels", label: "Channels", Icon: DnsIcon },
-      { href: "/uploads", label: "Uploads", Icon: CloudUploadIcon },
-      { href: "/monetization", label: "Monetization", Icon: HomeIcon },
-    ];
-    if (role === 'admin') items.push({ href: "/admin/users", label: "Admin", Icon: PeopleIcon });
+    const items: NavItem[] = [];
+    if (role === 'admin' || role === 'admin_viewer') {
+      items.push({ href: "/admin/dashboard", label: "Dashboard", Icon: HomeIcon });
+      items.push({ href: "/admin/users", label: "Admin", Icon: PeopleIcon });
+    } else {
+      items.push({ href: "/dashboard", label: "Dashboard", Icon: HomeIcon });
+      items.push({ href: "/channels", label: "Channels", Icon: DnsIcon });
+      items.push({ href: "/uploads", label: "Uploads", Icon: CloudUploadIcon });
+      items.push({ href: "/monetization", label: "Monetization", Icon: HomeIcon });
+    }
     return items;
   }, [role]);
 
@@ -47,36 +51,48 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] text-[#171717]">
-      <header className="sticky top-0 z-10 bg-white/80 backdrop-blur border-b border-black/10">
-        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link href="/" className="text-[18px] font-semibold tracking-tight">
+    <div className="min-h-screen bg-[#F5F5F5] dark:bg-[#0f172a] text-[#171717] dark:text-[#f1f5f9] transition-colors duration-300">
+      <header className="sticky top-0 z-10 bg-white/80 dark:bg-gray-900/80 backdrop-blur border-b border-black/10 dark:border-white/10">
+        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+          <Link href="/" className="text-xl font-bold tracking-tight hover:text-[#2D89FF] transition-colors" style={{ fontFamily: "Montserrat, sans-serif" }}>
             Portal
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
             {authed && (
-              <button onClick={signOut} className="inline-flex items-center gap-1 text-sm px-3 py-1.5 rounded-md bg-[#2D89FF] text-white hover:brightness-95">
+              <button 
+                onClick={signOut} 
+                className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg bg-[#2D89FF] text-white hover:brightness-110 transition-all duration-200 shadow-md hover:shadow-lg"
+              >
                 <LogoutIcon fontSize="small" /> Sign out
               </button>
             )}
           </div>
         </div>
       </header>
-      <div className="max-w-6xl mx-auto px-4 py-6 grid grid-cols-12 gap-6">
+      <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8 grid grid-cols-12 gap-4 sm:gap-6">
         <aside className="col-span-12 md:col-span-3 lg:col-span-2">
-          <nav className="bg-white rounded-lg shadow-sm border border-black/5 divide-y">
+          <nav className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-black/5 dark:border-white/10 overflow-hidden sticky top-24">
             {!mounted ? (
               <div className="p-3 space-y-2">
-                <Skeleton className="h-8 w-full" />
-                <Skeleton className="h-8 w-full" />
-                <Skeleton className="h-8 w-full" />
-                <Skeleton className="h-8 w-full" />
+                <Skeleton className="h-10 w-full" />
+                <Skeleton className="h-10 w-full" />
+                <Skeleton className="h-10 w-full" />
+                <Skeleton className="h-10 w-full" />
               </div>
             ) : (
               nav.map(({ href, label, Icon }) => {
                 const active = pathname?.startsWith(href);
                 return (
-                  <Link key={href} href={href} className={`flex items-center gap-3 px-4 py-3 text-sm ${active ? "bg-[#E8F2FF] text-[#2D89FF]" : "hover:bg-black/5"}`}>
+                  <Link 
+                    key={href} 
+                    href={href} 
+                    className={`flex items-center gap-3 px-4 py-3.5 text-sm font-medium transition-all duration-200 ${
+                      active 
+                        ? "bg-[#E8F2FF] dark:bg-[#2D89FF]/20 text-[#2D89FF] border-l-4 border-[#2D89FF]" 
+                        : "hover:bg-black/5 dark:hover:bg-white/5 dark:text-white/80 border-l-4 border-transparent"
+                    }`}
+                  >
                     <Icon fontSize="small" />
                     <span>{label}</span>
                   </Link>

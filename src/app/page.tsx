@@ -3,6 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import CookieConsent from "@/components/CookieConsent";
+import ThemeToggle from "@/components/ThemeToggle";
 
 // MUI Icons
 import MenuIcon from "@mui/icons-material/Menu";
@@ -53,38 +55,42 @@ function Header() {
   ];
 
   return (
-    <header className={`sticky top-0 z-50 transition-shadow bg-white/90 backdrop-blur ${isScrolled ? "shadow-sm" : "shadow-none"}`}>
+    <header className={`sticky top-0 z-50 transition-shadow bg-white/90 dark:bg-gray-900/80 backdrop-blur ${isScrolled ? "shadow-sm" : "shadow-none"}`}>
       <div className="container flex items-center justify-between h-16">
-        <Link href="#home" className="font-semibold text-lg tracking-tight text-[#111827]" aria-label="CreatorFlow - Home">
+        <Link href="#home" className="font-semibold text-lg tracking-tight text-[#111827] dark:text-white" aria-label="CreatorFlow - Home">
           CreatorFlow
         </Link>
         <nav className="hidden md:flex items-center gap-8" aria-label="Main">
           {links.map((l) => (
-            <a key={l.href} href={l.href} className="text-sm text-[#111827]/80 hover:text-[#111827] transition-colors">
+            <a key={l.href} href={l.href} className="text-sm text-[#111827]/80 dark:text-white/80 hover:text-[#111827] dark:hover:text-white transition-colors">
               {l.label}
             </a>
           ))}
         </nav>
-        <div className="hidden md:block">
+        <div className="hidden md:flex items-center gap-2">
+          <ThemeToggle />
           <Link href="/signup" className="inline-flex items-center rounded-full px-4 py-2 text-sm font-medium text-white shadow-sm transition-all" style={{ backgroundImage: `linear-gradient(90deg, ${PRIMARY}, ${ACCENT})` }}>
             Start for Free
           </Link>
         </div>
-        <button className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-md hover:bg-black/5" aria-label="Toggle menu" onClick={() => setIsOpen((v) => !v)}>
+        <button className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-md hover:bg-black/5 dark:hover:bg-white/10" aria-label="Toggle menu" onClick={() => setIsOpen((v) => !v)}>
           {isOpen ? <CloseIcon /> : <MenuIcon />}
         </button>
       </div>
       {isOpen && (
-        <div className="md:hidden border-t border-black/10 bg-white" data-aos="fade-down">
+        <div className="md:hidden border-t border-black/10 dark:border-white/10 bg-white dark:bg-gray-900" data-aos="fade-down">
           <div className="container py-4 flex flex-col gap-4">
             {links.map((l) => (
-              <a key={l.href} href={l.href} className="text-[#111827]" onClick={() => setIsOpen(false)}>
+              <a key={l.href} href={l.href} className="text-[#111827] dark:text-white" onClick={() => setIsOpen(false)}>
                 {l.label}
               </a>
             ))}
-            <Link href="/signup" onClick={() => setIsOpen(false)} className="inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium text-white shadow-sm transition-all" style={{ backgroundImage: `linear-gradient(90deg, ${PRIMARY}, ${ACCENT})` }}>
-              Start for Free
-            </Link>
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <Link href="/signup" onClick={() => setIsOpen(false)} className="inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium text-white shadow-sm transition-all" style={{ backgroundImage: `linear-gradient(90deg, ${PRIMARY}, ${ACCENT})` }}>
+                Start for Free
+              </Link>
+            </div>
           </div>
         </div>
       )}
@@ -114,7 +120,7 @@ function Hero() {
 
       <div className="relative z-20 container grid lg:grid-cols-2 gap-10 items-center py-20 mb-48 min-h-[600px]">
         <div data-aos="fade-up">
-          <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-3 py-1 text-xs text-[#111827]/70 shadow-sm">
+          <div className="inline-flex items-center gap-2 rounded-full border border-black/10 dark:border-white/20 bg-white dark:bg-gray-800 px-3 py-1 text-xs text-[#111827]/70 dark:text-white/80 shadow-sm">
             <span className="h-2 w-2 rounded-full" style={{ background: PRIMARY }} />
             Creator automation for global reach
           </div>
@@ -143,7 +149,7 @@ function Hero() {
         </div>
         <div className="relative flex justify-center items-center" data-aos="zoom-in">
           <div className="absolute -inset-16 -z-10 bg-gradient-to-tr from-[#6C63FF20] to-[#FF658420] blur-3xl" />
-          <div className="rounded-2xl border border-black/10 bg-white/80 p-6 shadow-xl backdrop-blur">
+          <div className="rounded-2xl border border-black/10 dark:border-white/20 bg-white/80 dark:bg-gray-800/80 p-6 shadow-xl backdrop-blur">
             <Image src="/hero-draw.png" alt="Hero illustration" width={800} height={600} className="w-full h-auto" />
           </div>
         </div>
@@ -154,15 +160,15 @@ function Hero() {
 
 function Problem() {
   return (
-    <section className="bg-white" data-aos="fade-up">
+    <section className="bg-white dark:bg-gray-900" data-aos="fade-up">
       <div className="container py-16 grid lg:grid-cols-2 gap-10 items-center mb-48">
         <div data-aos="fade-right">
-          <blockquote className="text-xl sm:text-2xl leading-relaxed text-[#111827]">
+          <blockquote className="text-xl sm:text-2xl leading-relaxed text-[#111827] dark:text-white/90">
             “Creators waste hours reposting the same content across platforms. Our Australian-built software automates it — reuploads, localizes, and schedules everything for you.”
           </blockquote>
         </div>
         <div className="relative" data-aos="fade-left">
-          <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-lg">
+          <div className="rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-gray-800 p-6 shadow-lg">
             <Image src="/problem-draw.png" alt="Tired creator illustration" width={640} height={420} className="w-full h-auto" />
           </div>
         </div>
@@ -194,20 +200,20 @@ function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" className="bg-[#F9FAFB]">
+    <section id="how-it-works" className="bg-[#F9FAFB] dark:bg-gray-950">
       <div className="container py-20 mb-48">
-        <h2 className="text-3xl sm:text-4xl font-bold text-[#111827] text-center">How It Works</h2>
+        <h2 className="text-3xl sm:text-4xl font-bold text-[#111827] dark:text-white text-center">How It Works</h2>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {steps.map(({ num, title, desc, Icon }, i) => (
-            <div key={title} className="group rounded-2xl border border-black/10 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl" data-aos="zoom-in" data-aos-delay={i * 100}>
+            <div key={title} className="group rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-gray-800 p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl" data-aos="zoom-in" data-aos-delay={i * 100}>
               <div className="flex items-center justify-between">
                 <span className="inline-flex h-9 w-9 items-center justify-center rounded-full text-white text-sm font-bold shadow" style={{ backgroundImage: `linear-gradient(90deg, ${PRIMARY}, ${ACCENT})` }}>
                   {num}
                 </span>
                 <Icon className="text-[#6C63FF]" />
               </div>
-              <h3 className="mt-4 text-lg font-semibold text-[#111827]">{title}</h3>
-              <p className="mt-1 text-sm text-[#111827]/70">{desc}</p>
+              <h3 className="mt-4 text-lg font-semibold text-[#111827] dark:text-white">{title}</h3>
+              <p className="mt-1 text-sm text-[#111827]/70 dark:text-white/70">{desc}</p>
             </div>
           ))}
         </div>
@@ -229,19 +235,19 @@ function Features() {
   ];
 
   return (
-    <section id="features" className="bg-white">
+    <section id="features" className="bg-white dark:bg-gray-900">
       <div className="container py-20 mb-48">
-        <h2 className="text-3xl sm:text-4xl font-bold text-[#111827] text-center">Built for Modern Creators</h2>
+        <h2 className="text-3xl sm:text-4xl font-bold text-[#111827] dark:text-white text-center">Built for Modern Creators</h2>
         <div className="mt-10 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {items.map(({ Icon, title, desc }, i) => (
-            <div key={title} className="group rounded-2xl border border-black/10 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl" data-aos="zoom-in" data-aos-delay={i * 60}>
+            <div key={title} className="group rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-gray-800 p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl" data-aos="zoom-in" data-aos-delay={i * 60}>
               <div className="flex items-center gap-3">
                 <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-white shadow" style={{ backgroundImage: `linear-gradient(90deg, ${PRIMARY}, ${ACCENT})` }}>
                   <Icon />
                 </div>
-                <h3 className="text-base font-semibold text-[#111827]">{title}</h3>
+                <h3 className="text-base font-semibold text-[#111827] dark:text-white">{title}</h3>
               </div>
-              <p className="mt-3 text-sm text-[#111827]/70">{desc}</p>
+              <p className="mt-3 text-sm text-[#111827]/70 dark:text-white/70">{desc}</p>
             </div>
           ))}
         </div>
@@ -259,16 +265,16 @@ function WhyChooseUs() {
   ];
 
   return (
-    <section className="bg-[#F9FAFB]" data-aos="fade-in">
+    <section className="bg-[#F9FAFB] dark:bg-gray-950" data-aos="fade-in">
       <div className="container py-20 mb-48">
-        <h2 className="text-3xl sm:text-4xl font-bold text-[#111827] text-center max-w-3xl mx-auto">
+        <h2 className="text-3xl sm:text-4xl font-bold text-[#111827] dark:text-white text-center max-w-3xl mx-auto">
           Because our software doesn’t just distribute — it understands audiences.
         </h2>
         <ul className="mt-8 grid gap-4 sm:grid-cols-2 max-w-3xl mx-auto">
           {bullets.map((b) => (
             <li key={b} className="flex items-start gap-3">
               <CheckCircleIcon className="mt-0.5 text-[#6C63FF]" />
-              <span className="text-[#111827]">{b}</span>
+              <span className="text-[#111827] dark:text-white/90">{b}</span>
             </li>
           ))}
         </ul>
@@ -285,17 +291,17 @@ function UseCases() {
     { Icon: WorkspacesIcon, title: "Agencies", desc: "Multi-client scheduling & analytics" },
   ];
   return (
-    <section className="bg-white">
+    <section className="bg-white dark:bg-gray-900" data-aos-delay="60">
       <div className="container py-20 mb-48">
-        <h2 className="text-3xl sm:text-4xl font-bold text-[#111827] text-center">Who It’s For</h2>
+        <h2 className="text-3xl sm:text-4xl font-bold text-[#111827] dark:text-white text-center">Who It’s For</h2>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {cases.map(({ Icon, title, desc }, i) => (
-            <div key={title} className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl" data-aos="zoom-in" data-aos-delay={i * 80}>
+            <div key={title} className="rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-gray-800 p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl" data-aos="zoom-in" data-aos-delay={i * 80}>
               <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-white shadow" style={{ backgroundImage: `linear-gradient(90deg, ${PRIMARY}, ${ACCENT})` }}>
                 <Icon />
               </div>
-              <h3 className="mt-4 text-base font-semibold text-[#111827]">{title}</h3>
-              <p className="mt-1 text-sm text-[#111827]/70">{desc}</p>
+              <h3 className="mt-4 text-base font-semibold text-[#111827] dark:text-white">{title}</h3>
+              <p className="mt-1 text-sm text-[#111827]/70 dark:text-white/70">{desc}</p>
             </div>
           ))}
         </div>
@@ -330,25 +336,25 @@ function Pricing() {
   ];
 
   return (
-    <section id="pricing" className="bg-[#F9FAFB]">
+    <section id="pricing" className="bg-[#F9FAFB] dark:bg-gray-950">
       <div className="container py-20 mb-48">
-        <h2 className="text-3xl sm:text-4xl font-bold text-[#111827] text-center">Not Sure Which Plan Is For You?</h2>
+        <h2 className="text-3xl sm:text-4xl font-bold text-[#111827] dark:text-white text-center">Not Sure Which Plan Is For You?</h2>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {tiers.map((t) => (
-            <div key={t.name} className={`relative rounded-2xl border border-black/10 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl`} data-aos="zoom-in">
+            <div key={t.name} className={`relative rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-gray-800 p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl`} data-aos="zoom-in">
               {t.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold text-white shadow" style={{ backgroundImage: `linear-gradient(90deg, ${PRIMARY}, ${ACCENT})` }}>
                   Most Popular
                 </div>
               )}
-              <h3 className="text-lg font-semibold text-[#111827]">{t.name}</h3>
+              <h3 className="text-lg font-semibold text-[#111827] dark:text-white">{t.name}</h3>
               <div className="mt-2 flex items-end gap-1">
-                <span className="text-3xl font-bold text-[#111827]">{t.price}</span>
-                <span className="text-sm text-[#111827]/60">{t.period}</span>
+                <span className="text-3xl font-bold text-[#111827] dark:text-white">{t.price}</span>
+                <span className="text-sm text-[#111827]/60 dark:text-white/60">{t.period}</span>
               </div>
               <ul className="mt-4 space-y-2">
                 {t.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-[#111827]">
+                  <li key={f} className="flex items-center gap-2 text-sm text-[#111827] dark:text-white/90">
                     <CheckCircleIcon className="text-[#6C63FF]" />
                     <span>{f}</span>
                   </li>
@@ -367,15 +373,15 @@ function Pricing() {
 
 function FinalCTA() {
   return (
-    <section className="bg-white" data-aos="fade-up">
+    <section className="bg-white dark:bg-gray-900" data-aos="fade-up">
       <div className="container py-20 text-center mb-36">
-        <h2 className="text-3xl sm:text-4xl font-bold text-[#111827]">Go Global in Minutes — Not Months.</h2>
+        <h2 className="text-3xl sm:text-4xl font-bold text-[#111827] dark:text-white">Go Global in Minutes — Not Months.</h2>
         <div className="mt-6 flex items-center justify-center">
           <Link href="/signup" className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white shadow-sm transition-transform hover:scale-[1.02]" style={{ backgroundImage: `linear-gradient(90deg, ${PRIMARY}, ${ACCENT})` }}>
             <span>🌎 Start for Free</span>
           </Link>
         </div>
-        <p className="mt-3 text-sm text-[#111827]/70">No credit card required. Cancel anytime.</p>
+        <p className="mt-3 text-sm text-[#111827]/70 dark:text-white/70">No credit card required. Cancel anytime.</p>
       </div>
     </section>
   );
@@ -383,49 +389,50 @@ function FinalCTA() {
 
 function Footer() {
   return (
-    <footer id="contact" className="bg-[#F9FAFB] border-t border-black/10">
+    <footer id="contact" className="bg-[#F9FAFB] dark:bg-gray-950 border-t border-black/10 dark:border-white/10">
       <div className="container py-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <h4 className="font-semibold text-[#111827]">Company</h4>
-          <ul className="mt-3 space-y-2 text-sm text-[#111827]/80">
-            <li><a href="#" className="hover:text-[#111827]">About</a></li>
-            <li><a href="#blog" className="hover:text-[#111827]">Blog</a></li>
-            <li><a href="#" className="hover:text-[#111827]">Careers</a></li>
+          <h4 className="font-semibold text-[#111827] dark:text-white">Company</h4>
+          <ul className="mt-3 space-y-2 text-sm text-[#111827]/80 dark:text-white/80">
+            <li><a href="#" className="hover:text-[#111827] dark:hover:text-white">About</a></li>
+            <li><a href="#blog" className="hover:text-[#111827] dark:hover:text-white">Blog</a></li>
+            <li><a href="#" className="hover:text-[#111827] dark:hover:text-white">Careers</a></li>
           </ul>
         </div>
         <div>
-          <h4 className="font-semibold text-[#111827]">Quick Links</h4>
-          <ul className="mt-3 space-y-2 text-sm text-[#111827]/80">
-            <li><a href="#pricing" className="hover:text-[#111827]">Pricing</a></li>
-            <li><a href="#" className="hover:text-[#111827]">Docs</a></li>
-            <li><a href="#" className="hover:text-[#111827]">FAQ</a></li>
+          <h4 className="font-semibold text-[#111827] dark:text-white">Quick Links</h4>
+          <ul className="mt-3 space-y-2 text-sm text-[#111827]/80 dark:text-white/80">
+            <li><a href="#pricing" className="hover:text-[#111827] dark:hover:text-white">Pricing</a></li>
+            <li><a href="/legal" className="hover:text-[#111827] dark:hover:text-white">Legal & Privacy</a></li>
+            <li><a href="/support" className="hover:text-[#111827] dark:hover:text-white">Support</a></li>
+            <li><a href="/billing-policy" className="hover:text-[#111827] dark:hover:text-white">Billing Policy</a></li>
           </ul>
         </div>
         <div>
-          <h4 className="font-semibold text-[#111827]">Services</h4>
-          <ul className="mt-3 space-y-2 text-sm text-[#111827]/80">
-            <li><a href="#features" className="hover:text-[#111827]">Localization</a></li>
-            <li><a href="#features" className="hover:text-[#111827]">Optimization</a></li>
-            <li><a href="#features" className="hover:text-[#111827]">Analytics</a></li>
+          <h4 className="font-semibold text-[#111827] dark:text-white">Services</h4>
+          <ul className="mt-3 space-y-2 text-sm text-[#111827]/80 dark:text-white/80">
+            <li><a href="#features" className="hover:text-[#111827] dark:hover:text-white">Localization</a></li>
+            <li><a href="#features" className="hover:text-[#111827] dark:hover:text-white">Optimization</a></li>
+            <li><a href="#features" className="hover:text-[#111827] dark:hover:text-white">Analytics</a></li>
           </ul>
         </div>
         <div>
-          <h4 className="font-semibold text-[#111827]">Contact</h4>
-          <ul className="mt-3 space-y-2 text-sm text-[#111827]/80">
+          <h4 className="font-semibold text-[#111827] dark:text-white">Contact</h4>
+          <ul className="mt-3 space-y-2 text-sm text-[#111827]/80 dark:text-white/80">
             <li>Email: hello@creatorflow.app</li>
             <li>Phone: +61 400 000 000</li>
             <li>Address: Sydney, Australia</li>
           </ul>
           <div className="mt-4 flex items-center gap-3">
-            <a href="#" aria-label="Facebook" className="text-[#111827]/70 hover:text-[#111827]"><FacebookIcon /></a>
-            <a href="#" aria-label="Twitter" className="text-[#111827]/70 hover:text-[#111827]"><TwitterIcon /></a>
-            <a href="#" aria-label="LinkedIn" className="text-[#111827]/70 hover:text-[#111827]"><LinkedInIcon /></a>
-            <a href="#" aria-label="Instagram" className="text-[#111827]/70 hover:text-[#111827]"><InstagramIcon /></a>
+            <a href="#" aria-label="Facebook" className="text-[#111827]/70 dark:text-white/70 hover:text-[#111827] dark:hover:text-white"><FacebookIcon /></a>
+            <a href="#" aria-label="Twitter" className="text-[#111827]/70 dark:text-white/70 hover:text-[#111827] dark:hover:text-white"><TwitterIcon /></a>
+            <a href="#" aria-label="LinkedIn" className="text-[#111827]/70 dark:text-white/70 hover:text-[#111827] dark:hover:text-white"><LinkedInIcon /></a>
+            <a href="#" aria-label="Instagram" className="text-[#111827]/70 dark:text-white/70 hover:text-[#111827] dark:hover:text-white"><InstagramIcon /></a>
           </div>
         </div>
       </div>
-      <div className="border-t border-black/10">
-        <div className="container py-6 text-center text-sm text-[#111827]/70">
+      <div className="border-t border-black/10 dark:border-white/10">
+        <div className="container py-6 text-center text-sm text-[#111827]/70 dark:text-white/70">
           <p>Proudly Australian-Built Software for Global Creators.</p>
           <p className="mt-1">© 2025 CreatorFlow. All rights reserved.</p>
         </div>
@@ -436,7 +443,7 @@ function Footer() {
 
 export default function Home() {
   return (
-    <div className="bg-[#F9FAFB] text-[#111827] ">
+    <div className="bg-[#F9FAFB] dark:bg-gray-950 text-[#111827] dark:text-white">
       <Header />
       <Hero />
       <Problem />
@@ -447,6 +454,7 @@ export default function Home() {
       <Pricing />
       <FinalCTA />
       <Footer />
+      <CookieConsent />
       <div id="blog" className="sr-only" />
     </div>
   );
