@@ -336,26 +336,49 @@ pnpm lint         # Run ESLint
 - CSRF not needed (JWT-based, no cookies)
 - All API calls over HTTPS in production
 
-## 🚀 Deployment
+## 🚀 Deployment (Vercel)
 
-**Vercel (Recommended)**:
-1. Connect GitHub repository
-2. Set environment variables in Vercel dashboard
-3. Deploy automatically on push to main
+**1. Push Frontend to GitHub**
+```bash
+git add frontend/
+git commit -m "Add frontend"
+git push
+```
 
-**Environment Variables for Production**:
+**2. Import Project on Vercel**
+- Go to https://vercel.com/new
+- Import your GitHub repository
+- Configure:
+  - **Framework Preset**: Next.js
+  - **Root Directory**: `frontend`
+  - **Build Command**: `pnpm build` (auto-detected)
+  - **Output Directory**: `.next` (auto-detected)
+
+**3. Add Environment Variables**
+In Vercel dashboard, add:
 ```env
-NEXT_PUBLIC_GATEWAY_HTTP_URL=https://api.yourdomain.com
-NEXT_PUBLIC_GATEWAY_WS_URL=wss://api.yourdomain.com
+NEXT_PUBLIC_GATEWAY_HTTP_URL=https://saas-gateway.onrender.com
+NEXT_PUBLIC_GATEWAY_WS_URL=wss://saas-gateway.onrender.com
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```
 
-**Build**:
-```bash
-pnpm build
-pnpm start
+**4. Deploy**
+Click "Deploy" - Vercel will build and deploy automatically
+
+**5. Update Gateway Environment**
+Update `FRONTEND_BASE_URL` in Render to point to your Vercel URL:
 ```
+FRONTEND_BASE_URL=https://your-app.vercel.app
+```
+
+**6. Custom Domain (Optional)**
+- Add domain in Vercel dashboard
+- Configure DNS records
+- SSL automatically provisioned
+
+### Rollback
+Vercel keeps all deployments - click any previous deployment and click "Promote to Production"
 
 ## 📚 Project Structure
 

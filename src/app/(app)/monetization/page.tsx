@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { api } from "@/lib/api";
 
@@ -116,10 +117,34 @@ function transformPlanToTier(plan: any): Tier {
 }
 
 export default function MonetizationPage() {
+  const searchParams = useSearchParams();
   const { data: planData, mutate: mutatePlan } = useSWR<PlanData>("/api/v1/billing/plan", fetcher);
   const { data: plansResponse, error: plansError } = useSWR<{ plans: any[] }>("/api/v1/plans", fetcher);
   const [busy, setBusy] = useState(false);
   const [isAnnual, setIsAnnual] = useState(false);
+
+  // Handle successful payment redirect and refresh data
+  useEffect(() => {
+    const success = searchParams.get('success');
+    if (success === '1') {
+      // Refresh plan data after successful payment
+      // Add a small delay to allow webhook processing
+      const timer = setTimeout(() => {
+        mutatePlan();
+      }, 2000);
+      
+      // Show success message
+      const showSuccess = () => {
+        alert('🎉 Payment successful! Your plan is being updated...');
+      };
+      showSuccess();
+      
+      // Clean up URL
+      window.history.replaceState({}, '', '/monetization');
+      
+      return () => clearTimeout(timer);
+    }
+  }, [searchParams, mutatePlan]);
 
   // Transform API plans to tier format
   const TIERS: Tier[] = plansResponse?.plans?.map(transformPlanToTier) || [];
@@ -326,6 +351,8 @@ export default function MonetizationPage() {
         {/* Pricing Table */}
         <div className="grid md:grid-cols-3 gap-8">
           {TIERS.map((tier, idx) => {
+            // Set 'pro_plus' as the most popular tier
+            const isPopular = tier.slug === "pro_plus";
             const isCurrent = tier.slug === currentPlanSlug;
             return (
               <div
@@ -333,79 +360,79 @@ export default function MonetizationPage() {
                 data-aos="fade-up"
                 data-aos-delay={idx * 100 + 300}
                 className={`relative bg-white dark:bg-gray-900 rounded-3xl border-2 p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 group ${
-                  tier.popular ? "border-[#2D89FF] border-3 transform scale-105" : "border-black/5 dark:border-white/10"
+                  isPopular ? "border-[#2D89FF] border-3 transform scale-105" : "border-black/5 dark:border-white/10"
                 }`}
               >
                 {/* Gradient background effect for popular */}
-                {tier.popular && (
+                {isPopular && (
                   <div className="absolute -inset-1 bg-gradient-to-r from-[#2D89FF] via-[#4CAF50] to-[#2D89FF] rounded-3xl blur opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
                 )}
                 
-                {tier.popular && (
+                {isPopular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-full text-xs font-bold text-white shadow-lg animate-pulse" style={{ background: "linear-gradient(135deg, #FFB400 0%, #FF6B35 100%)" }}>
                     ⭐ MOST POPULAR
                   </div>
                 )}
                 
                 <div className="relative z-10">
-                <div className="text-center mb-4">
-                  <h3 className="text-xl font-bold mb-2 dark:text-white" style={{ fontFamily: "Montserrat, sans-serif" }}>
-                    {tier.name}
-                  </h3>
-                  <div className="text-4xl font-bold" style={{ color: "#2D89FF" }}>
-                    {getPrice(tier)}
-                    <span className="text-lg font-normal text-black/60 dark:text-white/60">{getPeriod()}</span>
-                  </div>
-                  {isAnnual && tier.price !== "$0" && (
-                    <div className="text-xs text-[#4CAF50] font-medium mt-1">
-                      Save 2 months (billed annually)
+                  <div className="text-center mb-4">
+                    <h3 className="text-xl font-bold mb-2 dark:text-white" style={{ fontFamily: "Montserrat, sans-serif" }}>
+                      {tier.name}
+                    </h3>
+                    <div className="text-4xl font-bold" style={{ color: "#2D89FF" }}>
+                      {getPrice(tier)}
+                      <span className="text-lg font-normal text-black/60 dark:text-white/60">{getPeriod()}</span>
                     </div>
+                    {isAnnual && tier.price !== "$0" && (
+                      <div className="text-xs text-[#4CAF50] font-medium mt-1">
+                        Save 2 months (billed annually)
+                      </div>
+                    )}
+                  </div>
+                  <ul className="space-y-3 mb-6">
+                    {tier.features.filter((feat: any) => !feat.annual).map((feat: any, i: number) => (
+                      <li key={i} className="flex items-start gap-2 text-sm" title={feat.tooltip || ""}>
+                        {feat.included ? (
+                          <span className="text-green-600 font-bold">✅</span>
+                        ) : (
+                          <span className="text-red-500 font-bold">❌</span>
+                        )}
+                        <span className={feat.included ? "text-black/80 dark:text-white/80" : "text-black/40 dark:text-white/40"}>
+                          {feat.text}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  {isCurrent ? (
+                    <button
+                      disabled
+                      className="w-full rounded-lg px-4 py-3 text-sm font-bold text-white opacity-60"
+                      style={{ backgroundColor: "#2D89FF" }}
+                    >
+                      Current Plan
+                    </button>
+                  ) : getPriceId(tier) ? (
+                    <button
+                      disabled={busy}
+                      onClick={() => checkout(getPriceId(tier)!)}
+                      className="w-full rounded-lg px-4 py-3 text-sm font-bold text-white hover:brightness-95 disabled:opacity-50 cursor-pointer"
+                      style={{ 
+                        backgroundColor: 
+                          tier.slug === 'pro' ? "#4CAF50" : // Green for Pro
+                          tier.slug === 'pro_plus' ? "#FF6B35" : // Orange for Pro+
+                          "#2D89FF" // Blue for Free
+                      }}
+                    >
+                      Upgrade to {tier.name}
+                    </button>
+                  ) : (
+                    <button
+                      disabled
+                      className="w-full rounded-lg px-4 py-3 text-sm font-bold border border-black/20 dark:border-white/20 text-black/60 dark:text-white/60"
+                    >
+                      Current Plan
+                    </button>
                   )}
-                </div>
-                <ul className="space-y-3 mb-6">
-                  {tier.features.filter((feat: any) => !feat.annual).map((feat: any, i: number) => (
-                    <li key={i} className="flex items-start gap-2 text-sm" title={feat.tooltip || ""}>
-                      {feat.included ? (
-                        <span className="text-green-600 font-bold">✅</span>
-                      ) : (
-                        <span className="text-red-500 font-bold">❌</span>
-                      )}
-                      <span className={feat.included ? "text-black/80 dark:text-white/80" : "text-black/40 dark:text-white/40"}>
-                        {feat.text}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-                {isCurrent ? (
-                  <button
-                    disabled
-                    className="w-full rounded-lg px-4 py-3 text-sm font-bold text-white opacity-60"
-                    style={{ backgroundColor: "#2D89FF" }}
-                  >
-                    Current Plan
-                  </button>
-                ) : getPriceId(tier) ? (
-                  <button
-                    disabled={busy}
-                    onClick={() => checkout(getPriceId(tier)!)}
-                    className="w-full rounded-lg px-4 py-3 text-sm font-bold text-white hover:brightness-95 disabled:opacity-50"
-                    style={{ 
-                      backgroundColor: 
-                        tier.slug === 'pro' ? "#4CAF50" : // Green for Pro
-                        tier.slug === 'pro_plus' ? "#FF6B35" : // Orange for Pro+
-                        "#2D89FF" // Blue for Free
-                    }}
-                  >
-                    Upgrade to {tier.name}
-                  </button>
-                ) : (
-                  <button
-                    disabled
-                    className="w-full rounded-lg px-4 py-3 text-sm font-bold border border-black/20 dark:border-white/20 text-black/60 dark:text-white/60"
-                  >
-                    Current Plan
-                  </button>
-                )}
                 </div>
               </div>
             );
@@ -447,7 +474,7 @@ export default function MonetizationPage() {
           </p>
           <div className="flex flex-wrap gap-3 relative z-10">
             <a href="/support" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#2D89FF] text-white font-medium hover:bg-[#2D89FF]/90 hover:scale-105 transition-all duration-200">
-              📞 Support Page
+              ✉️ Email Support
             </a>
             <a href="/billing-policy" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-[#2D89FF] text-[#2D89FF] font-medium hover:bg-[#2D89FF] hover:text-white hover:scale-105 transition-all duration-200">
               📄 Billing Policy
