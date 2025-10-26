@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { api } from "@/lib/api";
@@ -116,14 +116,10 @@ function transformPlanToTier(plan: any): Tier {
   };
 }
 
-export default function MonetizationPage() {
+// Component to handle payment success redirect
+function PaymentSuccessHandler({ mutatePlan }: { mutatePlan: () => void }) {
   const searchParams = useSearchParams();
-  const { data: planData, mutate: mutatePlan } = useSWR<PlanData>("/api/v1/billing/plan", fetcher);
-  const { data: plansResponse, error: plansError } = useSWR<{ plans: any[] }>("/api/v1/plans", fetcher);
-  const [busy, setBusy] = useState(false);
-  const [isAnnual, setIsAnnual] = useState(false);
 
-  // Handle successful payment redirect and refresh data
   useEffect(() => {
     const success = searchParams.get('success');
     if (success === '1') {
@@ -145,6 +141,15 @@ export default function MonetizationPage() {
       return () => clearTimeout(timer);
     }
   }, [searchParams, mutatePlan]);
+
+  return null;
+}
+
+function MonetizationPageContent() {
+  const { data: planData, mutate: mutatePlan } = useSWR<PlanData>("/api/v1/billing/plan", fetcher);
+  const { data: plansResponse, error: plansError } = useSWR<{ plans: any[] }>("/api/v1/plans", fetcher);
+  const [busy, setBusy] = useState(false);
+  const [isAnnual, setIsAnnual] = useState(false);
 
   // Transform API plans to tier format
   const TIERS: Tier[] = plansResponse?.plans?.map(transformPlanToTier) || [];
@@ -263,7 +268,11 @@ export default function MonetizationPage() {
   }
 
   return (
-    <div className="space-y-10">
+    <>
+      <Suspense fallback={null}>
+        <PaymentSuccessHandler mutatePlan={mutatePlan} />
+      </Suspense>
+      <div className="space-y-10">
         <div data-aos="fade-down" className="text-center relative">
           <div className="absolute -inset-10 bg-gradient-to-r from-[#2D89FF]/10 via-[#4CAF50]/10 to-[#FF6B35]/10 rounded-full blur-3xl opacity-40"></div>
           <div className="relative">
@@ -481,6 +490,37 @@ export default function MonetizationPage() {
             </a>
           </div>
         </div>
-    </div>
+      </div>
+    </>
+  );
+}
+
+export default function MonetizationPage() {
+  return (
+    <Suspense fallback={
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-3xl font-bold dark:text-white" style={{ fontFamily: "Montserrat, sans-serif" }}>
+            Plans & Pricing
+          </h1>
+          <p className="text-black/60 dark:text-white/60 mt-2">Loading pricing information...</p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-white dark:bg-gray-900 rounded-2xl border border-black/5 dark:border-white/10 p-6 shadow-md animate-pulse">
+              <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"></div>
+              <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-6"></div>
+              <div className="space-y-2">
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    }>
+      <MonetizationPageContent />
+    </Suspense>
   );
 }
