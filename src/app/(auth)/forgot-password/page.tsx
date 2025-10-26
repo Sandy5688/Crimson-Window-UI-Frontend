@@ -17,7 +17,26 @@ export default function ForgotPasswordPage() {
       await api.post("/auth/forgot-password", { email });
       setMessage("If an account exists for that email, a reset link has been sent.");
     } catch (err: any) {
-      setError(err?.response?.data?.error || "Request failed");
+      // Handle different error response formats
+      const errorData = err?.response?.data?.error;
+      if (typeof errorData === 'string') {
+        setError(errorData);
+      } else if (typeof errorData === 'object') {
+        const formErrors = errorData?.formErrors || [];
+        const fieldErrors = errorData?.fieldErrors || {};
+        
+        if (formErrors.length > 0) {
+          setError(formErrors.join(', '));
+        } else if (Object.keys(fieldErrors).length > 0) {
+          const firstField = Object.keys(fieldErrors)[0];
+          const firstError = fieldErrors[firstField]?.[0] || fieldErrors[firstField];
+          setError(`${firstField}: ${firstError}`);
+        } else {
+          setError(JSON.stringify(errorData));
+        }
+      } else {
+        setError(err?.message || "Request failed");
+      }
     } finally {
       setLoading(false);
     }

@@ -22,7 +22,27 @@ export default function LoginPage() {
       const goAdmin = isAdminRead();
       router.push(goAdmin ? "/admin/dashboard" : "/dashboard");
     } catch (err: any) {
-      setError(err?.response?.data?.error || "Login failed");
+      // Handle different error response formats
+      const errorData = err?.response?.data?.error;
+      if (typeof errorData === 'string') {
+        setError(errorData);
+      } else if (typeof errorData === 'object') {
+        // Handle validation error objects with formErrors/fieldErrors
+        const formErrors = errorData?.formErrors || [];
+        const fieldErrors = errorData?.fieldErrors || {};
+        
+        if (formErrors.length > 0) {
+          setError(formErrors.join(', '));
+        } else if (Object.keys(fieldErrors).length > 0) {
+          const firstField = Object.keys(fieldErrors)[0];
+          const firstError = fieldErrors[firstField]?.[0] || fieldErrors[firstField];
+          setError(`${firstField}: ${firstError}`);
+        } else {
+          setError(JSON.stringify(errorData));
+        }
+      } else {
+        setError(err?.message || "Login failed");
+      }
     } finally {
       setLoading(false);
     }

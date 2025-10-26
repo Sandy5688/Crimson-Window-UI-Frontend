@@ -15,6 +15,13 @@ export default function SignupPage() {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    
+    // Client-side validation
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long");
+      return;
+    }
+    
     setLoading(true);
     try {
       await api.post("/auth/signup", { email, password, name: name || undefined });
@@ -23,7 +30,27 @@ export default function SignupPage() {
       const goAdmin = isAdminRead();
       router.push(goAdmin ? "/admin/dashboard" : "/dashboard");
     } catch (err: any) {
-      setError(err?.response?.data?.error || "Signup failed");
+      // Handle different error response formats
+      const errorData = err?.response?.data?.error;
+      if (typeof errorData === 'string') {
+        setError(errorData);
+      } else if (typeof errorData === 'object') {
+        // Handle validation error objects with formErrors/fieldErrors
+        const formErrors = errorData?.formErrors || [];
+        const fieldErrors = errorData?.fieldErrors || {};
+        
+        if (formErrors.length > 0) {
+          setError(formErrors.join(', '));
+        } else if (Object.keys(fieldErrors).length > 0) {
+          const firstField = Object.keys(fieldErrors)[0];
+          const firstError = fieldErrors[firstField]?.[0] || fieldErrors[firstField];
+          setError(`${firstField}: ${firstError}`);
+        } else {
+          setError(JSON.stringify(errorData));
+        }
+      } else {
+        setError(err?.message || "Signup failed");
+      }
     } finally {
       setLoading(false);
     }
@@ -44,7 +71,15 @@ export default function SignupPage() {
         </div>
         <div className="space-y-1">
           <label className="block text-sm">Password</label>
-          <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" required className="w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-[#2D89FF]" />
+          <input 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            type="password" 
+            required 
+            minLength={8}
+            className="w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-[#2D89FF]" 
+          />
+          <p className="text-xs text-black/60">Minimum 8 characters required</p>
         </div>
         <button disabled={loading} className="w-full rounded-md bg-[#2D89FF] text-white py-2 hover:brightness-95 disabled:opacity-70">
           {loading ? "Creating..." : "Create account"}

@@ -40,7 +40,26 @@ function ResetPasswordFormInner() {
       setMessage("Password updated. Redirecting to sign in...");
       setTimeout(() => router.push("/login"), 1500);
     } catch (err: any) {
-      setError(err?.response?.data?.error || "Reset failed");
+      // Handle different error response formats
+      const errorData = err?.response?.data?.error;
+      if (typeof errorData === 'string') {
+        setError(errorData);
+      } else if (typeof errorData === 'object') {
+        const formErrors = errorData?.formErrors || [];
+        const fieldErrors = errorData?.fieldErrors || {};
+        
+        if (formErrors.length > 0) {
+          setError(formErrors.join(', '));
+        } else if (Object.keys(fieldErrors).length > 0) {
+          const firstField = Object.keys(fieldErrors)[0];
+          const firstError = fieldErrors[firstField]?.[0] || fieldErrors[firstField];
+          setError(`${firstField}: ${firstError}`);
+        } else {
+          setError(JSON.stringify(errorData));
+        }
+      } else {
+        setError(err?.message || "Reset failed");
+      }
     } finally {
       setLoading(false);
     }
@@ -54,7 +73,15 @@ function ResetPasswordFormInner() {
         {error && <div className="text-red-600 text-sm">{error}</div>}
         <div className="space-y-1">
           <label className="block text-sm">New password</label>
-          <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" required className="w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-[#2D89FF]" />
+          <input 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            type="password" 
+            required 
+            minLength={8}
+            className="w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-[#2D89FF]" 
+          />
+          <p className="text-xs text-black/60">Minimum 8 characters required</p>
         </div>
         <div className="space-y-1">
           <label className="block text-sm">Confirm password</label>
