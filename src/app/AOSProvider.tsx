@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-// @ts-expect-error: No type declarations for 'aos'
 import AOS from "aos";
 import "aos/dist/aos.css";
 

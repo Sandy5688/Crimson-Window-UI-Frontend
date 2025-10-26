@@ -15,6 +15,7 @@ declare module 'aos' {
     disableMutationObserver?: boolean;
     throttleDelay?: number;
     debounceDelay?: number;
+    mirror?: boolean;
   }
 
   const AOS: {
