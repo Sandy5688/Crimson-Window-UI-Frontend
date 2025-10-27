@@ -119,26 +119,38 @@ function transformPlanToTier(plan: any): Tier {
 // Component to handle payment success redirect
 function PaymentSuccessHandler({ mutatePlan }: { mutatePlan: () => void }) {
   const searchParams = useSearchParams();
+  const [syncing, setSyncing] = useState(false);
 
   useEffect(() => {
     const success = searchParams.get('success');
     if (success === '1') {
-      // Refresh plan data after successful payment
-      // Add a small delay to allow webhook processing
-      const timer = setTimeout(() => {
-        mutatePlan();
-      }, 2000);
-      
-      // Show success message
-      const showSuccess = () => {
-        alert('🎉 Payment successful! Your plan is being updated...');
+      // Automatically attempt to sync plan after payment
+      const syncPlan = async () => {
+        try {
+          setSyncing(true);
+          const { syncPlanFromStripe } = await import('@/lib/billing');
+          const result = await syncPlanFromStripe();
+          
+          if (result.success) {
+            alert('🎉 Payment successful! Your plan has been updated.');
+          } else {
+            // If sync fails, fallback to webhook processing
+            alert('🎉 Payment successful! Your plan is being updated...');
+            setTimeout(() => mutatePlan(), 2000);
+          }
+        } catch (error) {
+          console.error('Failed to sync plan:', error);
+          // Fallback to webhook processing
+          setTimeout(() => mutatePlan(), 2000);
+        } finally {
+          setSyncing(false);
+          mutatePlan();
+          // Clean up URL
+          window.history.replaceState({}, '', '/monetization');
+        }
       };
-      showSuccess();
       
-      // Clean up URL
-      window.history.replaceState({}, '', '/monetization');
-      
-      return () => clearTimeout(timer);
+      syncPlan();
     }
   }, [searchParams, mutatePlan]);
 
@@ -150,9 +162,30 @@ function MonetizationPageContent() {
   const { data: plansResponse, error: plansError } = useSWR<{ plans: any[] }>("/api/v1/plans", fetcher);
   const [busy, setBusy] = useState(false);
   const [isAnnual, setIsAnnual] = useState(false);
+  const [syncing, setSyncing] = useState(false);
 
   // Transform API plans to tier format
   const TIERS: Tier[] = plansResponse?.plans?.map(transformPlanToTier) || [];
+
+  // Manual sync function for when webhooks fail
+  async function handleManualSync() {
+    setSyncing(true);
+    try {
+      const { syncPlanFromStripe } = await import('@/lib/billing');
+      const result = await syncPlanFromStripe();
+      
+      if (result.success) {
+        alert(`✅ ${result.message}`);
+        mutatePlan(); // Refresh plan data
+      } else {
+        alert(`❌ ${result.message}`);
+      }
+    } catch (error: any) {
+      alert(`❌ Failed to sync plan: ${error.message || 'Unknown error'}`);
+    } finally {
+      setSyncing(false);
+    }
+  }
 
   async function checkout(priceId: string) {
     setBusy(true);
@@ -280,6 +313,21 @@ function MonetizationPageContent() {
               Plans & Pricing
             </h1>
             <p className="text-black/60 dark:text-white/60 text-lg max-w-2xl mx-auto">Choose the perfect plan to grow your content empire 🚀</p>
+            {planData?.plan && (
+              <p className="text-black/70 dark:text-white/70 text-sm mt-3">
+                Current Plan: <span className="font-semibold">{planData.plan.name}</span>
+                {planData.plan.slug !== 'free' && (
+                  <button
+                    onClick={handleManualSync}
+                    disabled={syncing}
+                    className="ml-3 text-xs px-3 py-1 rounded-lg border border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="If your payment succeeded but plan hasn't updated, click here to sync"
+                  >
+                    {syncing ? '⏳ Syncing...' : '🔄 Sync Plan'}
+                  </button>
+                )}
+              </p>
+            )}
           </div>
         </div>
 
