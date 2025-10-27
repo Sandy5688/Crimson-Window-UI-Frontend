@@ -128,7 +128,7 @@ function Hero() {
             Upload Once. Speak Every Language. Rank Everywhere.
           </h1>
           <p className="mt-4 text-base sm:text-lg text-white/90 drop-shadow">
-            Transform your videos, podcasts, and posts into global hits — automatically localized, trend-tuned, and adapted for every audience.
+            Transform your videos, podcasts, and stories into global hits — automatically localized, trend-tuned, and adapted for every audience.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3" data-aos="zoom-in">
             <Link
