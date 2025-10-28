@@ -171,8 +171,8 @@ function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    // Only enable mouse tilt for md and up
-    if (typeof window !== 'undefined' && window.innerWidth < 768) return;
+    // Only enable mouse tilt for lg and up
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - rect.left - rect.width / 2) / 25;
     const y = (e.clientY - rect.top - rect.height / 2) / 25;
@@ -201,7 +201,7 @@ function Hero() {
       {/* Gradient Overlay */}
       <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/40 via-black/25 to-black/60" />
 
-      {/* Animated particles - hide on small screens */}
+      {/* Animated particles - hide on small/medium screens */}
       <div className="absolute inset-0 z-10 opacity-30 hidden md:block">
         <div className="absolute top-[20%] left-[15%] w-2 h-2 bg-white rounded-full animate-ping" style={{ animationDuration: "3s" }} />
         <div className="absolute top-[60%] right-[20%] w-2 h-2 bg-white rounded-full animate-ping" style={{ animationDuration: "4s", animationDelay: "1s" }} />
@@ -210,88 +210,89 @@ function Hero() {
 
       <div className="relative z-20 container mx-auto px-4 md:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center min-h-[600px] md:min-h-screen py-12 md:py-16 lg:py-20">
-        {/* Text content - center align on small/medium screens, left align on large */}
-        <div data-aos="fade-up" className="flex flex-col items-center lg:items-start text-center lg:text-left w-full max-w-3xl mx-auto lg:mx-0">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-4 py-2 text-xs text-white shadow-lg mb-4">
-            <span className="flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full opacity-75" style={{ background: ACCENT }} />
-              <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: PRIMARY }} />
-            </span>
-            Creator automation for global reach
+          {/* Text content - center align on small/medium screens, left align on large */}
+          <div data-aos="fade-up" className="flex flex-col items-center lg:items-start text-center lg:text-left w-full max-w-3xl mx-auto lg:mx-0">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-4 py-2 text-xs text-white shadow-lg mb-4">
+              <span className="flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full opacity-75" style={{ background: ACCENT }} />
+                <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: PRIMARY }} />
+              </span>
+              Creator automation for global reach
+            </div>
+
+            <h1 className="mt-4 md:mt-6 text-4xl sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight text-white drop-shadow-2xl leading-tight max-w-4xl">
+              Upload Once.{" "}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#6C63FF] via-[#FF6584] to-[#6C63FF] animate-gradient">
+                Speak Every Language.
+              </span>{" "}
+              Rank Everywhere.
+            </h1>
+
+            <p className="mt-5 md:mt-6 text-lg sm:text-xl md:text-2xl lg:text-xl text-white/90 drop-shadow-lg leading-relaxed max-w-2xl">
+              Transform your videos, podcasts, and stories into global hits — automatically localized, trend-tuned, and adapted for every audience.
+            </p>
+
+            {/* Stats Section -- Only visible at lg+ screens */}
+            <div className="hidden lg:grid mt-8 md:mt-10 lg:mt-12 grid-cols-3 gap-3 md:gap-5 lg:gap-4 w-full max-w-2xl">
+              <div className="text-center p-3 md:p-4 rounded-xl bg-white/10 backdrop-blur border border-white/20" data-aos="fade-up" data-aos-delay="100">
+                <div className="text-xl md:text-2xl font-bold text-white">
+                  <AnimatedCounter end={15000} suffix="+" />
+                </div>
+                <div className="text-xs md:text-sm text-white/70 mt-1">Creators</div>
+              </div>
+              <div className="text-center p-3 md:p-4 rounded-xl bg-white/10 backdrop-blur border border-white/20" data-aos="fade-up" data-aos-delay="200">
+                <div className="text-xl md:text-2xl font-bold text-white">
+                  <AnimatedCounter end={50} suffix="+" />
+                </div>
+                <div className="text-xs md:text-sm text-white/70 mt-1">Countries</div>
+              </div>
+              <div className="text-center p-3 md:p-4 rounded-xl bg-white/10 backdrop-blur border border-white/20" data-aos="fade-up" data-aos-delay="300">
+                <div className="text-xl md:text-2xl font-bold text-white">
+                  <AnimatedCounter end={1} suffix="M+" />
+                </div>
+                <div className="text-xs md:text-sm text-white/70 mt-1">Videos</div>
+              </div>
+            </div>
+
+            {/* Call-to-action Section: Always visible, but adjust spacing on small & md screens since stats are hidden */}
+            <div className={`mt-8 ${/* Remove md:mt-10 and lg:mt-12 if stats are hidden */ "lg:mt-12"} flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-3 md:gap-4 w-full`}>
+              <Link
+                href="/signup"
+                className="group inline-flex items-center gap-2 rounded-full px-7 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold text-white shadow-2xl transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(108,99,255,0.5)]"
+                style={{ backgroundImage: `linear-gradient(135deg, ${PRIMARY}, ${ACCENT})` }}
+              >
+                <RocketLaunchIcon className="group-hover:rotate-12 transition-transform w-5 h-5 md:w-6 md:h-6" />
+                <span>Start for Free</span>
+              </Link>
+              <a
+                href="#how-it-works"
+                className="inline-flex items-center gap-2 rounded-full px-7 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold text-white bg-white/10 border border-white/30 hover:bg-white/20 backdrop-blur transition-all hover:scale-105"
+              >
+                <PlayCircleOutlineIcon className="w-5 h-5 md:w-6 md:h-6" />
+                <span>See How It Works</span>
+              </a>
+            </div>
           </div>
 
-          <h1 className="mt-4 md:mt-6 text-4xl sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight text-white drop-shadow-2xl leading-tight max-w-4xl">
-            Upload Once.{" "}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#6C63FF] via-[#FF6584] to-[#6C63FF] animate-gradient">
-              Speak Every Language.
-            </span>{" "}
-            Rank Everywhere.
-          </h1>
-
-          <p className="mt-5 md:mt-6 text-lg sm:text-xl md:text-2xl lg:text-xl text-white/90 drop-shadow-lg leading-relaxed max-w-2xl">
-            Transform your videos, podcasts, and stories into global hits — automatically localized, trend-tuned, and adapted for every audience.
-          </p>
-
-          {/* Stats Section */}
-          <div className="mt-8 md:mt-10 lg:mt-12 grid grid-cols-3 gap-3 md:gap-5 lg:gap-4 w-full max-w-2xl">
-            <div className="text-center p-3 md:p-4 rounded-xl bg-white/10 backdrop-blur border border-white/20" data-aos="fade-up" data-aos-delay="100">
-              <div className="text-xl md:text-2xl font-bold text-white">
-                <AnimatedCounter end={15000} suffix="+" />
-              </div>
-              <div className="text-xs md:text-sm text-white/70 mt-1">Creators</div>
-            </div>
-            <div className="text-center p-3 md:p-4 rounded-xl bg-white/10 backdrop-blur border border-white/20" data-aos="fade-up" data-aos-delay="200">
-              <div className="text-xl md:text-2xl font-bold text-white">
-                <AnimatedCounter end={50} suffix="+" />
-              </div>
-              <div className="text-xs md:text-sm text-white/70 mt-1">Countries</div>
-            </div>
-            <div className="text-center p-3 md:p-4 rounded-xl bg-white/10 backdrop-blur border border-white/20" data-aos="fade-up" data-aos-delay="300">
-              <div className="text-xl md:text-2xl font-bold text-white">
-                <AnimatedCounter end={1} suffix="M+" />
-              </div>
-              <div className="text-xs md:text-sm text-white/70 mt-1">Videos</div>
-            </div>
-          </div>
-
-          <div className="mt-8 md:mt-10 lg:mt-12 flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-3 md:gap-4 w-full">
-            <Link
-              href="/signup"
-              className="group inline-flex items-center gap-2 rounded-full px-7 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold text-white shadow-2xl transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(108,99,255,0.5)]"
-              style={{ backgroundImage: `linear-gradient(135deg, ${PRIMARY}, ${ACCENT})` }}
+          {/* Hero Image with 3D Tilt Effect -- only show on laptop (lg) and larger */}
+          <div className="relative hidden lg:flex justify-center items-center w-full" data-aos="zoom-in">
+            <div className="absolute -inset-16 md:-inset-20 lg:-inset-24 bg-gradient-to-tr from-[#6C63FF40] to-[#FF658440] blur-3xl animate-pulse" style={{ animationDuration: "4s" }} />
+            <div
+              className="relative rounded-2xl border-2 border-white/20 bg-white/10 backdrop-blur-xl p-6 md:p-8 shadow-2xl transition-transform duration-300 ease-out hover:shadow-[0_0_60px_rgba(108,99,255,0.4)] w-full"
+              style={{
+                transform: `perspective(1000px) rotateX(${-mousePosition.y}deg) rotateY(${mousePosition.x}deg) scale3d(1.02, 1.02, 1.02)`,
+              }}
             >
-              <RocketLaunchIcon className="group-hover:rotate-12 transition-transform w-5 h-5 md:w-6 md:h-6" />
-              <span>Start for Free</span>
-            </Link>
-            <a
-              href="#how-it-works"
-              className="inline-flex items-center gap-2 rounded-full px-7 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold text-white bg-white/10 border border-white/30 hover:bg-white/20 backdrop-blur transition-all hover:scale-105"
-            >
-              <PlayCircleOutlineIcon className="w-5 h-5 md:w-6 md:h-6" />
-              <span>See How It Works</span>
-            </a>
-          </div>
-        </div>
-
-        {/* Hero Image with 3D Tilt Effect -- only show on laptop (lg) and larger */}
-        <div className="relative hidden lg:flex justify-center items-center w-full" data-aos="zoom-in">
-          <div className="absolute -inset-16 md:-inset-20 lg:-inset-24 bg-gradient-to-tr from-[#6C63FF40] to-[#FF658440] blur-3xl animate-pulse" style={{ animationDuration: "4s" }} />
-          <div
-            className="relative rounded-2xl border-2 border-white/20 bg-white/10 backdrop-blur-xl p-6 md:p-8 shadow-2xl transition-transform duration-300 ease-out hover:shadow-[0_0_60px_rgba(108,99,255,0.4)] w-full"
-            style={{
-              transform: `perspective(1000px) rotateX(${-mousePosition.y}deg) rotateY(${mousePosition.x}deg) scale3d(1.02, 1.02, 1.02)`,
-            }}
-          >
-            <Image src="/hero-draw.png" alt="Hero illustration" width={800} height={600} className="w-full h-auto rounded-lg" />
-            {/* Floating badges */}
-            <div className="absolute -top-4 -right-4 bg-white dark:bg-gray-800 rounded-full p-3 shadow-xl border-2 border-purple-500 animate-bounce" style={{ animationDuration: "3s" }}>
-              <VerifiedIcon className="text-purple-500 w-6 h-6" />
-            </div>
-            <div className="absolute -bottom-4 -left-4 bg-white dark:bg-gray-800 rounded-full p-3 shadow-xl border-2 border-pink-500 animate-bounce" style={{ animationDuration: "3s", animationDelay: "1s" }}>
-              <TrendingUpOutlinedIcon className="text-pink-500 w-6 h-6" />
+              <Image src="/hero-draw.png" alt="Hero illustration" width={800} height={600} className="w-full h-auto rounded-lg" />
+              {/* Floating badges */}
+              <div className="absolute -top-4 -right-4 bg-white dark:bg-gray-800 rounded-full p-3 shadow-xl border-2 border-purple-500 animate-bounce" style={{ animationDuration: "3s" }}>
+                <VerifiedIcon className="text-purple-500 w-6 h-6" />
+              </div>
+              <div className="absolute -bottom-4 -left-4 bg-white dark:bg-gray-800 rounded-full p-3 shadow-xl border-2 border-pink-500 animate-bounce" style={{ animationDuration: "3s", animationDelay: "1s" }}>
+                <TrendingUpOutlinedIcon className="text-pink-500 w-6 h-6" />
+              </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
 
@@ -751,9 +752,7 @@ function PlatformCarousel() {
     { name: "SoundCloud", color: "#FF5500", icon: "☁️" },
     { name: "Amazon Music", color: "#FF9900", icon: "🎼" },
     { name: "Deezer", color: "#FF6600", icon: "💿" },
-    { name: "TuneIn", color: "#14D8CC", icon: "📡" },
-    { name: "Pandora", color: "#3668FF", icon: "🎵" },
-    { name: "Tidal", color: "#000000", icon: "🌊" }
+    { name: "TuneIn", color: "#14D8CC", icon: "📡" }
   ];
 
   return (
@@ -792,7 +791,7 @@ function PlatformCarousel() {
             {[...platforms, ...platforms].map((platform, index) => (
               <div
                 key={`${platform.name}-${index}`}
-                className="flex-shrink-0 w-64 md:w-80 h-32 md:h-40 rounded-3xl border-3 border-purple-200/50 dark:border-purple-500/30 bg-white dark:bg-gray-800 shadow-2xl hover:shadow-[0_20px_60px_rgba(168,85,247,0.4)] transition-all duration-300 hover:scale-110 flex flex-col items-center justify-center gap-3 group relative overflow-hidden"
+                className="flex-shrink-0 w-64 md:w-80 h-48 md:h-56 rounded-3xl border-3 border-purple-200/50 dark:border-purple-500/30 bg-white dark:bg-gray-800 shadow-2xl hover:shadow-[0_20px_60px_rgba(168,85,247,0.4)] transition-all duration-300 hover:scale-110 flex flex-col items-center justify-center gap-3 group relative overflow-hidden"
                 style={{
                   boxShadow: `0 10px 40px ${platform.color}20`,
                 }}
@@ -821,7 +820,7 @@ function PlatformCarousel() {
             {[...platforms.slice().reverse(), ...platforms.slice().reverse()].map((platform, index) => (
               <div
                 key={`${platform.name}-reverse-${index}`}
-                className="flex-shrink-0 w-64 md:w-80 h-32 md:h-40 rounded-3xl border-3 border-pink-200/50 dark:border-pink-500/30 bg-white dark:bg-gray-800 shadow-2xl hover:shadow-[0_20px_60px_rgba(236,72,153,0.4)] transition-all duration-300 hover:scale-110 flex flex-col items-center justify-center gap-3 group relative overflow-hidden"
+                className="flex-shrink-0 w-64 md:w-80 h-48 md:h-56 rounded-3xl border-3 border-pink-200/50 dark:border-pink-500/30 bg-white dark:bg-gray-800 shadow-2xl hover:shadow-[0_20px_60px_rgba(236,72,153,0.4)] transition-all duration-300 hover:scale-110 flex flex-col items-center justify-center gap-3 group relative overflow-hidden"
                 style={{
                   boxShadow: `0 10px 40px ${platform.color}20`,
                 }}
@@ -850,13 +849,13 @@ function PlatformCarousel() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 max-w-5xl mx-auto" data-aos="fade-up" data-aos-delay="200">
           <div className="text-center p-6 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-purple-200 dark:border-purple-700 shadow-xl">
             <div className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
-              {platforms.length}+
+              {platforms.length}
             </div>
             <div className="text-sm md:text-base text-gray-600 dark:text-gray-300 font-semibold">Platforms</div>
           </div>
           <div className="text-center p-6 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-purple-200 dark:border-purple-700 shadow-xl">
             <div className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
-              195+
+              50+
             </div>
             <div className="text-sm md:text-base text-gray-600 dark:text-gray-300 font-semibold">Countries</div>
           </div>
@@ -885,10 +884,10 @@ function PlatformCarousel() {
           100% { transform: translateX(0); }
         }
         .animate-scroll {
-          animation: scroll 40s linear infinite;
+          animation: scroll 20s linear infinite;
         }
         .animate-scroll-reverse {
-          animation: scroll-reverse 40s linear infinite;
+          animation: scroll-reverse 20s linear infinite;
         }
         .animate-scroll:hover,
         .animate-scroll-reverse:hover {
@@ -901,13 +900,51 @@ function PlatformCarousel() {
 
 // Live Activity Feed
 function LiveActivity() {
-  const [activities] = useState([
-    { user: "Sarah", action: "uploaded", content: "Tech Review 2024", time: "2m ago", country: "🇺🇸" },
-    { user: "Marcus", action: "reached", content: "1M views", time: "5m ago", country: "🇬🇧" },
-    { user: "Aisha", action: "published to", content: "15 channels", time: "8m ago", country: "🇮🇳" },
-    { user: "Carlos", action: "gained", content: "10K subs", time: "12m ago", country: "🇧🇷" },
-    { user: "Emma", action: "optimized", content: "Gaming Stream", time: "15m ago", country: "🇦🇺" },
-  ]);
+  const allActivities = [
+    { user: "Sarah", action: "uploaded", content: "Tech Review 2024", time: "just now", country: "🇺🇸" },
+    { user: "Marcus", action: "reached", content: "1M views", time: "just now", country: "🇬🇧" },
+    { user: "Aisha", action: "published to", content: "15 channels", time: "just now", country: "🇮🇳" },
+    { user: "Carlos", action: "gained", content: "10K subs", time: "just now", country: "🇧🇷" },
+    { user: "Emma", action: "optimized", content: "Gaming Stream", time: "just now", country: "🇦🇺" },
+    { user: "Liam", action: "uploaded", content: "Tutorial Series", time: "just now", country: "🇨🇦" },
+    { user: "Sofia", action: "reached", content: "500K views", time: "just now", country: "🇪🇸" },
+    { user: "Yuki", action: "published to", content: "8 channels", time: "just now", country: "🇯🇵" },
+    { user: "David", action: "gained", content: "5K subs", time: "just now", country: "🇩🇪" },
+    { user: "Priya", action: "optimized", content: "Vlog Daily", time: "just now", country: "🇮🇳" },
+    { user: "Alex", action: "uploaded", content: "Product Launch", time: "just now", country: "🇫🇷" },
+    { user: "Zara", action: "reached", content: "2M views", time: "just now", country: "🇿🇦" },
+    { user: "Chen", action: "published to", content: "20 channels", time: "just now", country: "🇨🇳" },
+    { user: "Nina", action: "gained", content: "15K subs", time: "just now", country: "🇸🇪" },
+    { user: "Omar", action: "optimized", content: "Comedy Sketch", time: "just now", country: "🇪🇬" },
+  ];
+
+  const [activities, setActivities] = useState(allActivities.slice(0, 5));
+  const [usedIndices, setUsedIndices] = useState(new Set([0, 1, 2, 3, 4]));
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Get a random activity that hasn't been shown recently
+      let newIndex;
+      const availableIndices = Array.from({ length: allActivities.length }, (_, i) => i)
+        .filter(i => !usedIndices.has(i));
+      
+      if (availableIndices.length === 0) {
+        // Reset if we've used all activities
+        setUsedIndices(new Set());
+        newIndex = Math.floor(Math.random() * allActivities.length);
+      } else {
+        newIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+      }
+
+      const newActivity = allActivities[newIndex];
+      
+      // Add new activity to the top, remove the oldest
+      setActivities(prev => [newActivity, ...prev.slice(0, 4)]);
+      setUsedIndices(prev => new Set([...prev, newIndex]));
+    }, 3000); // New activity every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [usedIndices]);
 
   return (
     <section className="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-950 dark:via-purple-950/20 dark:to-gray-900 relative overflow-hidden">
@@ -934,10 +971,12 @@ function LiveActivity() {
         <div className="max-w-3xl mx-auto space-y-3" data-aos="fade-up">
           {activities.map((activity, index) => (
             <div
-              key={index}
-              className="flex items-center gap-4 p-4 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-purple-200/50 dark:border-purple-500/30 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-x-2"
-              data-aos="fade-left"
-              data-aos-delay={index * 100}
+              key={`${activity.user}-${activity.content}-${index}`}
+              className="flex items-center gap-4 p-4 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-purple-200/50 dark:border-purple-500/30 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-x-2 animate-slideInFromRight"
+              style={{ 
+                animation: index === 0 ? 'slideInFromRight 0.5s ease-out' : 'none',
+                opacity: index === 4 ? 0.5 : 1,
+              }}
             >
               <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-lg">
                 {activity.user[0]}
@@ -947,7 +986,9 @@ function LiveActivity() {
                   <span className="font-semibold">{activity.user}</span> {activity.action}{" "}
                   <span className="font-semibold text-purple-600 dark:text-purple-400">{activity.content}</span>
                 </p>
-                <p className="text-xs text-[#111827]/60 dark:text-white/60">{activity.time}</p>
+                <p className="text-xs text-[#111827]/60 dark:text-white/60">
+                  {index < 3 ? "just now" : index === 3 ? "1min ago" : "2min ago"}
+                </p>
               </div>
               <div className="text-2xl">{activity.country}</div>
             </div>
@@ -958,19 +999,19 @@ function LiveActivity() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-4xl mx-auto" data-aos="fade-up">
           <div className="text-center p-6 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-purple-200/50 dark:border-purple-500/30 shadow-lg">
             <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">
-              <AnimatedCounter end={250} suffix="K+" />
+              <AnimatedCounter end={1} suffix="M+" />
             </div>
             <div className="text-sm text-[#111827]/70 dark:text-white/70 mt-1">Videos Uploaded</div>
           </div>
           <div className="text-center p-6 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-pink-200/50 dark:border-pink-500/30 shadow-lg">
             <div className="text-3xl font-bold text-pink-600 dark:text-pink-400">
-              <AnimatedCounter end={98} suffix="%" />
+              <AnimatedCounter end={99} suffix="%" />
             </div>
             <div className="text-sm text-[#111827]/70 dark:text-white/70 mt-1">Satisfaction Rate</div>
           </div>
           <div className="text-center p-6 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-blue-200/50 dark:border-blue-500/30 shadow-lg">
             <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-              <AnimatedCounter end={180} suffix="+" />
+              <AnimatedCounter end={50} suffix="+" />
             </div>
             <div className="text-sm text-[#111827]/70 dark:text-white/70 mt-1">Countries</div>
           </div>
