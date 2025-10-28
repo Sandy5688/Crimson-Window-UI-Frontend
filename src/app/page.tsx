@@ -171,6 +171,8 @@ function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    // Only enable mouse tilt for md and up
+    if (typeof window !== 'undefined' && window.innerWidth < 768) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - rect.left - rect.width / 2) / 25;
     const y = (e.clientY - rect.top - rect.height / 2) / 25;
@@ -180,111 +182,116 @@ function Hero() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden min-h-[700px] bg-black"
+      className="relative overflow-hidden min-h-[600px] md:min-h-screen bg-black"
       onMouseMove={handleMouseMove}
     >
-      {/* Background Video */}
+      {/* Responsive Background Video */}
       <video
         autoPlay
         muted
         loop
         playsInline
         className="absolute inset-0 w-full h-full object-cover object-center z-0 pointer-events-none"
+        style={{
+          minHeight: '100vh',
+        }}
         src="https://cdn.pixabay.com/video/2023/09/02/178826-860734645_large.mp4"
         aria-hidden="true"
       />
       {/* Gradient Overlay */}
       <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/40 via-black/25 to-black/60" />
-      
-      {/* Animated particles */}
-      <div className="absolute inset-0 z-10 opacity-30">
+
+      {/* Animated particles - hide on small screens */}
+      <div className="absolute inset-0 z-10 opacity-30 hidden md:block">
         <div className="absolute top-[20%] left-[15%] w-2 h-2 bg-white rounded-full animate-ping" style={{ animationDuration: "3s" }} />
         <div className="absolute top-[60%] right-[20%] w-2 h-2 bg-white rounded-full animate-ping" style={{ animationDuration: "4s", animationDelay: "1s" }} />
         <div className="absolute bottom-[30%] left-[40%] w-2 h-2 bg-white rounded-full animate-ping" style={{ animationDuration: "5s", animationDelay: "2s" }} />
       </div>
 
-      <div className="relative z-20 container grid lg:grid-cols-2 gap-10 items-center py-20 mb-48 min-h-[650px]">
-        <div data-aos="fade-up">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-4 py-2 text-xs text-white shadow-lg">
+      <div className="relative z-20 container mx-auto px-4 md:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center min-h-[600px] md:min-h-screen py-12 md:py-16 lg:py-20">
+        {/* Text content - center align on small/medium screens, left align on large */}
+        <div data-aos="fade-up" className="flex flex-col items-center lg:items-start text-center lg:text-left w-full max-w-3xl mx-auto lg:mx-0">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-4 py-2 text-xs text-white shadow-lg mb-4">
             <span className="flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full opacity-75" style={{ background: ACCENT }} />
               <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: PRIMARY }} />
             </span>
             Creator automation for global reach
           </div>
-          
-          <h1 className="mt-6 text-4xl sm:text-6xl font-extrabold tracking-tight text-white drop-shadow-2xl">
+
+          <h1 className="mt-4 md:mt-6 text-4xl sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight text-white drop-shadow-2xl leading-tight max-w-4xl">
             Upload Once.{" "}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#6C63FF] via-[#FF6584] to-[#6C63FF] animate-gradient">
               Speak Every Language.
             </span>{" "}
             Rank Everywhere.
           </h1>
-          
-          <p className="mt-6 text-base sm:text-xl text-white/90 drop-shadow-lg leading-relaxed">
+
+          <p className="mt-5 md:mt-6 text-lg sm:text-xl md:text-2xl lg:text-xl text-white/90 drop-shadow-lg leading-relaxed max-w-2xl">
             Transform your videos, podcasts, and stories into global hits — automatically localized, trend-tuned, and adapted for every audience.
           </p>
 
           {/* Stats Section */}
-          <div className="mt-8 grid grid-cols-3 gap-4">
-            <div className="text-center p-3 rounded-xl bg-white/10 backdrop-blur border border-white/20" data-aos="fade-up" data-aos-delay="100">
-              <div className="text-2xl font-bold text-white">
+          <div className="mt-8 md:mt-10 lg:mt-12 grid grid-cols-3 gap-3 md:gap-5 lg:gap-4 w-full max-w-2xl">
+            <div className="text-center p-3 md:p-4 rounded-xl bg-white/10 backdrop-blur border border-white/20" data-aos="fade-up" data-aos-delay="100">
+              <div className="text-xl md:text-2xl font-bold text-white">
                 <AnimatedCounter end={15000} suffix="+" />
               </div>
-              <div className="text-xs text-white/70 mt-1">Creators</div>
+              <div className="text-xs md:text-sm text-white/70 mt-1">Creators</div>
             </div>
-            <div className="text-center p-3 rounded-xl bg-white/10 backdrop-blur border border-white/20" data-aos="fade-up" data-aos-delay="200">
-              <div className="text-2xl font-bold text-white">
+            <div className="text-center p-3 md:p-4 rounded-xl bg-white/10 backdrop-blur border border-white/20" data-aos="fade-up" data-aos-delay="200">
+              <div className="text-xl md:text-2xl font-bold text-white">
                 <AnimatedCounter end={50} suffix="+" />
               </div>
-              <div className="text-xs text-white/70 mt-1">Countries</div>
+              <div className="text-xs md:text-sm text-white/70 mt-1">Countries</div>
             </div>
-            <div className="text-center p-3 rounded-xl bg-white/10 backdrop-blur border border-white/20" data-aos="fade-up" data-aos-delay="300">
-              <div className="text-2xl font-bold text-white">
+            <div className="text-center p-3 md:p-4 rounded-xl bg-white/10 backdrop-blur border border-white/20" data-aos="fade-up" data-aos-delay="300">
+              <div className="text-xl md:text-2xl font-bold text-white">
                 <AnimatedCounter end={1} suffix="M+" />
               </div>
-              <div className="text-xs text-white/70 mt-1">Videos</div>
+              <div className="text-xs md:text-sm text-white/70 mt-1">Videos</div>
             </div>
           </div>
-          
-          <div className="mt-8 flex flex-wrap items-center gap-3" data-aos="zoom-in" data-aos-delay="400">
+
+          <div className="mt-8 md:mt-10 lg:mt-12 flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-3 md:gap-4 w-full">
             <Link
               href="/signup"
-              className="group inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-semibold text-white shadow-2xl transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(108,99,255,0.5)]"
+              className="group inline-flex items-center gap-2 rounded-full px-7 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold text-white shadow-2xl transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(108,99,255,0.5)]"
               style={{ backgroundImage: `linear-gradient(135deg, ${PRIMARY}, ${ACCENT})` }}
             >
-              <RocketLaunchIcon className="group-hover:rotate-12 transition-transform" />
+              <RocketLaunchIcon className="group-hover:rotate-12 transition-transform w-5 h-5 md:w-6 md:h-6" />
               <span>Start for Free</span>
             </Link>
             <a
               href="#how-it-works"
-              className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-semibold text-white bg-white/10 border border-white/30 hover:bg-white/20 backdrop-blur transition-all hover:scale-105"
+              className="inline-flex items-center gap-2 rounded-full px-7 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold text-white bg-white/10 border border-white/30 hover:bg-white/20 backdrop-blur transition-all hover:scale-105"
             >
-              <PlayCircleOutlineIcon />
+              <PlayCircleOutlineIcon className="w-5 h-5 md:w-6 md:h-6" />
               <span>See How It Works</span>
             </a>
           </div>
         </div>
 
-        {/* Hero Image with 3D Tilt Effect */}
-        <div className="relative flex justify-center items-center" data-aos="zoom-in">
-          <div className="absolute -inset-24 bg-gradient-to-tr from-[#6C63FF40] to-[#FF658440] blur-3xl animate-pulse" style={{ animationDuration: "4s" }} />
-          <div 
-            className="relative rounded-2xl border-2 border-white/20 bg-white/10 backdrop-blur-xl p-8 shadow-2xl transition-transform duration-300 ease-out hover:shadow-[0_0_60px_rgba(108,99,255,0.4)]"
+        {/* Hero Image with 3D Tilt Effect -- only show on laptop (lg) and larger */}
+        <div className="relative hidden lg:flex justify-center items-center w-full" data-aos="zoom-in">
+          <div className="absolute -inset-16 md:-inset-20 lg:-inset-24 bg-gradient-to-tr from-[#6C63FF40] to-[#FF658440] blur-3xl animate-pulse" style={{ animationDuration: "4s" }} />
+          <div
+            className="relative rounded-2xl border-2 border-white/20 bg-white/10 backdrop-blur-xl p-6 md:p-8 shadow-2xl transition-transform duration-300 ease-out hover:shadow-[0_0_60px_rgba(108,99,255,0.4)] w-full"
             style={{
               transform: `perspective(1000px) rotateX(${-mousePosition.y}deg) rotateY(${mousePosition.x}deg) scale3d(1.02, 1.02, 1.02)`,
             }}
           >
             <Image src="/hero-draw.png" alt="Hero illustration" width={800} height={600} className="w-full h-auto rounded-lg" />
-            
             {/* Floating badges */}
             <div className="absolute -top-4 -right-4 bg-white dark:bg-gray-800 rounded-full p-3 shadow-xl border-2 border-purple-500 animate-bounce" style={{ animationDuration: "3s" }}>
-              <VerifiedIcon className="text-purple-500" />
+              <VerifiedIcon className="text-purple-500 w-6 h-6" />
             </div>
             <div className="absolute -bottom-4 -left-4 bg-white dark:bg-gray-800 rounded-full p-3 shadow-xl border-2 border-pink-500 animate-bounce" style={{ animationDuration: "3s", animationDelay: "1s" }}>
-              <TrendingUpOutlinedIcon className="text-pink-500" />
+              <TrendingUpOutlinedIcon className="text-pink-500 w-6 h-6" />
             </div>
           </div>
+        </div>
         </div>
       </div>
 
@@ -346,7 +353,6 @@ function Problem() {
 // Testimonials Carousel
 function Testimonials() {
   const [activeIndex, setActiveIndex] = useState(0);
-  
   const testimonials = [
     {
       name: "Sarah Chen",
@@ -382,6 +388,15 @@ function Testimonials() {
     },
   ];
 
+  // Auto-slide logic
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % testimonials.length);
+    }, 3000); // 3 seconds interval
+
+    return () => clearInterval(interval);
+  }, [testimonials.length]);
+
   const nextTestimonial = () => {
     setActiveIndex((prev) => (prev + 1) % testimonials.length);
   };
@@ -395,13 +410,18 @@ function Testimonials() {
       {/* Decorative elements */}
       <div className="absolute top-10 left-10 w-20 h-20 bg-purple-500/10 rounded-full blur-xl" />
       <div className="absolute bottom-10 right-10 w-32 h-32 bg-pink-500/10 rounded-full blur-xl" />
-      
+
       <div className="container py-20 mb-48 relative z-10">
         <div className="text-center mb-12" data-aos="fade-up">
           <h2 className="text-3xl sm:text-5xl font-bold text-[#111827] dark:text-white">
-            Loved by Creators <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Worldwide</span>
+            Loved by Creators{" "}
+            <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              Worldwide
+            </span>
           </h2>
-          <p className="mt-4 text-lg text-[#111827]/70 dark:text-white/70">See what creators are saying about CreatorFlow</p>
+          <p className="mt-4 text-lg text-[#111827]/70 dark:text-white/70">
+            See what creators are saying about CreatorFlow
+          </p>
         </div>
 
         <div className="relative max-w-4xl mx-auto">
@@ -410,11 +430,11 @@ function Testimonials() {
             <div className="absolute -inset-4 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-purple-500/20 rounded-3xl blur-2xl" />
             <div className="relative bg-white dark:bg-gray-800 rounded-3xl p-8 sm:p-12 shadow-2xl border-2 border-purple-200/50 dark:border-purple-500/30">
               <FormatQuoteIcon className="text-purple-500 text-5xl opacity-20 absolute top-6 left-6" />
-              
+
               <div className="flex items-center gap-4 mb-6">
                 <div className="relative">
-                  <Image 
-                    src={testimonials[activeIndex].avatar} 
+                  <Image
+                    src={testimonials[activeIndex].avatar}
                     alt={testimonials[activeIndex].name}
                     width={64}
                     height={64}
@@ -427,8 +447,12 @@ function Testimonials() {
                   )}
                 </div>
                 <div>
-                  <h4 className="text-xl font-bold text-[#111827] dark:text-white">{testimonials[activeIndex].name}</h4>
-                  <p className="text-sm text-[#111827]/60 dark:text-white/60">{testimonials[activeIndex].role}</p>
+                  <h4 className="text-xl font-bold text-[#111827] dark:text-white">
+                    {testimonials[activeIndex].name}
+                  </h4>
+                  <p className="text-sm text-[#111827]/60 dark:text-white/60">
+                    {testimonials[activeIndex].role}
+                  </p>
                 </div>
                 <div className="ml-auto">
                   <div className="flex gap-1">
@@ -459,14 +483,16 @@ function Testimonials() {
             >
               <ArrowBackIcon className="text-purple-600 dark:text-purple-400" />
             </button>
-            
+
             <div className="flex gap-2">
               {testimonials.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setActiveIndex(index)}
                   className={`h-2 rounded-full transition-all ${
-                    index === activeIndex ? 'w-8 bg-gradient-to-r from-purple-500 to-pink-500' : 'w-2 bg-gray-300 dark:bg-gray-600'
+                    index === activeIndex
+                      ? "w-8 bg-gradient-to-r from-purple-500 to-pink-500"
+                      : "w-2 bg-gray-300 dark:bg-gray-600"
                   }`}
                   aria-label={`Go to testimonial ${index + 1}`}
                 />
@@ -526,6 +552,21 @@ function HowItWorks() {
               <p className="mt-1 text-sm text-[#111827]/70 dark:text-white/70">{desc}</p>
             </div>
           ))}
+        </div>
+
+        {/* CTA: Professionally encourage signup */}
+        <div className="mt-12 flex justify-center">
+          <Link
+            href="/signup"
+            className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all bg-gradient-to-r from-purple-600 to-pink-500 hover:scale-105 hover:shadow-[0_0_30px_rgba(108,99,255,0.18)]"
+            style={{ backgroundImage: `linear-gradient(90deg, ${PRIMARY}, ${ACCENT})` }}
+            data-aos="fade-up"
+            data-aos-delay="350"
+          >
+            Get Started Free&nbsp;
+            <span className="hidden md:inline">— Experience CreatorFlow Today</span>
+            <RocketLaunchIcon className="w-6 h-6" />
+          </Link>
         </div>
       </div>
     </section>
@@ -701,45 +742,135 @@ function Features() {
 // Platform Logo Carousel
 function PlatformCarousel() {
   const platforms = [
-    { name: "YouTube", color: "#FF0000" },
-    { name: "Apple Music", color: "#000000" },
-    { name: "Audio Mack", color: "#E4405F" },
-    { name: "Podchaser", color: "#1877F2" },
-    { name: "iHeartRadio", color: "#1DA1F2" },
-    { name: "Spotify", color: "#1DB954" },
-    { name: "SoundCloud", color: "#9146FF" },
-    { name: "Amazon Music", color: "#0A66C2" },
-    { name: "Deezer", color: "#0A66C2" },
-    { name: "Tuneln", color: "#0A66C2" }
+    { name: "YouTube", color: "#FF0000", icon: "🎥" },
+    { name: "Apple Music", color: "#FA243C", icon: "🎵" },
+    { name: "Audio Mack", color: "#E4405F", icon: "🎧" },
+    { name: "Podchaser", color: "#7C3AED", icon: "🎙️" },
+    { name: "iHeartRadio", color: "#C6002B", icon: "📻" },
+    { name: "Spotify", color: "#1DB954", icon: "🎶" },
+    { name: "SoundCloud", color: "#FF5500", icon: "☁️" },
+    { name: "Amazon Music", color: "#FF9900", icon: "🎼" },
+    { name: "Deezer", color: "#FF6600", icon: "💿" },
+    { name: "TuneIn", color: "#14D8CC", icon: "📡" },
+    { name: "Pandora", color: "#3668FF", icon: "🎵" },
+    { name: "Tidal", color: "#000000", icon: "🌊" }
   ];
 
   return (
-    <section className="bg-white dark:bg-gray-900 py-16 overflow-hidden">
-      <div className="container mb-32">
-        <div className="text-center mb-12" data-aos="fade-up">
-          <h3 className="text-2xl sm:text-3xl font-bold text-[#111827] dark:text-white mb-3">
-            Distribute to <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Every Major Platform</span>
-          </h3>
-          <p className="text-[#111827]/70 dark:text-white/70">One upload, unlimited reach</p>
+    <section className="relative bg-gradient-to-br from-purple-50 via-white to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-20 md:py-32 overflow-hidden">
+      {/* Background decorations */}
+      <div className="absolute inset-0 z-0 opacity-30">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-400/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-pink-400/20 rounded-full blur-3xl" />
+      </div>
+
+      <div className="container relative z-10">
+        <div className="text-center mb-16 md:mb-20" data-aos="fade-up">
+          <div className="inline-flex items-center gap-2 rounded-full border border-purple-300 dark:border-purple-700 bg-purple-100/50 dark:bg-purple-900/30 backdrop-blur-md px-6 py-2 text-sm font-semibold text-purple-700 dark:text-purple-300 shadow-lg mb-6">
+            <span className="text-xl">🚀</span>
+            <span>Global Distribution Network</span>
+          </div>
+          
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#111827] dark:text-white mb-6 leading-tight">
+            Connect to{" "}
+            <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 bg-clip-text text-transparent">
+              Every Major Platform
+            </span>
+          </h2>
+          <p className="text-xl md:text-2xl text-[#111827]/70 dark:text-white/70 max-w-3xl mx-auto">
+            One upload, unlimited reach across all your favorite streaming platforms
+          </p>
         </div>
         
-        <div className="relative">
-          {/* Gradient Fade on sides */}
-          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white dark:from-gray-900 to-transparent z-10" />
-          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white dark:from-gray-900 to-transparent z-10" />
+        <div className="relative mb-16">
+          {/* Stronger Gradient Fade on sides */}
+          <div className="absolute left-0 top-0 bottom-0 w-32 md:w-48 bg-gradient-to-r from-purple-50 dark:from-gray-900 via-purple-50/80 dark:via-gray-900/80 to-transparent z-10" />
+          <div className="absolute right-0 top-0 bottom-0 w-32 md:w-48 bg-gradient-to-l from-pink-50 dark:from-gray-900 via-pink-50/80 dark:via-gray-900/80 to-transparent z-10" />
           
-          {/* Scrolling Animation */}
-          <div className="flex gap-8 animate-scroll">
+          {/* Scrolling Animation - Row 1 */}
+          <div className="flex gap-6 md:gap-8 animate-scroll mb-6 md:mb-8">
             {[...platforms, ...platforms].map((platform, index) => (
               <div
                 key={`${platform.name}-${index}`}
-                className="flex-shrink-0 w-48 h-24 rounded-2xl border-2 border-black/10 dark:border-white/10 bg-white dark:bg-gray-800 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center group"
+                className="flex-shrink-0 w-64 md:w-80 h-32 md:h-40 rounded-3xl border-3 border-purple-200/50 dark:border-purple-500/30 bg-white dark:bg-gray-800 shadow-2xl hover:shadow-[0_20px_60px_rgba(168,85,247,0.4)] transition-all duration-300 hover:scale-110 flex flex-col items-center justify-center gap-3 group relative overflow-hidden"
+                style={{
+                  boxShadow: `0 10px 40px ${platform.color}20`,
+                }}
               >
-                <span className="text-2xl font-bold group-hover:scale-110 transition-transform" style={{ color: platform.color }}>
+                {/* Gradient overlay on hover */}
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300"
+                  style={{ background: `linear-gradient(135deg, ${platform.color}, transparent)` }}
+                />
+                
+                <span className="text-5xl md:text-6xl group-hover:scale-125 transition-transform duration-300">
+                  {platform.icon}
+                </span>
+                <span 
+                  className="text-2xl md:text-3xl font-extrabold group-hover:scale-110 transition-transform duration-300 relative z-10" 
+                  style={{ color: platform.color }}
+                >
                   {platform.name}
                 </span>
               </div>
             ))}
+          </div>
+
+          {/* Scrolling Animation - Row 2 (Reverse direction) */}
+          <div className="flex gap-6 md:gap-8 animate-scroll-reverse">
+            {[...platforms.slice().reverse(), ...platforms.slice().reverse()].map((platform, index) => (
+              <div
+                key={`${platform.name}-reverse-${index}`}
+                className="flex-shrink-0 w-64 md:w-80 h-32 md:h-40 rounded-3xl border-3 border-pink-200/50 dark:border-pink-500/30 bg-white dark:bg-gray-800 shadow-2xl hover:shadow-[0_20px_60px_rgba(236,72,153,0.4)] transition-all duration-300 hover:scale-110 flex flex-col items-center justify-center gap-3 group relative overflow-hidden"
+                style={{
+                  boxShadow: `0 10px 40px ${platform.color}20`,
+                }}
+              >
+                {/* Gradient overlay on hover */}
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300"
+                  style={{ background: `linear-gradient(135deg, ${platform.color}, transparent)` }}
+                />
+                
+                <span className="text-5xl md:text-6xl group-hover:scale-125 transition-transform duration-300">
+                  {platform.icon}
+                </span>
+                <span 
+                  className="text-2xl md:text-3xl font-extrabold group-hover:scale-110 transition-transform duration-300 relative z-10" 
+                  style={{ color: platform.color }}
+                >
+                  {platform.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 max-w-5xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+          <div className="text-center p-6 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-purple-200 dark:border-purple-700 shadow-xl">
+            <div className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
+              {platforms.length}+
+            </div>
+            <div className="text-sm md:text-base text-gray-600 dark:text-gray-300 font-semibold">Platforms</div>
+          </div>
+          <div className="text-center p-6 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-purple-200 dark:border-purple-700 shadow-xl">
+            <div className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
+              195+
+            </div>
+            <div className="text-sm md:text-base text-gray-600 dark:text-gray-300 font-semibold">Countries</div>
+          </div>
+          <div className="text-center p-6 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-purple-200 dark:border-purple-700 shadow-xl">
+            <div className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
+              24/7
+            </div>
+            <div className="text-sm md:text-base text-gray-600 dark:text-gray-300 font-semibold">Availability</div>
+          </div>
+          <div className="text-center p-6 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-purple-200 dark:border-purple-700 shadow-xl">
+            <div className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
+              Instant
+            </div>
+            <div className="text-sm md:text-base text-gray-600 dark:text-gray-300 font-semibold">Sync</div>
           </div>
         </div>
       </div>
@@ -749,10 +880,18 @@ function PlatformCarousel() {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
         }
-        .animate-scroll {
-          animation: scroll 30s linear infinite;
+        @keyframes scroll-reverse {
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
         }
-        .animate-scroll:hover {
+        .animate-scroll {
+          animation: scroll 40s linear infinite;
+        }
+        .animate-scroll-reverse {
+          animation: scroll-reverse 40s linear infinite;
+        }
+        .animate-scroll:hover,
+        .animate-scroll-reverse:hover {
           animation-play-state: paused;
         }
       `}</style>
