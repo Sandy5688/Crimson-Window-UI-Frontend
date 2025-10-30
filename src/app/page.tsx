@@ -168,22 +168,11 @@ function Header() {
 }
 
 function Hero() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    // Only enable mouse tilt for lg and up
-    if (typeof window !== 'undefined' && window.innerWidth < 1024) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left - rect.width / 2) / 25;
-    const y = (e.clientY - rect.top - rect.height / 2) / 25;
-    setMousePosition({ x, y });
-  };
-
+  // No mouse-parallax necessary if everything is "set"
   return (
     <section
       id="home"
       className="relative overflow-hidden min-h-[600px] md:min-h-screen bg-black"
-      onMouseMove={handleMouseMove}
     >
       {/* Responsive Background Video */}
       <video
@@ -210,7 +199,7 @@ function Hero() {
 
       <div className="relative z-20 container mx-auto px-4 md:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center min-h-[600px] md:min-h-screen py-12 md:py-16 lg:py-20">
-          {/* Text content - center align on small/medium screens, left align on large */}
+          {/* Text content */}
           <div data-aos="fade-up" className="flex flex-col items-center lg:items-start text-center lg:text-left w-full max-w-3xl mx-auto lg:mx-0">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-4 py-2 text-xs text-white shadow-lg mb-4">
               <span className="flex h-2 w-2">
@@ -232,30 +221,8 @@ function Hero() {
               Transform your videos, podcasts, and stories into global hits — automatically localized, trend-tuned, and adapted for every audience.
             </p>
 
-            {/* Stats Section -- Only visible at lg+ screens */}
-            <div className="hidden lg:grid mt-8 md:mt-10 lg:mt-12 grid-cols-3 gap-3 md:gap-5 lg:gap-4 w-full max-w-2xl">
-              <div className="text-center p-3 md:p-4 rounded-xl bg-white/10 backdrop-blur border border-white/20" data-aos="fade-up" data-aos-delay="100">
-                <div className="text-xl md:text-2xl font-bold text-white">
-                  <AnimatedCounter end={15000} suffix="+" />
-                </div>
-                <div className="text-xs md:text-sm text-white/70 mt-1">Creators</div>
-              </div>
-              <div className="text-center p-3 md:p-4 rounded-xl bg-white/10 backdrop-blur border border-white/20" data-aos="fade-up" data-aos-delay="200">
-                <div className="text-xl md:text-2xl font-bold text-white">
-                  <AnimatedCounter end={50} suffix="+" />
-                </div>
-                <div className="text-xs md:text-sm text-white/70 mt-1">Countries</div>
-              </div>
-              <div className="text-center p-3 md:p-4 rounded-xl bg-white/10 backdrop-blur border border-white/20" data-aos="fade-up" data-aos-delay="300">
-                <div className="text-xl md:text-2xl font-bold text-white">
-                  <AnimatedCounter end={1} suffix="M+" />
-                </div>
-                <div className="text-xs md:text-sm text-white/70 mt-1">Videos</div>
-              </div>
-            </div>
-
-            {/* Call-to-action Section: Always visible, but adjust spacing on small & md screens since stats are hidden */}
-            <div className={`mt-8 ${/* Remove md:mt-10 and lg:mt-12 if stats are hidden */ "lg:mt-12"} flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-3 md:gap-4 w-full`}>
+            {/* Call-to-action Section */}
+            <div className="mt-8 flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-3 md:gap-4 w-full">
               <Link
                 href="/signup"
                 className="group inline-flex items-center gap-2 rounded-full px-7 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold text-white shadow-2xl transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(108,99,255,0.5)]"
@@ -274,14 +241,11 @@ function Hero() {
             </div>
           </div>
 
-          {/* Hero Image with 3D Tilt Effect -- only show on laptop (lg) and larger */}
+          {/* Hero Image with no 3D Tilt Effect, static */}
           <div className="relative hidden lg:flex justify-center items-center w-full" data-aos="zoom-in">
             <div className="absolute -inset-16 md:-inset-20 lg:-inset-24 bg-gradient-to-tr from-[#6C63FF40] to-[#FF658440] blur-3xl animate-pulse" style={{ animationDuration: "4s" }} />
             <div
-              className="relative rounded-2xl border-2 border-white/20 bg-white/10 backdrop-blur-xl p-6 md:p-8 shadow-2xl transition-transform duration-300 ease-out hover:shadow-[0_0_60px_rgba(108,99,255,0.4)] w-full"
-              style={{
-                transform: `perspective(1000px) rotateX(${-mousePosition.y}deg) rotateY(${mousePosition.x}deg) scale3d(1.02, 1.02, 1.02)`,
-              }}
+              className="relative rounded-2xl border-2 border-white/20 bg-white/10 backdrop-blur-xl p-6 md:p-8 shadow-2xl w-full"
             >
               <Image src="/hero-draw.png" alt="Hero illustration" width={800} height={600} className="w-full h-auto rounded-lg" />
               {/* Floating badges */}
@@ -319,7 +283,7 @@ function Problem() {
         backgroundSize: '30px 30px'
       }} />
       
-      <div className="container py-16 grid lg:grid-cols-2 gap-10 items-center mb-48 relative z-10">
+      <div className="container py-16 grid lg:grid-cols-2 gap-10 items-center my-16 md:my-48 relative z-10">
         <div data-aos="fade-right">
           <div className="inline-flex items-center gap-2 rounded-full border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-900/20 px-4 py-2 text-xs text-purple-700 dark:text-purple-300 mb-6">
             <span className="relative flex h-2 w-2">
@@ -412,7 +376,7 @@ function Testimonials() {
       <div className="absolute top-10 left-10 w-20 h-20 bg-purple-500/10 rounded-full blur-xl" />
       <div className="absolute bottom-10 right-10 w-32 h-32 bg-pink-500/10 rounded-full blur-xl" />
 
-      <div className="container py-20 mb-48 relative z-10">
+      <div className="container py-20 my-16 md:my-48 relative z-10">
         <div className="text-center mb-12" data-aos="fade-up">
           <h2 className="text-3xl sm:text-5xl font-bold text-[#111827] dark:text-white">
             Loved by Creators{" "}
@@ -538,7 +502,7 @@ function HowItWorks() {
 
   return (
     <section id="how-it-works" className="bg-[#F9FAFB] dark:bg-gray-950">
-      <div className="container py-20 mb-48">
+      <div className="container py-20 my-16 md:my-48">
         <h2 className="text-3xl sm:text-4xl font-bold text-[#111827] dark:text-white text-center">How It Works</h2>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {steps.map(({ num, title, desc, Icon }, i) => (
@@ -576,17 +540,77 @@ function HowItWorks() {
 
 // Bento Grid Features Section
 function Features() {
+  const features = [
+    {
+      title: "Smart Localization",
+      desc: "AI-powered localization that adapts phrasing and tone per region for natural reach. Your content feels native everywhere.",
+      Icon: LanguageIcon,
+      color: "from-purple-500 to-pink-500",
+      tags: ["50+ Languages", "Cultural Context", "Auto-Translate"]
+    },
+    {
+      title: "Trend-Aware Optimization",
+      desc: "Keeps your uploads aligned with live global trends in real-time.",
+      Icon: TrendingUpIcon,
+      color: "from-blue-500 to-cyan-500",
+      tags: null
+    },
+    {
+      title: "Multi-Platform Sync",
+      desc: "One upload = instant presence everywhere. Save hours every week.",
+      Icon: SyncAltIcon,
+      color: "from-green-500 to-emerald-500",
+      tags: null
+    },
+    {
+      title: "Voice Consistency",
+      desc: "Maintains your creative style across platforms.",
+      Icon: RecordVoiceOverIcon,
+      color: "from-orange-500 to-red-500",
+      tags: null
+    },
+    {
+      title: "Smart Testing",
+      desc: "A/B tests thumbnails & titles automatically.",
+      Icon: AutoGraphIcon,
+      color: "from-indigo-500 to-blue-500",
+      tags: null
+    },
+    {
+      title: "Network Boost",
+      desc: "Amplifies reach using global creator data.",
+      Icon: RocketLaunchIcon,
+      color: "from-pink-500 to-rose-500",
+      tags: null
+    },
+    {
+      title: "Gamified Growth",
+      desc: "Rewards you for milestones & audience expansion with achievements and insights.",
+      Icon: EmojiEventsIcon,
+      color: "from-yellow-500 via-orange-500 to-red-500",
+      tags: null
+    },
+    {
+      title: "Brand Safety",
+      desc: "Consistent tone, message, and intent worldwide.",
+      Icon: ShieldIcon,
+      color: "from-teal-500 to-cyan-500",
+      tags: null
+    },
+  ];
+
   return (
     <section id="features" className="bg-white dark:bg-gray-900 relative overflow-hidden">
       {/* Grid Pattern Background */}
-      <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.07]" 
-        style={{ 
+      <div
+        className="absolute inset-0 opacity-[0.03] dark:opacity-[0.07]"
+        style={{
           backgroundImage: `linear-gradient(${PRIMARY} 1px, transparent 1px), linear-gradient(90deg, ${PRIMARY} 1px, transparent 1px)`,
-          backgroundSize: '50px 50px'
-        }} 
+          backgroundSize: "50px 50px"
+        }}
       />
-      
-      <div className="container py-20 mb-48 relative z-10">
+
+      <div className="container py-20 my-16 md:my-48 relative z-10">
         <div className="text-center mb-16" data-aos="fade-up">
           <h2 className="text-3xl sm:text-5xl font-bold text-[#111827] dark:text-white">
             Built for <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Modern Creators</span>
@@ -596,144 +620,36 @@ function Features() {
           </p>
         </div>
 
-        {/* Bento Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-6">
-          {/* Large Featured Card - Spans 2 columns and 2 rows */}
-          <div 
-            className="md:col-span-3 md:row-span-2 group relative overflow-hidden rounded-3xl border-2 border-purple-200/50 dark:border-purple-500/30 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-purple-500/10 dark:from-purple-500/20 dark:via-pink-500/20 dark:to-purple-500/20 p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
-            data-aos="fade-up"
-          >
-            <div className="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full opacity-20 blur-3xl group-hover:opacity-30 transition-opacity" />
-            <div className="relative z-10">
-              <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 text-white shadow-lg mb-4">
-                <LanguageIcon className="text-4xl" />
+        {/* Professional, Consistent Feature Grid */}
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {features.map((feature, idx) => (
+            <div
+              key={feature.title}
+              className="group flex flex-col h-full rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-gray-800 p-6 shadow-sm hover:shadow-xl transition hover:-translate-y-1"
+              data-aos="fade-up"
+              data-aos-delay={idx * 70}
+            >
+              <div
+                className={`inline-flex items-center justify-center p-4 rounded-2xl mb-4 text-white shadow-lg bg-gradient-to-br ${feature.color}`}
+              >
+                <feature.Icon className="text-3xl" />
               </div>
-              <h3 className="text-2xl sm:text-3xl font-bold text-[#111827] dark:text-white mb-3">
-                Smart Localization
-              </h3>
-              <p className="text-base text-[#111827]/70 dark:text-white/70 mb-6">
-                AI-powered localization that adapts phrasing and tone per region for natural reach. Your content feels native everywhere.
-              </p>
-              <div className="flex flex-wrap gap-2 mt-4">
-                <span className="px-3 py-1 rounded-full bg-white/50 dark:bg-gray-800/50 text-xs font-medium text-[#111827] dark:text-white">50+ Languages</span>
-                <span className="px-3 py-1 rounded-full bg-white/50 dark:bg-gray-800/50 text-xs font-medium text-[#111827] dark:text-white">Cultural Context</span>
-                <span className="px-3 py-1 rounded-full bg-white/50 dark:bg-gray-800/50 text-xs font-medium text-[#111827] dark:text-white">Auto-Translate</span>
-              </div>
+              <h3 className="text-lg font-bold text-[#111827] dark:text-white mb-2">{feature.title}</h3>
+              <p className="text-sm text-[#111827]/70 dark:text-white/70 flex-1">{feature.desc}</p>
+              {feature.tags && (
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {feature.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-3 py-1 rounded-full bg-white/70 dark:bg-gray-700/40 text-xs font-medium text-[#111827] dark:text-white"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
-
-          {/* Medium Cards */}
-          <div 
-            className="md:col-span-3 group relative overflow-hidden rounded-3xl border-2 border-blue-200/50 dark:border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 dark:from-blue-500/20 dark:to-cyan-500/20 p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-            data-aos="fade-up"
-            data-aos-delay="100"
-          >
-            <div className="flex items-start gap-4">
-              <div className="inline-flex p-3 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 text-white shadow-lg">
-                <TrendingUpIcon className="text-2xl" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-bold text-[#111827] dark:text-white mb-2">Trend-Aware Optimization</h3>
-                <p className="text-sm text-[#111827]/70 dark:text-white/70">
-                  Keeps your uploads aligned with live global trends in real-time.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div 
-            className="md:col-span-3 group relative overflow-hidden rounded-3xl border-2 border-green-200/50 dark:border-green-500/30 bg-gradient-to-br from-green-500/10 to-emerald-500/10 dark:from-green-500/20 dark:to-emerald-500/20 p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-            data-aos="fade-up"
-            data-aos-delay="200"
-          >
-            <div className="flex items-start gap-4">
-              <div className="inline-flex p-3 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 text-white shadow-lg">
-                <SyncAltIcon className="text-2xl" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-bold text-[#111827] dark:text-white mb-2">Multi-Platform Sync</h3>
-                <p className="text-sm text-[#111827]/70 dark:text-white/70">
-                  One upload = instant presence everywhere. Save hours every week.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Small Cards */}
-          <div 
-            className="md:col-span-2 group rounded-3xl border-2 border-orange-200/50 dark:border-orange-500/30 bg-gradient-to-br from-orange-500/10 to-red-500/10 dark:from-orange-500/20 dark:to-red-500/20 p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-            data-aos="fade-up"
-            data-aos-delay="300"
-          >
-            <div className="inline-flex p-3 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 text-white shadow-lg mb-3">
-              <RecordVoiceOverIcon className="text-xl" />
-            </div>
-            <h3 className="text-lg font-bold text-[#111827] dark:text-white mb-2">Voice Consistency</h3>
-            <p className="text-sm text-[#111827]/70 dark:text-white/70">
-              Maintains your creative style across platforms.
-            </p>
-          </div>
-
-          <div 
-            className="md:col-span-2 group rounded-3xl border-2 border-indigo-200/50 dark:border-indigo-500/30 bg-gradient-to-br from-indigo-500/10 to-blue-500/10 dark:from-indigo-500/20 dark:to-blue-500/20 p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-            data-aos="fade-up"
-            data-aos-delay="350"
-          >
-            <div className="inline-flex p-3 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-500 text-white shadow-lg mb-3">
-              <AutoGraphIcon className="text-xl" />
-            </div>
-            <h3 className="text-lg font-bold text-[#111827] dark:text-white mb-2">Smart Testing</h3>
-            <p className="text-sm text-[#111827]/70 dark:text-white/70">
-              A/B tests thumbnails & titles automatically.
-            </p>
-          </div>
-
-          <div 
-            className="md:col-span-2 group rounded-3xl border-2 border-pink-200/50 dark:border-pink-500/30 bg-gradient-to-br from-pink-500/10 to-rose-500/10 dark:from-pink-500/20 dark:to-rose-500/20 p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-            data-aos="fade-up"
-            data-aos-delay="400"
-          >
-            <div className="inline-flex p-3 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 text-white shadow-lg mb-3">
-              <RocketLaunchIcon className="text-xl" />
-            </div>
-            <h3 className="text-lg font-bold text-[#111827] dark:text-white mb-2">Network Boost</h3>
-            <p className="text-sm text-[#111827]/70 dark:text-white/70">
-              Amplifies reach using global creator data.
-            </p>
-          </div>
-
-          {/* Wide Card */}
-          <div 
-            className="md:col-span-4 group relative overflow-hidden rounded-3xl border-2 border-yellow-200/50 dark:border-yellow-500/30 bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 dark:from-yellow-500/20 dark:via-orange-500/20 dark:to-red-500/20 p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-            data-aos="fade-up"
-            data-aos-delay="450"
-          >
-            <div className="flex items-center gap-4">
-              <div className="inline-flex p-3 rounded-xl bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 text-white shadow-lg">
-                <EmojiEventsIcon className="text-2xl" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-[#111827] dark:text-white mb-1">Gamified Growth</h3>
-                <p className="text-sm text-[#111827]/70 dark:text-white/70">
-                  Rewards you for milestones & audience expansion with achievements and insights.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div 
-            className="md:col-span-2 group rounded-3xl border-2 border-teal-200/50 dark:border-teal-500/30 bg-gradient-to-br from-teal-500/10 to-cyan-500/10 dark:from-teal-500/20 dark:to-cyan-500/20 p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-            data-aos="fade-up"
-            data-aos-delay="500"
-          >
-            <div className="inline-flex p-3 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 text-white shadow-lg mb-3">
-              <ShieldIcon className="text-xl" />
-            </div>
-            <h3 className="text-lg font-bold text-[#111827] dark:text-white mb-2">Brand Safety</h3>
-            <p className="text-sm text-[#111827]/70 dark:text-white/70">
-              Consistent tone, message, and intent worldwide.
-            </p>
-          </div>
+          ))}
         </div>
       </div>
     </section>
@@ -745,7 +661,7 @@ function PlatformCarousel() {
   const platforms = [
     { name: "YouTube", color: "#FF0000", icon: "🎥" },
     { name: "Apple Music", color: "#FA243C", icon: "🎵" },
-    { name: "Audio Mack", color: "#E4405F", icon: "🎧" },
+    { name: "Audiomack", color: "#E4405F", icon: "🎧" },
     { name: "Podchaser", color: "#7C3AED", icon: "🎙️" },
     { name: "iHeartRadio", color: "#C6002B", icon: "📻" },
     { name: "Spotify", color: "#1DB954", icon: "🎶" },
@@ -756,7 +672,7 @@ function PlatformCarousel() {
   ];
 
   return (
-    <section className="relative bg-gradient-to-br from-purple-50 via-white to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-20 md:py-32 overflow-hidden">
+    <section className="relative bg-gradient-to-br from-purple-50 via-white to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-32 md:py-48 overflow-hidden">
       {/* Background decorations */}
       <div className="absolute inset-0 z-0 opacity-30">
         <div className="absolute top-20 left-10 w-72 h-72 bg-purple-400/20 rounded-full blur-3xl" />
@@ -846,7 +762,7 @@ function PlatformCarousel() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 max-w-5xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+        <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto " data-aos="fade-up" data-aos-delay="200">
           <div className="text-center p-6 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-purple-200 dark:border-purple-700 shadow-xl">
             <div className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
               {platforms.length}
@@ -859,12 +775,12 @@ function PlatformCarousel() {
             </div>
             <div className="text-sm md:text-base text-gray-600 dark:text-gray-300 font-semibold">Countries</div>
           </div>
-          <div className="text-center p-6 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-purple-200 dark:border-purple-700 shadow-xl">
+          {/* <div className="text-center p-6 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-purple-200 dark:border-purple-700 shadow-xl">
             <div className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
               24/7
             </div>
             <div className="text-sm md:text-base text-gray-600 dark:text-gray-300 font-semibold">Availability</div>
-          </div>
+          </div> */}
           <div className="text-center p-6 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-purple-200 dark:border-purple-700 shadow-xl">
             <div className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
               Instant
@@ -927,9 +843,8 @@ function LiveActivity() {
       let newIndex;
       const availableIndices = Array.from({ length: allActivities.length }, (_, i) => i)
         .filter(i => !usedIndices.has(i));
-      
+
       if (availableIndices.length === 0) {
-        // Reset if we've used all activities
         setUsedIndices(new Set());
         newIndex = Math.floor(Math.random() * allActivities.length);
       } else {
@@ -937,11 +852,10 @@ function LiveActivity() {
       }
 
       const newActivity = allActivities[newIndex];
-      
-      // Add new activity to the top, remove the oldest
+
       setActivities(prev => [newActivity, ...prev.slice(0, 4)]);
       setUsedIndices(prev => new Set([...prev, newIndex]));
-    }, 3000); // New activity every 3 seconds
+    }, 5000); // New activity every 5 seconds (less frequent)
 
     return () => clearInterval(interval);
   }, [usedIndices]);
@@ -953,7 +867,7 @@ function LiveActivity() {
         <div className="absolute bottom-[20%] right-[10%] w-40 h-40 bg-pink-500 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
       </div>
 
-      <div className="container py-20 mb-48 relative z-10">
+      <div className="container py-20 my-16 md:my-48 relative z-10">
         <div className="text-center mb-12" data-aos="fade-up">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/50 dark:bg-gray-800/50 backdrop-blur border border-purple-200 dark:border-purple-500/30 mb-4">
             <span className="relative flex h-3 w-3">
@@ -1041,7 +955,7 @@ function WhyChooseUs() {
       <div className="absolute top-0 left-[20%] w-64 h-64 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-0 right-[20%] w-64 h-64 bg-pink-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
       
-      <div className="container py-20 mb-48 relative z-10">
+      <div className="container py-20 my-16 md:my-48 relative z-10">
         <h2 className="text-3xl sm:text-5xl font-bold text-[#111827] dark:text-white text-center max-w-3xl mx-auto mb-4">
           Because our software doesn't just distribute — it{" "}
           <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">understands audiences</span>.
@@ -1079,7 +993,7 @@ function UseCases() {
         backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236C63FF' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
       }} />
       
-      <div className="container py-20 mb-48 relative z-10">
+      <div className="container py-20 my-16 md:my-48 relative z-10">
         <div className="text-center mb-16" data-aos="fade-up">
           <h2 className="text-3xl sm:text-5xl font-bold text-[#111827] dark:text-white mb-4">
             Who It's <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">For</span>
@@ -1147,7 +1061,7 @@ function Pricing() {
       <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
       
-      <div className="container py-20 mb-48 relative z-10">
+      <div className="container py-20 my-16 md:my-48 relative z-10">
         <div className="text-center mb-16" data-aos="fade-up">
           <h2 className="text-3xl sm:text-5xl font-bold text-[#111827] dark:text-white mb-4">
             Simple, <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Transparent</span> Pricing
@@ -1241,7 +1155,7 @@ function FinalCTA() {
         backgroundSize: '50px 50px'
       }} />
       
-      <div className="container py-24 text-center mb-36 relative z-10">
+      <div className="container py-24 text-center my-16 md:my-36 relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur border border-white/30 text-white text-sm font-medium mb-8" data-aos="zoom-in">
