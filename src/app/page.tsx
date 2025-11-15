@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import CookieConsent from "@/components/CookieConsent";
 import ThemeToggle from "@/components/ThemeToggle";
+import MarketingNav from "@/components/layout/MarketingNav";
+import MarketingFooter from "@/components/layout/MarketingFooter";
 
 // MUI Icons
 import MenuIcon from "@mui/icons-material/Menu";
@@ -115,12 +117,12 @@ function Header() {
   }, []);
 
   const links = [
-    { href: "#home", label: "Home" },
-    { href: "#features", label: "Features" },
-    { href: "#how-it-works", label: "How It Works" },
-    { href: "#pricing", label: "Pricing" },
-    { href: "#blog", label: "Blog" },
-    { href: "#contact", label: "Contact" },
+    { href: "/#home", label: "Home" },
+    { href: "/features", label: "Features" },
+    { href: "/how-it-works", label: "How It Works" },
+    { href: "/pricing", label: "Pricing" },
+    { href: "/blog", label: "Blog" },
+    { href: "/contact", label: "Contact" },
   ];
 
   return (
@@ -138,7 +140,7 @@ function Header() {
         </nav>
         <div className="hidden md:flex items-center gap-2">
           <ThemeToggle />
-          <Link href="/signup" className="inline-flex items-center rounded-full px-4 py-2 text-sm font-medium text-white shadow-sm transition-all" style={{ backgroundImage: `linear-gradient(90deg, ${PRIMARY}, ${ACCENT})` }}>
+          <Link href="/signup" className="inline-flex items-center rounded-full px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(108,99,255,0.5)]" style={{ backgroundImage: `linear-gradient(90deg, ${PRIMARY}, ${ACCENT})` }}>
             Start for Free
           </Link>
         </div>
@@ -232,7 +234,7 @@ function Hero() {
                 <span>Start for Free</span>
               </Link>
               <a
-                href="#how-it-works"
+                href="/how-it-works"
                 className="inline-flex items-center gap-2 rounded-full px-7 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold text-white bg-white/10 border border-white/30 hover:bg-white/20 backdrop-blur transition-all hover:scale-105"
               >
                 <PlayCircleOutlineIcon className="w-5 h-5 md:w-6 md:h-6" />
@@ -479,24 +481,41 @@ function Testimonials() {
 }
 
 function HowItWorks() {
+
+  const [activeStep, setActiveStep] = useState<string | null>(null);
+
   const steps = [
     {
       num: "1",
       title: "Upload Once",
-      desc: "Drop your video or paste a link",
+      desc: "Drop your video or paste a link. We fetch everything we need automatically.",
       Icon: CloudUploadIcon,
+      longDesc: "Simply upload your content or provide a link. Our system instantly recognizes the format and prepares it for global distribution.",
+      color: "from-purple-500 to-pink-500",
     },
     {
       num: "2",
-      title: "We Optimize It",
-      desc: "Smart titles, tags & metadata for every region",
+      title: "Optimize",
+      desc: "CreatorFlow crafts localized titles, tags and descriptions aligned to trends.",
       Icon: AutoFixHighIcon,
+      longDesc: "AI analyzes current trends across 50+ languages and generates platform-specific metadata that resonates with each audience.",
+      color: "from-blue-500 to-cyan-500",
     },
     {
       num: "3",
-      title: "Distribute Everywhere",
-      desc: "Instantly published to all connected channels",
+      title: "Distribute",
+      desc: "Publish to YouTube, Audiomack, Apple Music and more—instantly and reliably.",
       Icon: PublicIcon,
+      longDesc: "With a single click, your content goes live across all your connected platforms simultaneously.",
+      color: "from-green-500 to-emerald-500",
+    },
+    {
+      num: "4",
+      title: "Analyze",
+      desc: "A/B tests run automatically. Winners ship, insights flow back into your next upload.",
+      Icon: AutoGraphIcon,
+      longDesc: "Automatic testing and analytics give you actionable insights to improve your next release.",
+      color: "from-orange-500 to-red-500",
     },
   ];
 
@@ -505,17 +524,56 @@ function HowItWorks() {
       <div className="container py-20 my-16 md:my-48">
         <h2 className="text-3xl sm:text-4xl font-bold text-[#111827] dark:text-white text-center">How It Works</h2>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {steps.map(({ num, title, desc, Icon }, i) => (
-            <div key={title} className="group rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-gray-800 p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl" data-aos="zoom-in" data-aos-delay={i * 100}>
-              <div className="flex items-center justify-between">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full text-white text-sm font-bold shadow" style={{ backgroundImage: `linear-gradient(90deg, ${PRIMARY}, ${ACCENT})` }}>
-                  {num}
-                </span>
-                <Icon className="text-[#6C63FF]" />
+          {steps.map(({ num, title, desc, Icon, longDesc, color }, i) => (
+            <Link key={title} href="/signup">
+              <div 
+                onMouseEnter={() => setActiveStep(title)}
+                onMouseLeave={() => setActiveStep(null)}
+                className="group relative h-full rounded-2xl border-2 border-black/10 dark:border-white/10 bg-white dark:bg-gray-800 p-6 shadow-md transition-all duration-300 hover:shadow-2xl hover:-translate-y-3 cursor-pointer overflow-hidden"
+                data-aos="zoom-in" 
+                data-aos-delay={i * 100}
+              >
+                {/* Animated Background Gradient */}
+                <div className={`absolute inset-0 opacity-0 group-hover:opacity-8 transition-opacity duration-300 bg-gradient-to-br ${color}`} />
+                
+                {/* Top Border Accent */}
+                <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left`} />
+
+                <div className="relative z-10">
+                  {/* Step Number */}
+                  <div className="flex items-start justify-between mb-4">
+                    <span className={`inline-flex h-12 w-12 items-center justify-center rounded-full text-white text-lg font-bold shadow-lg bg-gradient-to-br ${color} group-hover:scale-125 group-hover:shadow-2xl transition-all duration-300`}>
+                      {num}
+                    </span>
+                    <ArrowForwardIcon className={`text-[#6C63FF] opacity-0 group-hover:opacity-100 transform group-hover:translate-x-1 transition-all duration-300`} />
+                  </div>
+
+                  {/* Icon */}
+                  <div className="mb-4">
+                    <Icon className={`text-5xl text-[#6C63FF] group-hover:scale-110 group-hover:rotate-12 transition-all duration-300`} />
+                  </div>
+
+                  {/* Title */}
+                  <h3 className={`text-xl font-bold text-[#111827] dark:text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300`}>
+                    {title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="mt-3 text-sm text-[#111827]/70 dark:text-white/70 group-hover:text-[#111827] dark:group-hover:text-white transition-colors duration-300">
+                    {activeStep === title ? longDesc : desc}
+                  </p>
+
+                  {/* CTA */}
+                  <div className="mt-4 inline-flex items-center gap-2 text-purple-600 dark:text-purple-400 font-semibold text-sm opacity-0 group-hover:opacity-100 transform group-hover:translate-x-1 transition-all duration-300">
+                    Learn More
+                    <span className="inline-block transform group-hover:translate-x-1 transition-transform duration-300">→</span>
+                  </div>
+                </div>
+
+                {/* Floating particles effect */}
+                <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-t from-purple-400/10 to-transparent rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
-              <h3 className="mt-4 text-lg font-semibold text-[#111827] dark:text-white">{title}</h3>
-              <p className="mt-1 text-sm text-[#111827]/70 dark:text-white/70">{desc}</p>
-            </div>
+            </Link>
           ))}
         </div>
 
@@ -540,62 +598,64 @@ function HowItWorks() {
 
 // Bento Grid Features Section
 function Features() {
+  const [hoveredFeature, setHoveredFeature] = useState<string | null>(null);
+  
   const features = [
     {
       title: "Smart Localization",
-      desc: "AI-powered localization that adapts phrasing and tone per region for natural reach. Your content feels native everywhere.",
+      desc: "AI-powered localization that adapts phrasing and tone per region. Your content feels native everywhere.",
       Icon: LanguageIcon,
       color: "from-purple-500 to-pink-500",
-      tags: ["50+ Languages", "Cultural Context", "Auto-Translate"]
+      bullets: ["50+ languages", "Cultural phrasing", "Time-zone aware scheduling"]
     },
     {
       title: "Trend-Aware Optimization",
-      desc: "Keeps your uploads aligned with live global trends in real-time.",
+      desc: "Keep titles, tags and thumbnails aligned with live global trends for maximum visibility.",
       Icon: TrendingUpIcon,
       color: "from-blue-500 to-cyan-500",
-      tags: null
+      bullets: ["Live trend monitoring", "Smart hashtagging", "Title scoring"]
     },
     {
       title: "Multi-Platform Sync",
-      desc: "One upload = instant presence everywhere. Save hours every week.",
+      desc: "One upload = instant presence everywhere. Publish to Audiomack, Spotify, Apple Music and more.",
       Icon: SyncAltIcon,
       color: "from-green-500 to-emerald-500",
-      tags: null
+      bullets: ["Single source workflow", "Reliable retries", "Platform-specific metadata"]
     },
     {
       title: "Voice Consistency",
-      desc: "Maintains your creative style across platforms.",
+      desc: "Maintain your creative style and brand voice across platforms and languages.",
       Icon: RecordVoiceOverIcon,
       color: "from-orange-500 to-red-500",
-      tags: null
+      bullets: ["Style guardrails", "Glossary support", "Reviewer workflows"]
     },
     {
       title: "Smart Testing",
-      desc: "A/B tests thumbnails & titles automatically.",
+      desc: "Run A/B tests on thumbnails and titles automatically and ship the winner.",
       Icon: AutoGraphIcon,
       color: "from-indigo-500 to-blue-500",
-      tags: null
+      bullets: ["Auto-switch winners", "CTR tracking", "Variant insights"]
     },
     {
       title: "Network Boost",
-      desc: "Amplifies reach using global creator data.",
+      desc: "Leverage global creator data to amplify reach and discoverability.",
       Icon: RocketLaunchIcon,
       color: "from-pink-500 to-rose-500",
-      tags: null
+      bullets: ["Audience lookalikes", "Timing optimization", "Content clusters"]
     },
     {
       title: "Gamified Growth",
-      desc: "Rewards you for milestones & audience expansion with achievements and insights.",
+      desc: "Insights and achievements that guide you to the next milestone, faster.",
       Icon: EmojiEventsIcon,
       color: "from-yellow-500 via-orange-500 to-red-500",
-      tags: null
+      bullets: ["Milestone tracking", "Actionable tips", "Weekly goals"]
     },
     {
       title: "Brand Safety",
-      desc: "Consistent tone, message, and intent worldwide.",
+      desc: "Consistency and control over tone, message and intent worldwide.",
       Icon: ShieldIcon,
       color: "from-teal-500 to-cyan-500",
-      tags: null
+      bullets: ["Approval flows", "Audit logs", "Policy templates"]
     },
   ];
 
@@ -622,36 +682,83 @@ function Features() {
 
         {/* Professional, Consistent Feature Grid */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map((feature, idx) => (
-            <div
-              key={feature.title}
-              className="group flex flex-col h-full rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-gray-800 p-6 shadow-sm hover:shadow-xl transition hover:-translate-y-1"
-              data-aos="fade-up"
-              data-aos-delay={idx * 70}
-            >
+          {features.map((f, idx) => (
+            <Link key={f.title} href="/signup">
               <div
-                className={`inline-flex items-center justify-center p-4 rounded-2xl mb-4 text-white shadow-lg bg-gradient-to-br ${feature.color}`}
+                onMouseEnter={() => setHoveredFeature(f.title)}
+                onMouseLeave={() => setHoveredFeature(null)}
+                className="group relative h-full flex flex-col rounded-2xl border-2 border-black/10 dark:border-white/10 bg-white dark:bg-gray-800 p-6 shadow-md transition-all duration-300 hover:shadow-2xl hover:-translate-y-3 cursor-pointer overflow-hidden"
+                data-aos="fade-up"
+                data-aos-delay={idx * 70}
               >
-                <feature.Icon className="text-3xl" />
-              </div>
-              <h3 className="text-lg font-bold text-[#111827] dark:text-white mb-2">{feature.title}</h3>
-              <p className="text-sm text-[#111827]/70 dark:text-white/70 flex-1">{feature.desc}</p>
-              {feature.tags && (
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {feature.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 rounded-full bg-white/70 dark:bg-gray-700/40 text-xs font-medium text-[#111827] dark:text-white"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                {/* Animated Background Gradient */}
+                <div className={`absolute inset-0 opacity-0 group-hover:opacity-8 transition-opacity duration-300 bg-gradient-to-br ${f.color}`} />
+                
+                {/* Top Border Accent */}
+                <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${f.color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left`} />
+
+                <div className="relative z-10">
+                  {/* Icon with Badge */}
+                  <div className="flex items-start justify-between mb-4">
+                    <div className={`inline-flex items-center justify-center p-4 rounded-2xl text-white shadow-lg bg-gradient-to-br ${f.color} group-hover:scale-110 group-hover:shadow-2xl transition-all duration-300`}>
+                      <f.Icon className="text-3xl" />
+                    </div>
+                    <ArrowForwardIcon className={`text-[#6C63FF] opacity-0 group-hover:opacity-100 transform group-hover:translate-x-1 transition-all duration-300`} />
+                  </div>
+
+                  {/* Title */}
+                  <h3 className={`text-lg font-bold text-[#111827] dark:text-white mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300`}>
+                    {f.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-sm text-[#111827]/70 dark:text-white/70 group-hover:text-[#111827] dark:group-hover:text-white transition-colors duration-300">
+                    {f.desc}
+                  </p>
+
+                  {/* Bullet Points with Animation */}
+                  <ul className={`mt-4 space-y-2 transition-all duration-300 ${hoveredFeature === f.title ? 'opacity-100' : 'opacity-100'}`}>
+                    {f.bullets.map((b, bulletIdx) => (
+                      <li 
+                        key={b} 
+                        className="flex items-center gap-2 text-sm text-[#111827] dark:text-white/90 transform transition-all duration-300"
+                        style={{
+                          transitionDelay: hoveredFeature === f.title ? `${bulletIdx * 50}ms` : '0ms'
+                        }}
+                      >
+                        <span className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center bg-gradient-to-br from-purple-500 to-pink-500 group-hover:scale-110 transition-transform duration-300">
+                          <CheckCircleIcon className="text-white text-xs" />
+                        </span>
+                        <span className="group-hover:font-semibold transition-all duration-300">{b}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* CTA */}
+                  <div className="mt-4 inline-flex items-center gap-2 text-purple-600 dark:text-purple-400 font-semibold text-sm opacity-0 group-hover:opacity-100 transform group-hover:translate-x-1 transition-all duration-300">
+                    Explore Now
+                    <span className="inline-block transform group-hover:translate-x-1 transition-transform duration-300">→</span>
+                  </div>
                 </div>
-              )}
-            </div>
+
+                {/* Floating particles effect */}
+                <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-t from-purple-400/10 to-transparent rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
+            </Link>
           ))}
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes shimmer {
+          0% { background-position: -1000px 0; }
+          100% { background-position: 1000px 0; }
+        }
+        
+        .group:hover {
+          animation: shimmer 2s infinite;
+        }
+      `}</style>
     </section>
   );
 }
@@ -913,7 +1020,7 @@ function LiveActivity() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-4xl mx-auto" data-aos="fade-up">
           <div className="text-center p-6 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-purple-200/50 dark:border-purple-500/30 shadow-lg">
             <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">
-              <AnimatedCounter end={1} suffix="M+" />
+              <AnimatedCounter end={500} suffix="K+" />
             </div>
             <div className="text-sm text-[#111827]/70 dark:text-white/70 mt-1">Videos Uploaded</div>
           </div>
@@ -942,16 +1049,18 @@ function LiveActivity() {
 }
 
 function WhyChooseUs() {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
   const bullets = [
-    { text: "Feels native in every market", icon: PublicIcon },
-    { text: "Real-time trend awareness", icon: TrendingUpIcon },
-    { text: "Proven 25–50% CTR boost", icon: AutoGraphIcon },
-    { text: "Zero setup friction", icon: RocketLaunchIcon },
+    { text: "Feels native in every market", icon: PublicIcon, detail: "AI adapts tone and phrasing for 50+ regions" },
+    { text: "Real-time trend awareness", icon: TrendingUpIcon, detail: "Monitor global trends and optimize instantly" },
+    { text: "Proven 25–50% CTR boost", icon: AutoGraphIcon, detail: "Data-backed results from 10,000+ creators" },
+    { text: "Zero setup friction", icon: RocketLaunchIcon, detail: "Connect channels and publish in minutes" },
   ];
 
   return (
     <section className="bg-white dark:bg-gray-900 relative overflow-hidden" data-aos="fade-in">
-      {/* Animated background circles */}
+      {/* Animated background circles with gradient shift */}
       <div className="absolute top-0 left-[20%] w-64 h-64 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-0 right-[20%] w-64 h-64 bg-pink-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
       
@@ -961,19 +1070,55 @@ function WhyChooseUs() {
           <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">understands audiences</span>.
         </h2>
         <div className="grid gap-6 sm:grid-cols-2 max-w-3xl mx-auto mt-12">
-          {bullets.map(({ text, icon: Icon }, i) => (
+          {bullets.map(({ text, icon: Icon, detail }, i) => (
             <div 
-              key={text} 
-              className="group flex items-start gap-4 p-6 rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border-2 border-purple-200/50 dark:border-purple-500/30 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+              key={text}
+              onMouseEnter={() => setHoveredIndex(i)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              className="group relative flex flex-col items-start gap-4 p-6 rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border-2 border-purple-200/50 dark:border-purple-500/30 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer overflow-hidden"
               data-aos="zoom-in"
               data-aos-delay={i * 100}
+              style={{
+                perspective: '1000px',
+                transform: hoveredIndex === i ? 'rotateX(2deg) rotateY(-2deg)' : 'rotateX(0) rotateY(0)',
+              }}
             >
-              <div className="flex-shrink-0 p-3 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 text-white shadow-lg group-hover:scale-110 transition-transform">
-                <Icon />
+              {/* Animated gradient overlay on hover */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-purple-500/5 to-pink-500/5" />
+
+              {/* Background glow effect */}
+              <div className="absolute -inset-2 bg-gradient-to-r from-purple-400/0 via-pink-400/0 to-purple-400/0 group-hover:from-purple-400/20 group-hover:via-pink-400/20 group-hover:to-purple-400/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+              <div className="relative z-10 flex-shrink-0">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 text-white shadow-lg group-hover:scale-125 group-hover:rotate-12 transition-all duration-300">
+                  <Icon className="text-2xl" />
+                </div>
               </div>
-              <span className="text-lg font-semibold text-[#111827] dark:text-white/90 pt-2">{text}</span>
+
+              <div className="relative z-10 flex-1">
+                <span className="text-lg font-semibold text-[#111827] dark:text-white/90 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300 block">
+                  {text}
+                </span>
+                
+                {/* Expandable detail section */}
+                <div className={`overflow-hidden transition-all duration-300 ${hoveredIndex === i ? 'max-h-20 opacity-100 mt-3' : 'max-h-0 opacity-0'}`}>
+                  <p className="text-sm text-[#111827]/70 dark:text-white/70 leading-relaxed">
+                    {detail}
+                  </p>
+                </div>
+              </div>
+
+              {/* Hover indicator line */}
+              <div className={`absolute bottom-0 left-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300 ${hoveredIndex === i ? 'w-full' : 'w-0'}`} />
             </div>
           ))}
+        </div>
+
+        {/* Trust line below bullets */}
+        <div className="mt-12 text-center" data-aos="fade-up" data-aos-delay="500">
+          <p className="text-sm md:text-base text-black/80 dark:text-white/80">
+            <span className="font-semibold text-black dark:text-white">15,000+</span> creators trust CreatorFlow for global distribution
+          </p>
         </div>
       </div>
     </section>
@@ -1030,7 +1175,7 @@ function Pricing() {
       name: "Free",
       price: "$0",
       period: "/mo",
-      features: ["Up to 5 channels", "Basic localization", "Scheduled posting", "Email support"],
+      features: ["2 video uploads", "1 podcast upload", "2 platforms accessible", "Auto-Reupload", "And More..."],
       popular: false,
       gradient: "from-gray-500 to-gray-700",
       icon: "🚀",
@@ -1039,7 +1184,7 @@ function Pricing() {
       name: "Pro",
       price: "$19",
       period: "/mo",
-      features: ["Up to 20 channels", "Trend-aware optimization", "A/B testing", "Priority support"],
+      features: ["20 video uploads", "10 podcast upload", "Up to 5 platforms", "Auto-Reupload", "And More..."],
       popular: false,
       gradient: "from-blue-500 to-cyan-500",
       icon: "⚡",
@@ -1048,7 +1193,7 @@ function Pricing() {
       name: "Pro+",
       price: "$49",
       period: "/mo",
-      features: ["Unlimited channels", "Advanced analytics", "Team workspaces", "Dedicated manager"],
+      features: ["Unlimited video uploads", "Unlimited podcast upload", "All 10 integrated platforms", "Auto-Reupload", "And More..."],
       popular: true,
       gradient: "from-purple-500 to-pink-500",
       icon: "👑",
@@ -1127,10 +1272,6 @@ function Pricing() {
             <div className="flex items-center gap-2 text-[#111827] dark:text-white">
               <CheckCircleIcon className="text-green-500" />
               <span className="text-sm font-medium">Cancel Anytime</span>
-            </div>
-            <div className="flex items-center gap-2 text-[#111827] dark:text-white">
-              <EmojiEventsIcon className="text-yellow-500" />
-              <span className="text-sm font-medium">14-Day Money Back</span>
             </div>
           </div>
         </div>
@@ -1214,7 +1355,7 @@ function FinalCTA() {
               <div className="text-sm text-white/80">Countries Served</div>
             </div>
             <div className="text-center p-6 rounded-2xl bg-white/10 backdrop-blur border border-white/20">
-              <div className="text-3xl sm:text-4xl font-bold text-white mb-2">1M+</div>
+              <div className="text-3xl sm:text-4xl font-bold text-white mb-2">500K+</div>
               <div className="text-sm text-white/80">Videos Uploaded</div>
             </div>
           </div>
@@ -1232,14 +1373,14 @@ function Footer() {
           <h4 className="font-semibold text-[#111827] dark:text-white">Company</h4>
           <ul className="mt-3 space-y-2 text-sm text-[#111827]/80 dark:text-white/80">
             <li><a href="#" className="hover:text-[#111827] dark:hover:text-white">About</a></li>
-            <li><a href="#blog" className="hover:text-[#111827] dark:hover:text-white">Blog</a></li>
+            <li><Link href="/blog" className="hover:text-[#111827] dark:hover:text-white">Blog</Link></li>
             <li><a href="#" className="hover:text-[#111827] dark:hover:text-white">Careers</a></li>
           </ul>
         </div>
         <div>
           <h4 className="font-semibold text-[#111827] dark:text-white">Quick Links</h4>
           <ul className="mt-3 space-y-2 text-sm text-[#111827]/80 dark:text-white/80">
-            <li><a href="#pricing" className="hover:text-[#111827] dark:hover:text-white">Pricing</a></li>
+            <li><Link href="/pricing" className="hover:text-[#111827] dark:hover:text-white">Pricing</Link></li>
             <li><a href="/legal" className="hover:text-[#111827] dark:hover:text-white">Legal & Privacy</a></li>
             <li><a href="/support" className="hover:text-[#111827] dark:hover:text-white">Support</a></li>
             <li><a href="/billing-policy" className="hover:text-[#111827] dark:hover:text-white">Billing Policy</a></li>
@@ -1248,9 +1389,9 @@ function Footer() {
         <div>
           <h4 className="font-semibold text-[#111827] dark:text-white">Services</h4>
           <ul className="mt-3 space-y-2 text-sm text-[#111827]/80 dark:text-white/80">
-            <li><a href="#features" className="hover:text-[#111827] dark:hover:text-white">Localization</a></li>
-            <li><a href="#features" className="hover:text-[#111827] dark:hover:text-white">Optimization</a></li>
-            <li><a href="#features" className="hover:text-[#111827] dark:hover:text-white">Analytics</a></li>
+            <li><Link href="/features" className="hover:text-[#111827] dark:hover:text-white">Localization</Link></li>
+            <li><Link href="/features" className="hover:text-[#111827] dark:hover:text-white">Optimization</Link></li>
+            <li><Link href="/features" className="hover:text-[#111827] dark:hover:text-white">Analytics</Link></li>
           </ul>
         </div>
         <div>
@@ -1281,8 +1422,8 @@ function Footer() {
 export default function Home() {
   return (
     <div className="bg-[#F9FAFB] dark:bg-gray-950 text-[#111827] dark:text-white relative">
+      <MarketingNav />
       <AnimatedBlobs />
-      <Header />
       <Hero />
       <Problem />
       <Testimonials />
@@ -1294,7 +1435,7 @@ export default function Home() {
       <UseCases />
       <Pricing />
       <FinalCTA />
-      <Footer />
+      <MarketingFooter />
       <CookieConsent />
       <div id="blog" className="sr-only" />
     </div>

@@ -41,7 +41,7 @@ pnpm dev
 - `/signup` - User registration
 - `/legal` - Privacy policy, terms, cookies, disclaimer
 - `/support` - Contact, help topics, trust & safety
-- `/billing-policy` - Refund policy, billing info
+- `/billing-policy` - Billing info and terms
 
 **Authenticated**
 - `/dashboard` - Overview with metrics cards and quick actions

@@ -46,3 +46,22 @@ html:where(:not(.no-smooth)) {
     opacity: 1;
   }
 }
+
+/* Global interactive behavior for buttons and CTA-like links */
+a[href], button {
+  transition: transform .15s ease, box-shadow .2s ease, filter .2s ease, opacity .2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Press feedback */
+a[href]:active, button:active {
+  transform: scale(0.98);
+}
+
+/* Focus-visible accessibility ring */
+a[href]:focus-visible, button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.45);
+  border-radius: inherit;
+}
+
