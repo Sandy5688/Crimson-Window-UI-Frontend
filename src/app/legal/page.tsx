@@ -146,4 +146,4 @@ export default function LegalPage() {
       <CookieConsent />
     </div>
   );
-
+}
