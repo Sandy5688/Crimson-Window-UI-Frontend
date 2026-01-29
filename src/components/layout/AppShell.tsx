@@ -40,7 +40,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       items.push({ href: "/dashboard", label: "Dashboard", Icon: HomeIcon });
       items.push({ href: "/channels", label: "Channels", Icon: DnsIcon });
       items.push({ href: "/uploads", label: "Uploads", Icon: CloudUploadIcon });
-      items.push({ href: "/monetization", label: "Monetization", Icon: HomeIcon });
+      items.push({ href: "/monetization", label: "Plans", Icon: HomeIcon });
     }
     return items;
   }, [role]);
@@ -54,8 +54,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-[#F5F5F5] dark:bg-[#0f172a] text-[#171717] dark:text-[#f1f5f9] transition-colors duration-300">
       <header className="sticky top-0 z-10 bg-white/80 dark:bg-gray-900/80 backdrop-blur border-b border-black/10 dark:border-white/10">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold tracking-tight hover:text-[#2D89FF] transition-colors" style={{ fontFamily: "Montserrat, sans-serif" }}>
-            Portal
+          <Link href="/dashboard" className="text-xl font-bold tracking-tight hover:text-[#2D89FF] transition-colors cursor-pointer" style={{ fontFamily: "Montserrat, sans-serif" }}>
+            CreatorFlow
           </Link>
           <div className="flex items-center gap-3">
             <ThemeToggle />

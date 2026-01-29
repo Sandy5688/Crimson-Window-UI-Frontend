@@ -1,12 +1,50 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import CookieConsent from "@/components/CookieConsent";
 import MarketingNav from "@/components/layout/MarketingNav";
 import MarketingFooter from "@/components/layout/MarketingFooter";
+import { api } from "@/lib/api";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ErrorIcon from "@mui/icons-material/Error";
 
 export default function SupportPage() {
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const message = formData.get('message') as string;
+
+    try {
+      const response = await api.post('/api/v1/contact', {
+        name,
+        email,
+        subject: 'Support Request',
+        message,
+      });
+
+      if (response.data.success) {
+        setSubmitted(true);
+      } else {
+        setError(response.data.message || 'Failed to send message');
+      }
+    } catch (err: any) {
+      console.error('Support form error:', err);
+      setError(err.response?.data?.message || 'Failed to send message. Please try again or email us directly at hello@creatorflow.app');
+    } finally {
+      setLoading(false);
+    }
+  }
   return (
     <div className="bg-[#F9FAFB] dark:bg-gray-950 text-[#111827] dark:text-white relative">
       <MarketingNav />
@@ -37,64 +75,84 @@ export default function SupportPage() {
           <div className="relative z-10">
             <h2 className="text-2xl font-bold mb-3">Contact us</h2>
             <p className="text-black dark:text-white mb-6">
-              Fill out the form below and we’ll get back to you within 24–48 hours.
+              Fill out the form below and we'll get back to you within 24–48 hours.
             </p>
 
-            <form
-              action="https://formsubmit.co/personalsandykumar@gmail.com"
-              method="POST"
-              className="space-y-5"
-            >
-              <input type="hidden" name="_captcha" value="false" />
-              <input type="hidden" name="_next" value="https://yourdomain.com/thank-you" />
-
-              <div className="grid sm:grid-cols-2 gap-4">
+            {error && (
+              <div className="mb-6 flex items-start gap-3 rounded-2xl border border-red-500/40 bg-red-500/10 p-4 text-red-700 dark:text-red-300">
+                <ErrorIcon />
                 <div>
-                  <label className="block text-sm text-[#111827]/80 dark:text-white/80 mb-2">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    required
-                    className="w-full px-4 py-3 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                    placeholder="Your full name"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm text-[#111827]/80 dark:text-white/80 mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    className="w-full px-4 py-3 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                    placeholder="your@email.com"
-                  />
+                  <p className="font-semibold">Error sending message</p>
+                  <p className="text-sm opacity-80">{error}</p>
                 </div>
               </div>
+            )}
 
-              <div>
-                <label className="block text-sm text-[#111827]/80 dark:text-white/80 mb-2">
-                  Message
-                </label>
-                <textarea
-                  name="message"
-                  required
-                  rows={6}
-                  className="w-full px-4 py-3 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                  placeholder="Tell us what’s going on..."
-                ></textarea>
+            {submitted ? (
+              <div className="flex items-start gap-3 rounded-2xl border border-green-500/40 bg-green-500/10 p-4 text-green-700 dark:text-green-300">
+                <CheckCircleIcon />
+                <div>
+                  <p className="font-semibold">Thanks! Your message has been received.</p>
+                  <p className="text-sm opacity-80">We'll get back to you within 24-48 hours.</p>
+                </div>
               </div>
-
-              <button
-                type="submit"
-                className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-white shadow-xl transition-all bg-gradient-to-r from-purple-500 to-pink-500 hover:scale-105"
+            ) : (
+              <form
+                onSubmit={handleSubmit}
+                className="space-y-5"
               >
-                Send Message
-              </button>
-            </form>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm text-[#111827]/80 dark:text-white/80 mb-2">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      required
+                      disabled={loading}
+                      className="w-full px-4 py-3 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-purple-500 focus:outline-none disabled:opacity-50"
+                      placeholder="Your full name"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-[#111827]/80 dark:text-white/80 mb-2">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      required
+                      disabled={loading}
+                      className="w-full px-4 py-3 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-purple-500 focus:outline-none disabled:opacity-50"
+                      placeholder="your@email.com"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm text-[#111827]/80 dark:text-white/80 mb-2">
+                    Message
+                  </label>
+                  <textarea
+                    name="message"
+                    required
+                    rows={6}
+                    disabled={loading}
+                    className="w-full px-4 py-3 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-purple-500 focus:outline-none disabled:opacity-50"
+                    placeholder="Tell us what's going on..."
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-white shadow-xl transition-all bg-gradient-to-r from-purple-500 to-pink-500 hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
+                >
+                  {loading ? 'Sending...' : 'Send Message'}
+                </button>
+              </form>
+            )}
           </div>
         </section>
 

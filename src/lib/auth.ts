@@ -108,6 +108,13 @@ export function getEmail(): string | null {
   return (claims?.email || null);
 }
 
+export function isEmailVerified(): boolean {
+  const claims = parseJwt();
+  // Check for email_verified claim in JWT
+  // Returns true if verified, false if not verified or claim doesn't exist
+  return claims?.email_verified === true;
+}
+
 export function getRoleLabel(): string {
   const r = getRole();
   if (r === 'admin') return 'Admin';

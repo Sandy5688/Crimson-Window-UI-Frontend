@@ -3,10 +3,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 import CookieConsent from "@/components/CookieConsent";
 import ThemeToggle from "@/components/ThemeToggle";
 import MarketingNav from "@/components/layout/MarketingNav";
 import MarketingFooter from "@/components/layout/MarketingFooter";
+import { getToken } from "@/lib/auth";
 
 // MUI Icons
 import MenuIcon from "@mui/icons-material/Menu";
@@ -481,104 +483,101 @@ function Testimonials() {
 }
 
 function HowItWorks() {
-
-  const [activeStep, setActiveStep] = useState<string | null>(null);
-
-  const steps = [
-    {
-      num: "1",
-      title: "Upload Once",
-      desc: "Drop your video or paste a link. We fetch everything we need automatically.",
-      Icon: CloudUploadIcon,
-      longDesc: "Simply upload your content or provide a link. Our system instantly recognizes the format and prepares it for global distribution.",
-      color: "from-purple-500 to-pink-500",
-    },
-    {
-      num: "2",
-      title: "Optimize",
-      desc: "CreatorFlow crafts localized titles, tags and descriptions aligned to trends.",
-      Icon: AutoFixHighIcon,
-      longDesc: "AI analyzes current trends across 50+ languages and generates platform-specific metadata that resonates with each audience.",
-      color: "from-blue-500 to-cyan-500",
-    },
-    {
-      num: "3",
-      title: "Distribute",
-      desc: "Publish to YouTube, Audiomack, Apple Music and more—instantly and reliably.",
-      Icon: PublicIcon,
-      longDesc: "With a single click, your content goes live across all your connected platforms simultaneously.",
-      color: "from-green-500 to-emerald-500",
-    },
-    {
-      num: "4",
-      title: "Analyze",
-      desc: "A/B tests run automatically. Winners ship, insights flow back into your next upload.",
-      Icon: AutoGraphIcon,
-      longDesc: "Automatic testing and analytics give you actionable insights to improve your next release.",
-      color: "from-orange-500 to-red-500",
-    },
-  ];
+  // ITEM 8 FIX: Replaced static text cards with AI Explainer Video
+  // Video ID can be easily swapped by changing the 'videoId' variable below
+  const videoId = "dQw4w9WgXcQ"; // Replace with your actual explainer video ID
+  const videoTitle = "How CreatorFlow Works - AI-Powered Content Distribution";
 
   return (
-    <section id="how-it-works" className="bg-[#F9FAFB] dark:bg-gray-950">
-      <div className="container py-20 my-16 md:my-48">
-        <h2 className="text-3xl sm:text-4xl font-bold text-[#111827] dark:text-white text-center">How It Works</h2>
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {steps.map(({ num, title, desc, Icon, longDesc, color }, i) => (
-            <Link key={title} href="/signup">
-              <div 
-                onMouseEnter={() => setActiveStep(title)}
-                onMouseLeave={() => setActiveStep(null)}
-                className="group relative h-full rounded-2xl border-2 border-black/10 dark:border-white/10 bg-white dark:bg-gray-800 p-6 shadow-md transition-all duration-300 hover:shadow-2xl hover:-translate-y-3 cursor-pointer overflow-hidden"
-                data-aos="zoom-in" 
-                data-aos-delay={i * 100}
-              >
-                {/* Animated Background Gradient */}
-                <div className={`absolute inset-0 opacity-0 group-hover:opacity-8 transition-opacity duration-300 bg-gradient-to-br ${color}`} />
-                
-                {/* Top Border Accent */}
-                <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left`} />
+    <section id="how-it-works" className="bg-[#F9FAFB] dark:bg-gray-950 relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 opacity-5" style={{ 
+        backgroundImage: `radial-gradient(circle, ${PRIMARY} 1px, transparent 1px)`,
+        backgroundSize: '30px 30px'
+      }} />
+      
+      <div className="container py-20 my-16 md:my-48 relative z-10">
+        {/* Section Header */}
+        <div className="text-center mb-12" data-aos="fade-up">
+          <div className="inline-flex items-center gap-2 rounded-full border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-900/20 px-4 py-2 text-xs text-purple-700 dark:text-purple-300 mb-6">
+            <PlayCircleOutlineIcon className="w-4 h-4" />
+            Watch How It Works
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#111827] dark:text-white">
+            See CreatorFlow in{" "}
+            <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              Action
+            </span>
+          </h2>
+          <p className="mt-4 text-lg text-[#111827]/70 dark:text-white/70 max-w-2xl mx-auto">
+            Watch our AI-powered explainer video to see how CreatorFlow transforms your content from upload to global distribution in minutes.
+          </p>
+        </div>
 
-                <div className="relative z-10">
-                  {/* Step Number */}
-                  <div className="flex items-start justify-between mb-4">
-                    <span className={`inline-flex h-12 w-12 items-center justify-center rounded-full text-white text-lg font-bold shadow-lg bg-gradient-to-br ${color} group-hover:scale-125 group-hover:shadow-2xl transition-all duration-300`}>
-                      {num}
-                    </span>
-                    <ArrowForwardIcon className={`text-[#6C63FF] opacity-0 group-hover:opacity-100 transform group-hover:translate-x-1 transition-all duration-300`} />
-                  </div>
-
-                  {/* Icon */}
-                  <div className="mb-4">
-                    <Icon className={`text-5xl text-[#6C63FF] group-hover:scale-110 group-hover:rotate-12 transition-all duration-300`} />
-                  </div>
-
-                  {/* Title */}
-                  <h3 className={`text-xl font-bold text-[#111827] dark:text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300`}>
-                    {title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="mt-3 text-sm text-[#111827]/70 dark:text-white/70 group-hover:text-[#111827] dark:group-hover:text-white transition-colors duration-300">
-                    {activeStep === title ? longDesc : desc}
-                  </p>
-
-                  {/* CTA */}
-                  <div className="mt-4 inline-flex items-center gap-2 text-purple-600 dark:text-purple-400 font-semibold text-sm opacity-0 group-hover:opacity-100 transform group-hover:translate-x-1 transition-all duration-300">
-                    Learn More
-                    <span className="inline-block transform group-hover:translate-x-1 transition-transform duration-300">→</span>
+        {/* Video Container */}
+        <div className="max-w-5xl mx-auto" data-aos="zoom-in" data-aos-delay="100">
+          <div className="relative">
+            {/* Decorative gradient blur */}
+            <div className="absolute -inset-4 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-purple-500/20 rounded-3xl blur-2xl" />
+            
+            {/* Video embed wrapper */}
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-purple-200/50 dark:border-purple-500/30 bg-black">
+              {/* Aspect ratio container for responsive video */}
+              <div className="relative w-full" style={{ paddingBottom: "56.25%" /* 16:9 aspect ratio */ }}>
+                <iframe
+                  src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&showinfo=0`}
+                  title={videoTitle}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full"
+                  loading="lazy"
+                />
+              </div>
+              
+              {/* Fallback message if iframe fails to load */}
+              <noscript>
+                <div className="absolute inset-0 flex items-center justify-center bg-gray-900 text-white">
+                  <div className="text-center p-8">
+                    <PlayCircleOutlineIcon className="w-16 h-16 mb-4 mx-auto text-purple-400" />
+                    <p className="text-lg font-semibold">Enable JavaScript to watch this video</p>
+                    <p className="text-sm text-gray-400 mt-2">Or visit our YouTube channel directly</p>
                   </div>
                 </div>
+              </noscript>
+            </div>
 
-                {/* Floating particles effect */}
-                <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-t from-purple-400/10 to-transparent rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-            </Link>
+            {/* Floating badges */}
+            <div className="absolute -top-4 -right-4 bg-white dark:bg-gray-800 rounded-full p-3 shadow-xl border-2 border-purple-500 animate-bounce hidden md:block" style={{ animationDuration: "3s" }}>
+              <PlayCircleOutlineIcon className="text-purple-500 w-6 h-6" />
+            </div>
+            <div className="absolute -bottom-4 -left-4 bg-white dark:bg-gray-800 rounded-full p-3 shadow-xl border-2 border-pink-500 animate-bounce hidden md:block" style={{ animationDuration: "3s", animationDelay: "1s" }}>
+              <AutoGraphIcon className="text-pink-500 w-6 h-6" />
+            </div>
+          </div>
+        </div>
+
+        {/* Quick feature highlights below video */}
+        <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+          {[
+            { icon: CloudUploadIcon, text: "Upload Once" },
+            { icon: AutoFixHighIcon, text: "AI Optimize" },
+            { icon: PublicIcon, text: "Global Reach" },
+            { icon: AutoGraphIcon, text: "Auto Analytics" },
+          ].map(({ icon: Icon, text }, idx) => (
+            <div 
+              key={text}
+              className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white dark:bg-gray-800 border border-black/10 dark:border-white/10 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1"
+              data-aos="fade-up"
+              data-aos-delay={200 + idx * 50}
+            >
+              <Icon className="text-purple-600 dark:text-purple-400 w-6 h-6" />
+              <span className="text-sm font-semibold text-[#111827] dark:text-white text-center">{text}</span>
+            </div>
           ))}
         </div>
 
         {/* CTA: Professionally encourage signup */}
-        <div className="mt-12 flex justify-center">
+        <div className="mt-12 flex flex-col items-center gap-4">
           <Link
             href="/signup"
             className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all bg-gradient-to-r from-purple-600 to-pink-500 hover:scale-105 hover:shadow-[0_0_30px_rgba(108,99,255,0.18)]"
@@ -590,6 +589,9 @@ function HowItWorks() {
             <span className="hidden md:inline">— Experience CreatorFlow Today</span>
             <RocketLaunchIcon className="w-6 h-6" />
           </Link>
+          <p className="text-sm text-[#111827]/60 dark:text-white/60">
+            No credit card required • 2 uploads free • Cancel anytime
+          </p>
         </div>
       </div>
     </section>
@@ -1420,6 +1422,28 @@ function Footer() {
 }
 
 export default function Home() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Item 1: Redirect authenticated users to dashboard
+  useEffect(() => {
+    const token = getToken();
+    if (token) {
+      router.replace("/dashboard");
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
+
+  // Show nothing while checking auth status to prevent flash
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#F9FAFB] dark:bg-gray-950 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-[#F9FAFB] dark:bg-gray-950 text-[#111827] dark:text-white relative">
       <MarketingNav />
