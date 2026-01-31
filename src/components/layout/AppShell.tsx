@@ -9,6 +9,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DnsIcon from "@mui/icons-material/Dns";
 import PeopleIcon from "@mui/icons-material/People";
 import LogoutIcon from "@mui/icons-material/Logout";
+import SmartToyIcon from "@mui/icons-material/SmartToy";
 import ThemeToggle from "@/components/ThemeToggle";
 
 type NavItem = { href: string; label: string; Icon: React.ElementType };
@@ -40,6 +41,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       items.push({ href: "/dashboard", label: "Dashboard", Icon: HomeIcon });
       items.push({ href: "/channels", label: "Channels", Icon: DnsIcon });
       items.push({ href: "/uploads", label: "Uploads", Icon: CloudUploadIcon });
+      items.push({ href: "/automation", label: "Automation", Icon: SmartToyIcon });
       items.push({ href: "/monetization", label: "Plans", Icon: HomeIcon });
     }
     return items;
