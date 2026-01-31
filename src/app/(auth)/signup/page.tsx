@@ -32,8 +32,8 @@ export default function SignupPage() {
     
     setLoading(true);
     try {
-      await api.post("/auth/signup", { email, password, name: name || undefined });
-      const res = await api.post("/auth/login", { email, password });
+      await api.post("/api/auth/signup", { email, password, name: name || undefined });
+      const res = await api.post("/api/auth/login", { email, password });
       saveToken(res.data.token);
       const goAdmin = isAdminRead();
       router.push(goAdmin ? "/admin/dashboard" : "/dashboard");

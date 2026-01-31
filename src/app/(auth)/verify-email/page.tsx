@@ -46,7 +46,7 @@ function VerifyEmailContent() {
     setResent(false);
     
     try {
-      await api.post("/auth/resend-verification");
+      await api.post("/api/auth/resend-verification");
       setResent(true);
     } catch (err: any) {
       setError(err.response?.data?.error || err.response?.data?.message || "Failed to resend verification email");
@@ -61,7 +61,7 @@ function VerifyEmailContent() {
     
     try {
       // Refresh token to get updated email_verified status
-      const { data } = await api.post("/auth/refresh-token");
+      const { data } = await api.post("/api/auth/refresh-token");
       if (data.token) {
         saveToken(data.token);
         // Check if now verified

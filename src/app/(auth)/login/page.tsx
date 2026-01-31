@@ -17,7 +17,7 @@ export default function LoginPage() {
     setError(null);
     setLoading(true);
     try {
-      const res = await api.post("/auth/login", { email, password });
+      const res = await api.post("/api/auth/login", { email, password });
       saveToken(res.data.token);
       if (res?.data?.user) saveUserProfile(res.data.user);
       const goAdmin = isAdminRead();

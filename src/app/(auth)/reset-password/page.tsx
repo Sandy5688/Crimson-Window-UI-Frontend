@@ -45,7 +45,7 @@ function ResetPasswordFormInner() {
     }
     setLoading(true);
     try {
-      await api.post("/auth/reset-password", { token, password });
+      await api.post("/api/auth/reset-password", { token, password });
       setMessage("Password updated. Redirecting to sign in...");
       setTimeout(() => router.push("/login"), 1500);
     } catch (err: any) {

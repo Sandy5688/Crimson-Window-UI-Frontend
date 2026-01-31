@@ -15,7 +15,7 @@ export default function ForgotPasswordPage() {
     setMessage(null);
     setLoading(true);
     try {
-      await api.post("/auth/forgot-password", { email });
+      await api.post("/api/auth/forgot-password", { email });
       setMessage("If an account exists for that email, a reset link has been sent.");
     } catch (err: any) {
       // Handle different error response formats
