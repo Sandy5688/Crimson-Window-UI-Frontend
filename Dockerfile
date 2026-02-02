@@ -3,7 +3,7 @@
 # =============================================================================
 
 # Stage 1: Dependencies
-FROM node:18-alpine AS deps
+FROM node:20.11.0-alpine3.19 AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
@@ -19,7 +19,7 @@ RUN pnpm install --frozen-lockfile
 # =============================================================================
 # Stage 2: Builder - Build the Next.js app
 # =============================================================================
-FROM node:18-alpine AS builder
+FROM node:20.11.0-alpine3.19 AS builder
 WORKDIR /app
 
 # Install pnpm via npm (more reliable than corepack)
@@ -39,7 +39,7 @@ RUN pnpm build
 # =============================================================================
 # Stage 3: Runner - Production image
 # =============================================================================
-FROM node:18-alpine AS runner
+FROM node:20.11.0-alpine3.19 AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
