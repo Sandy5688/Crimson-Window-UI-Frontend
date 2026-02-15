@@ -7,9 +7,12 @@ import Providers from './providers'
 const inter = Inter({ variable: "--font-sans", weight: ["400","500","600","700","800"], subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "CreatorFlow — Upload Once. Speak Every Language.",
+  title: "Flowpload — Upload Once. Flow Everywhere.",
   description:
     "Transform your videos, podcasts, and posts into global hits — automatically localized, trend-tuned, and adapted for every audience.",
+  icons: {
+    icon: "/flowuplaod.png",
+  },
 };
 
 

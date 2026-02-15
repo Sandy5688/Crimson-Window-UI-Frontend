@@ -8,11 +8,20 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import ShieldIcon from "@mui/icons-material/Shield";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import Logo from "@/components/Logo";
 
 export default function MarketingFooter() {
   return (
     <footer className="bg-[#F9FAFB] dark:bg-gray-950 border-t border-black/10 dark:border-white/10">
       <div className="container py-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div>
+          <div className="mb-4">
+            <Logo href="/" width={140} height={40} />
+          </div>
+          <p className="text-sm text-[#111827]/70 dark:text-white/70 mb-4">
+            Upload Once. Flow Everywhere.
+          </p>
+        </div>
         <div>
           <h4 className="font-semibold text-[#111827] dark:text-white">Company</h4>
           <ul className="mt-3 space-y-2 text-sm text-[#111827]/80 dark:text-white/80">

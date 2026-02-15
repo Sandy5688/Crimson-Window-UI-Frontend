@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
+import Logo from "@/components/Logo";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
@@ -44,9 +45,7 @@ export default function MarketingNav() {
   return (
     <header className={`sticky top-0 z-50 transition-shadow bg-white/90 dark:bg-gray-900/80 backdrop-blur ${isScrolled ? "shadow-sm" : "shadow-none"}`}>
       <div className="container flex items-center justify-between h-16">
-        <Link href="/#home" className="font-semibold text-lg tracking-tight text-[#111827] dark:text-white" aria-label="CreatorFlow - Home">
-          CreatorFlow
-        </Link>
+        <Logo href="/#home" width={160} height={45} priority />
         <nav className="hidden md:flex items-center gap-8" aria-label="Main">
           {links.map((l) => (
             <Link key={l.href} href={l.href} className={`text-sm transition-colors ${isActive(l.href) ? "text-[#111827] dark:text-white font-semibold border-b-2" : "text-[#111827]/80 dark:text-white/80 hover:text-[#111827] dark:hover:text-white"}`} style={isActive(l.href) ? { borderColor: PRIMARY } : {}}>

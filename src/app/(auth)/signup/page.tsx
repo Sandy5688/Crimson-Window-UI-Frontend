@@ -3,6 +3,7 @@ import { useState } from "react";
 import { api } from "@/lib/api";
 import { saveToken, isAdminRead } from "@/lib/auth";
 import { useRouter } from "next/navigation";
+import Logo from "@/components/Logo";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -71,10 +72,8 @@ export default function SignupPage() {
       <div className="relative z-10 w-full max-w-md">
         {/* Header */}
         <div className="mb-8 text-center">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-[#2D89FF]/20 rounded-lg mb-4">
-            <svg className="w-7 h-7 text-[#2D89FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
+          <div className="inline-flex items-center justify-center mb-6">
+            <Logo href="/" width={200} height={60} />
           </div>
           <h1 className="text-3xl font-bold text-white mb-2">Create Account</h1>
           <p className="text-gray-400">Join us and get started today</p>
