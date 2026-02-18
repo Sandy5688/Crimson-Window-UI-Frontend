@@ -194,7 +194,7 @@ export default function FeaturesPage() {
               Why these features matter
             </h2>
             <p className="mt-4 text-lg text-black dark:text-white/70">
-              CreatorFlow aligns your creative output with what audiences are searching for—across languages, platforms and cultures—while preserving your unique voice.
+              Flowpload aligns your creative output with what audiences are searching for—across languages, platforms and cultures—while preserving your unique voice.
             </p>
             <ul className="mt-8 space-y-4">
               {[
@@ -223,7 +223,7 @@ export default function FeaturesPage() {
           <div className="relative group" data-aos="fade-left">
             <div className="absolute -inset-6 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-3xl blur-2xl group-hover:from-purple-500/30 group-hover:to-pink-500/30 transition-all duration-300" />
             <div className="relative rounded-2xl border-2 border-purple-200/50 dark:border-purple-500/30 bg-white dark:bg-gray-800 p-6 shadow-2xl group-hover:shadow-[0_20px_60px_rgba(108,99,255,0.2)] group-hover:-translate-y-2 transition-all duration-300">
-              <Image src="/hero-draw.png" alt="CreatorFlow Features" width={900} height={600} className="w-full h-auto rounded-xl group-hover:scale-105 transition-transform duration-300" />
+              <Image src="/hero-draw.png" alt="Flowpload Features" width={900} height={600} className="w-full h-auto rounded-xl group-hover:scale-105 transition-transform duration-300" />
             </div>
           </div>
         </div>
@@ -241,7 +241,7 @@ export default function FeaturesPage() {
             Ready to Go Global in Minutes?
           </h2>
           <p className="mt-6 text-xl text-white max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-            Join thousands of creators scaling their content across every major platform with CreatorFlow's powerful features.
+            Join thousands of creators scaling their content across every major platform with Flowpload's powerful features.
           </p>
           
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4" data-aos="fade-up" data-aos-delay="200">

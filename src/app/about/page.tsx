@@ -40,7 +40,7 @@ export default function AboutPage() {
             🇦🇺 Proudly Australian-Built
           </span>
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight">
-            About CreatorFlow
+            About Flowpload
           </h1>
           <p className="mt-5 text-lg md:text-xl text-black dark:text-white max-w-3xl mx-auto">
             We help creators go global in minutes—not months. One upload, localized and distributed everywhere.
@@ -77,7 +77,7 @@ export default function AboutPage() {
           <div className="relative" data-aos="fade-left">
             <div className="absolute -inset-6 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-3xl blur-2xl" />
             <div className="relative rounded-2xl border-2 border-purple-200/50 dark:border-purple-500/30 bg-white dark:bg-gray-800 p-6 shadow-2xl">
-              <Image src="/hero-draw.png" alt="CreatorFlow mission" width={900} height={600} className="w-full h-auto rounded-xl" />
+              <Image src="/hero-draw.png" alt="Flowpload mission" width={900} height={600} className="w-full h-auto rounded-xl" />
             </div>
           </div>
         </div>
@@ -185,7 +185,7 @@ export default function AboutPage() {
 
           <div className="mt-12 p-8 rounded-2xl border-2 border-purple-200/50 dark:border-purple-500/30 bg-gradient-to-br from-purple-50/50 to-pink-50/50 dark:from-purple-900/20 dark:to-pink-900/20">
             <p className="text-center text-[#111827] dark:text-white">
-              <span className="font-bold text-lg">Our commitment:</span> We live and breathe creator growth. Every feature is built with feedback from the creators using CreatorFlow daily. We're not just building software—we're building the infrastructure for the next generation of global creators.
+              <span className="font-bold text-lg">Our commitment:</span> We live and breathe creator growth. Every feature is built with feedback from the creators using Flowpload daily. We're not just building software—we're building the infrastructure for the next generation of global creators.
             </p>
           </div>
         </div>

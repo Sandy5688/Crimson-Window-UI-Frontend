@@ -38,7 +38,7 @@ export default function HowItWorksPage() {
     {
       num: "2",
       title: "Optimize",
-      desc: "CreatorFlow crafts localized titles, tags and descriptions aligned to trends.",
+      desc: "Flowpload crafts localized titles, tags and descriptions aligned to trends.",
       Icon: AutoFixHighIcon,
       longDesc: "AI analyzes current trends across 50+ languages and generates platform-specific metadata that resonates with each audience.",
       color: "from-blue-500 to-cyan-500",
@@ -147,7 +147,7 @@ export default function HowItWorksPage() {
             🚀 End-to-end in minutes
           </span>
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight">
-            How CreatorFlow Works
+            How Flowpload Works
           </h1>
           <p className="mt-5 text-lg md:text-xl text-white/80 max-w-3xl mx-auto">
             From upload to global distribution—automated, localized, and optimized for growth.
@@ -163,7 +163,7 @@ export default function HowItWorksPage() {
 
       <section className="container py-16 md:py-24">
         <div className="mb-12 text-center" data-aos="fade-up">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#111827] dark:text-white">The CreatorFlow Process</h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#111827] dark:text-white">The Flowpload Process</h2>
           <p className="mt-4 text-lg text-[#111827]/70 dark:text-white/70">Watch how your content transforms across every platform</p>
         </div>
         
@@ -239,7 +239,7 @@ export default function HowItWorksPage() {
               A simple flow—powerful outcomes
             </h2>
             <p className="mt-4 text-[#111827]/70 dark:text-white/70">
-              Attach channels, pick your audience, and let CreatorFlow handle the rest. Approve suggestions and publish with one click.
+              Attach channels, pick your audience, and let Flowpload handle the rest. Approve suggestions and publish with one click.
             </p>
             <ul className="mt-6 space-y-3">
               {[
@@ -308,7 +308,7 @@ export default function HowItWorksPage() {
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12" data-aos="fade-up">
             <h3 className="text-2xl md:text-4xl font-extrabold text-[#111827] dark:text-white">Frequently asked questions</h3>
-            <p className="mt-3 text-lg text-[#111827]/70 dark:text-white/70">Everything you need to know about CreatorFlow</p>
+            <p className="mt-3 text-lg text-[#111827]/70 dark:text-white/70">Everything you need to know about Flowpload</p>
           </div>
           
           <div className="space-y-4">
@@ -368,7 +368,7 @@ export default function HowItWorksPage() {
             Ready to Transform Your Content?
           </h2>
           <p className="mt-6 text-xl text-white/90 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-            Join thousands of creators who are scaling globally with CreatorFlow. Start for free today.
+            Join thousands of creators who are scaling globally with Flowpload. Start for free today.
           </p>
           
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4" data-aos="fade-up" data-aos-delay="200">

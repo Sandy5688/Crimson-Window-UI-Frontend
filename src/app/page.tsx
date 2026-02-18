@@ -130,8 +130,8 @@ function Header() {
   return (
     <header className={`sticky top-0 z-50 transition-shadow bg-white/90 dark:bg-gray-900/80 backdrop-blur ${isScrolled ? "shadow-sm" : "shadow-none"}`}>
       <div className="container flex items-center justify-between h-16">
-        <Link href="#home" className="font-semibold text-lg tracking-tight text-[#111827] dark:text-white" aria-label="CreatorFlow - Home">
-          CreatorFlow
+        <Link href="#home" className="font-semibold text-lg tracking-tight text-[#111827] dark:text-white" aria-label="Flowpload - Home">
+          Flowpload
         </Link>
         <nav className="hidden md:flex items-center gap-8" aria-label="Main">
           {links.map((l) => (
@@ -327,7 +327,7 @@ function Testimonials() {
       name: "Sarah Chen",
       role: "Gaming YouTuber",
       avatar: "https://i.pravatar.cc/150?img=1",
-      content: "CreatorFlow helped me reach 2M+ viewers across 15 countries. My content now feels native everywhere!",
+      content: "Flowpload helped me reach 2M+ viewers across 15 countries. My content now feels native everywhere!",
       stats: "2M+ views",
       verified: true,
     },
@@ -389,7 +389,7 @@ function Testimonials() {
             </span>
           </h2>
           <p className="mt-4 text-lg text-[#111827]/70 dark:text-white/70">
-            See what creators are saying about CreatorFlow
+            See what creators are saying about Flowpload
           </p>
         </div>
 
@@ -486,7 +486,7 @@ function HowItWorks() {
   // ITEM 8 FIX: Replaced static text cards with AI Explainer Video
   // Video ID can be easily swapped by changing the 'videoId' variable below
   const videoId = "dQw4w9WgXcQ"; // Replace with your actual explainer video ID
-  const videoTitle = "How CreatorFlow Works - AI-Powered Content Distribution";
+  const videoTitle = "How Flowpload Works - AI-Powered Content Distribution";
 
   return (
     <section id="how-it-works" className="bg-[#F9FAFB] dark:bg-gray-950 relative overflow-hidden">
@@ -504,13 +504,13 @@ function HowItWorks() {
             Watch How It Works
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#111827] dark:text-white">
-            See CreatorFlow in{" "}
+            See Flowpload in{" "}
             <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
               Action
             </span>
           </h2>
           <p className="mt-4 text-lg text-[#111827]/70 dark:text-white/70 max-w-2xl mx-auto">
-            Watch our AI-powered explainer video to see how CreatorFlow transforms your content from upload to global distribution in minutes.
+            Watch our AI-powered explainer video to see how Flowpload transforms your content from upload to global distribution in minutes.
           </p>
         </div>
 
@@ -586,7 +586,7 @@ function HowItWorks() {
             data-aos-delay="350"
           >
             Get Started Free&nbsp;
-            <span className="hidden md:inline">— Experience CreatorFlow Today</span>
+            <span className="hidden md:inline">— Experience Flowpload Today</span>
             <RocketLaunchIcon className="w-6 h-6" />
           </Link>
           <p className="text-sm text-[#111827]/60 dark:text-white/60">
@@ -1119,7 +1119,7 @@ function WhyChooseUs() {
         {/* Trust line below bullets */}
         <div className="mt-12 text-center" data-aos="fade-up" data-aos-delay="500">
           <p className="text-sm md:text-base text-black/80 dark:text-white/80">
-            <span className="font-semibold text-black dark:text-white">15,000+</span> creators trust CreatorFlow for global distribution
+            <span className="font-semibold text-black dark:text-white">15,000+</span> creators trust Flowpload for global distribution
           </p>
         </div>
       </div>
@@ -1399,7 +1399,7 @@ function Footer() {
         <div>
           <h4 className="font-semibold text-[#111827] dark:text-white">Contact</h4>
           <ul className="mt-3 space-y-2 text-sm text-[#111827]/80 dark:text-white/80">
-            <li>Email: hello@creatorflow.app</li>
+            <li>Email: support@flowpload.com</li>
             <li>Phone: +61 400 000 000</li>
             <li>Address: Sydney, Australia</li>
           </ul>
@@ -1414,7 +1414,7 @@ function Footer() {
       <div className="border-t border-black/10 dark:border-white/10">
         <div className="container py-6 text-center text-sm text-[#111827]/70 dark:text-white/70">
           <p>Proudly Australian-Built Software for Global Creators.</p>
-          <p className="mt-1">© 2025 CreatorFlow. All rights reserved.</p>
+          <p className="mt-1">© 2025 Flowpload. All rights reserved.</p>
         </div>
       </div>
     </footer>

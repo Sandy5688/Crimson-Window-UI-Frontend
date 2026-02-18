@@ -28,7 +28,7 @@ export default function OnboardingModal() {
   const steps = [
     {
       icon: "🎉",
-      title: "Welcome to CreatorFlow!",
+      title: "Welcome to Flowpload!",
       description: "Let's get you started with a quick tour of the platform. You can skip anytime.",
     },
     {

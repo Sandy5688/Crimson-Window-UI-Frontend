@@ -40,7 +40,7 @@ export default function SupportPage() {
       }
     } catch (err: any) {
       console.error('Support form error:', err);
-      setError(err.response?.data?.message || 'Failed to send message. Please try again or email us directly at hello@creatorflow.app');
+      setError(err.response?.data?.message || 'Failed to send message. Please try again or email us directly at support@flowpload.com');
     } finally {
       setLoading(false);
     }

@@ -46,7 +46,7 @@ export default function ContactPage() {
       }
     } catch (err: any) {
       console.error('Contact form error:', err);
-      setError(err.response?.data?.message || 'Failed to send message. Please try again or email us directly at hello@creatorflow.app');
+      setError(err.response?.data?.message || 'Failed to send message. Please try again or email us directly at support@flowpload.com');
     } finally {
       setLoading(false);
     }
@@ -66,7 +66,7 @@ export default function ContactPage() {
             💬 We’re here to help
           </span>
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight">
-            Contact CreatorFlow
+            Contact Flowpload
           </h1>
           <p className="mt-5 text-lg md:text-xl text-black dark:text-white max-w-3xl mx-auto">
             Questions about pricing, onboarding or features? Get in touch and we’ll respond promptly.
@@ -165,7 +165,7 @@ export default function ContactPage() {
             <ul className="mt-6 space-y-4">
               <li className="flex items-center gap-3 text-sm">
                 <EmailIcon className="text-purple-600 dark:text-purple-400" />
-                <span>hello@creatorflow.app</span>
+                <span>support@flowpload.com</span>
               </li>
               <li className="flex items-center gap-3 text-sm">
                 <PhoneIcon className="text-purple-600 dark:text-purple-400" />
