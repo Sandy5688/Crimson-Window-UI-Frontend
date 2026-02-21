@@ -9,7 +9,7 @@ import { api } from "@/lib/api";
 
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import EmailIcon from "@mui/icons-material/Email";
-import PhoneIcon from "@mui/icons-material/Phone";
+
 import PlaceIcon from "@mui/icons-material/Place";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
@@ -166,10 +166,6 @@ export default function ContactPage() {
               <li className="flex items-center gap-3 text-sm">
                 <EmailIcon className="text-purple-600 dark:text-purple-400" />
                 <span>support@flowpload.com</span>
-              </li>
-              <li className="flex items-center gap-3 text-sm">
-                <PhoneIcon className="text-purple-600 dark:text-purple-400" />
-                <span>+61 400 000 000</span>
               </li>
               <li className="flex items-center gap-3 text-sm">
                 <PlaceIcon className="text-purple-600 dark:text-purple-400" />

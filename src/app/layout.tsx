@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} antialiased`}>
         {/* Smooth scroll is set in globals.css */}
-        <div className="min-h-dvh bg-[#F9FAFB] text-[#111827] dark:bg-[#0f172a] dark:text-[#f1f5f9] transition-colors">
+        <div className="min-h-dvh flex flex-col bg-[#F9FAFB] text-[#111827] dark:bg-[#0f172a] dark:text-[#f1f5f9] transition-colors">
           <Providers>
           <AOSProvider>
             {children}
