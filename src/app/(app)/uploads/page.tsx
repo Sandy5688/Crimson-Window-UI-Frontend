@@ -46,12 +46,18 @@ export default function UploadsPage() {
     e.preventDefault();
     const form = e.currentTarget;
     const fd = new FormData(form);
+    const assetUrl = String(fd.get("assetUrl"));
+    const isValidFormat = /\.(mp4|mp3)(\?.*)?$/i.test(assetUrl);
+    if (!isValidFormat) {
+      setErr("Asset URL must point to an mp4 or mp3 file.");
+      return;
+    }
     setBusy(true);
     setErr(null);
     try {
       const payload = {
         channelId: String(fd.get("channelId")),
-        assetUrl: String(fd.get("assetUrl")),
+        assetUrl,
         title: String(fd.get("title")),
         description: String(fd.get("description")) || undefined,
         platform: String(fd.get("platform")) || "generic",
@@ -96,8 +102,17 @@ export default function UploadsPage() {
           {!channels && (
             <Skeleton className="h-10 w-full" />
           )}
-          {channels && (
+          {channels && channels.length === 0 && (
+            <div className="w-full rounded-lg border-2 border-dashed border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 px-4 py-3 text-sm text-black/50 dark:text-white/50">
+              No channels connected.{" "}
+              <a href="/channels" className="text-[#2D89FF] underline">
+                Connect a channel first
+              </a>
+            </div>
+          )}
+          {channels && channels.length > 0 && (
             <select name="channelId" required className="w-full rounded-lg border-2 border-black/10 dark:border-white/10 bg-white dark:bg-gray-800 text-[#111827] dark:text-white px-4 py-3 hover:border-[#2D89FF] focus:border-[#2D89FF] focus:ring-2 focus:ring-[#2D89FF]/20 transition-all duration-200">
+              <option value="">— Select a channel —</option>
               {channelOptions.map((c) => (
                 <option key={c.id} value={c.id}>{c.displayName}</option>
               ))}
@@ -105,17 +120,24 @@ export default function UploadsPage() {
           )}
         </div>
         <div className="space-y-1">
-          <label className="text-sm font-medium dark:text-white/80">Asset URL</label>
+          <label className="text-sm font-medium dark:text-white/80">Asset URL <span className="text-black/40 dark:text-white/40 font-normal">(mp4 or mp3 only)</span></label>
           <div className="flex gap-2">
-            <input name="assetUrl" type="url" placeholder="https://... or use Upload" required className="w-full rounded-lg border-2 border-black/10 dark:border-white/10 bg-white dark:bg-gray-800 text-[#111827] dark:text-white px-4 py-3 hover:border-[#2D89FF] focus:border-[#2D89FF] focus:ring-2 focus:ring-[#2D89FF]/20 transition-all duration-200" />
+            <input name="assetUrl" type="url" placeholder="https://example.com/video.mp4" required className="w-full rounded-lg border-2 border-black/10 dark:border-white/10 bg-white dark:bg-gray-800 text-[#111827] dark:text-white px-4 py-3 hover:border-[#2D89FF] focus:border-[#2D89FF] focus:ring-2 focus:ring-[#2D89FF]/20 transition-all duration-200" />
             <input name="assetFile" type="file" className="hidden" />
             <button type="button" onClick={async () => {
               const supabase = getSupabase();
               const fileInput = document.createElement('input');
               fileInput.type = 'file';
+              fileInput.accept = 'video/mp4,audio/mpeg,.mp4,.mp3';
               fileInput.onchange = async () => {
                 const file = fileInput.files?.[0];
                 if (!file) return;
+                const allowedTypes = ['video/mp4', 'audio/mpeg'];
+                const allowedExts = /\.(mp4|mp3)$/i;
+                if (!allowedTypes.includes(file.type) && !allowedExts.test(file.name)) {
+                  alert('Only mp4 and mp3 files are supported.');
+                  return;
+                }
                 const filename = `${Date.now()}-${file.name}`;
                 // Ask backend for a storage target path
                 const { data } = await api.post('/api/v1/upload/presign', { filename, contentType: file.type || 'application/octet-stream' });
