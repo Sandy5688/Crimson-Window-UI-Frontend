@@ -12,28 +12,29 @@ type PlanData = { plan: any; usage: any; channelCount: number; channelLimit: num
 const fetcher = (url: string) => api.get(url).then((r) => r.data);
 
 const PLATFORMS = [
-  { id: "youtube",     name: "YouTube",      color: "#FF0000", oauthSupported: true,  statusNote: null },
-  { id: "spotify",     name: "Spotify",      color: "#1DB954", oauthSupported: false, statusNote: "Via Aggregator" },
-  { id: "applemusic",  name: "Apple Music",  color: "#FC3C44", oauthSupported: false, statusNote: "Via Aggregator" },
-  { id: "deezer",      name: "Deezer",       color: "#FF6700", oauthSupported: false, statusNote: "Via Aggregator" },
-  { id: "soundcloud",  name: "SoundCloud",   color: "#FF5500", oauthSupported: false, statusNote: "Coming Soon" },
-  { id: "tunein",      name: "TuneIn",       color: "#14D8CC", oauthSupported: false, statusNote: "Partner Required" },
-  { id: "amazonmusic", name: "Amazon Music", color: "#00A8E1", oauthSupported: false, statusNote: "Via Aggregator" },
-  { id: "iheartradio", name: "iHeartRadio",  color: "#C6002B", oauthSupported: false, statusNote: "Partner Required" },
-  { id: "audiomack",   name: "Audiomack",    color: "#FFA200", oauthSupported: false, statusNote: "Coming Soon" },
-  { id: "podchaser",   name: "Podchaser",    color: "#5C68E2", oauthSupported: false, statusNote: "Coming Soon" },
+  { id: "youtube",     name: "YouTube",      color: "#FF0000" },
+  { id: "spotify",     name: "Spotify",      color: "#1DB954" },
+  { id: "applemusic",  name: "Apple Music",  color: "#FC3C44" },
+  { id: "deezer",      name: "Deezer",       color: "#FF6700" },
+  { id: "soundcloud",  name: "SoundCloud",   color: "#FF5500" },
+  { id: "tunein",      name: "TuneIn",       color: "#14D8CC" },
+  { id: "amazonmusic", name: "Amazon Music", color: "#00A8E1" },
+  { id: "iheartradio", name: "iHeartRadio",  color: "#C6002B" },
+  { id: "audiomack",   name: "Audiomack",    color: "#FFA200" },
+  { id: "podchaser",   name: "Podchaser",    color: "#5C68E2" },
 ];
 
 function ChannelsPageInner() {
   const searchParams = useSearchParams();
   const { data: channels, isLoading, error, mutate } = useSWR<Channel[]>("/api/v1/channels", fetcher);
   const { data: planData } = useSWR<PlanData>("/api/v1/billing/plan", fetcher);
+  const [showAddModal, setShowAddModal] = useState(false);
   const [showLimitModal, setShowLimitModal] = useState(false);
   const [busy, setBusy] = useState(false);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [oauthError, setOauthError] = useState<string | null>(null);
 
-  // Handle OAuth redirect-back params
+  // Handle YouTube OAuth redirect-back params
   useEffect(() => {
     const connected = searchParams.get("connected");
     const oauthErr = searchParams.get("oauth_error");
@@ -41,7 +42,6 @@ function ChannelsPageInner() {
       const platformName = PLATFORMS.find((p) => p.id === connected)?.name || connected;
       setSuccessMsg(`${platformName} connected successfully!`);
       mutate();
-      // Clean up URL params without reload
       window.history.replaceState({}, "", "/channels");
     }
     if (oauthErr) {
@@ -65,6 +65,7 @@ function ChannelsPageInner() {
     }
   }
 
+  // YouTube: real OAuth redirect
   async function handleOAuthConnect(provider: string) {
     if (planData && planData.channelCount >= planData.channelLimit) {
       setShowLimitModal(true);
@@ -75,6 +76,32 @@ function ChannelsPageInner() {
       window.location.href = res.data.url;
     } catch (e: any) {
       alert(e?.response?.data?.error || "Failed to start OAuth");
+    }
+  }
+
+  // All other platforms: manual channel ID form
+  async function handleConnect(provider: string, channelId: string, displayName: string) {
+    if (planData && planData.channelCount >= planData.channelLimit) {
+      setShowLimitModal(true);
+      return;
+    }
+    setBusy(true);
+    try {
+      await api.post("/api/v1/channels/connect", { provider, providerChannelId: channelId, displayName });
+      mutate();
+      setShowAddModal(false);
+    } catch (e: any) {
+      alert(e?.response?.data?.error || "Failed to connect");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function openAddModal() {
+    if (planData && planData.channelCount >= planData.channelLimit) {
+      setShowLimitModal(true);
+    } else {
+      setShowAddModal(true);
     }
   }
 
@@ -119,20 +146,27 @@ function ChannelsPageInner() {
             >
               Sync All
             </button>
+            <button
+              onClick={openAddModal}
+              className="rounded-lg px-4 py-2 text-sm font-bold text-white hover:brightness-95"
+              style={{ backgroundColor: "#2D89FF" }}
+            >
+              + Add Platform
+            </button>
           </div>
         </div>
 
-        {/* Success / Error banners */}
+        {/* OAuth success / error banners */}
         {successMsg && (
           <div className="rounded-lg bg-green-50 dark:bg-green-900/30 border border-green-300 dark:border-green-700 px-4 py-3 text-green-800 dark:text-green-200 text-sm flex items-center justify-between gap-3">
             <span>✅ {successMsg}</span>
-            <button onClick={() => setSuccessMsg(null)} className="text-green-600 dark:text-green-300 hover:text-green-900 font-bold">✕</button>
+            <button onClick={() => setSuccessMsg(null)} className="text-green-600 dark:text-green-300 font-bold">✕</button>
           </div>
         )}
         {oauthError && (
           <div className="rounded-lg bg-red-50 dark:bg-red-900/30 border border-red-300 dark:border-red-700 px-4 py-3 text-red-800 dark:text-red-200 text-sm flex items-center justify-between gap-3">
             <span>❌ OAuth error: {oauthError}</span>
-            <button onClick={() => setOauthError(null)} className="text-red-600 dark:text-red-300 hover:text-red-900 font-bold">✕</button>
+            <button onClick={() => setOauthError(null)} className="text-red-600 dark:text-red-300 font-bold">✕</button>
           </div>
         )}
 
@@ -151,9 +185,9 @@ function ChannelsPageInner() {
                 <EmptyState
                   icon="🎧"
                   title="No Channels Connected Yet"
-                  description="Connect your YouTube channel to start distributing content. More platforms coming soon!"
-                  actionLabel="Connect YouTube"
-                  onAction={() => handleOAuthConnect("youtube")}
+                  description="Connect your first platform to start distributing your content globally. Choose from YouTube, Spotify, Apple Music, and more!"
+                  actionLabel="Connect Your First Channel"
+                  onAction={openAddModal}
                 />
               </div>
             )}
@@ -215,22 +249,27 @@ function ChannelsPageInner() {
                     </>
                   )}
                   {!connected && (
-                    <>
-                      {platform.oauthSupported ? (
-                        <button
-                          disabled={busy}
-                          onClick={() => handleOAuthConnect(platform.id)}
-                          className="w-full mt-3 text-xs px-3 py-2 rounded-md font-medium text-white hover:brightness-95 disabled:opacity-50 flex items-center justify-center gap-1.5"
-                          style={{ backgroundColor: "#FFB400" }}
-                        >
-                          Connect with {platform.name}
-                        </button>
-                      ) : (
-                        <div className="mt-3 text-xs px-3 py-2 rounded-md text-center font-medium text-black/40 dark:text-white/30 bg-black/5 dark:bg-white/5 border border-dashed border-black/10 dark:border-white/10">
-                          {platform.statusNote}
-                        </div>
-                      )}
-                    </>
+                    platform.id === "youtube" ? (
+                      // YouTube: real OAuth button
+                      <button
+                        disabled={busy}
+                        onClick={() => handleOAuthConnect("youtube")}
+                        className="w-full mt-3 text-xs px-3 py-2 rounded-md font-medium text-white hover:brightness-95 disabled:opacity-50"
+                        style={{ backgroundColor: "#FFB400" }}
+                      >
+                        Connect with YouTube
+                      </button>
+                    ) : (
+                      // All other platforms: open the manual connect modal
+                      <button
+                        disabled={busy}
+                        onClick={openAddModal}
+                        className="w-full mt-3 text-xs px-3 py-2 rounded-md font-medium text-white hover:brightness-95 disabled:opacity-50"
+                        style={{ backgroundColor: "#FFB400" }}
+                      >
+                        Connect
+                      </button>
+                    )
                   )}
                 </div>
               );
@@ -239,6 +278,80 @@ function ChannelsPageInner() {
           </>
         )}
       </div>
+
+      {/* Add Platform Modal (for non-YouTube platforms) */}
+      {showAddModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={() => setShowAddModal(false)}>
+          <div
+            className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-6 max-w-md w-full mx-4 border border-black/10 dark:border-white/10"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="text-xl font-bold mb-4 dark:text-white" style={{ fontFamily: "Montserrat, sans-serif" }}>
+              Connect a Platform
+            </h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const fd = new FormData(e.currentTarget);
+                handleConnect(
+                  String(fd.get("provider")),
+                  String(fd.get("channelId")),
+                  String(fd.get("displayName"))
+                );
+              }}
+              className="space-y-4"
+            >
+              <div>
+                <label className="block text-sm font-medium mb-1 dark:text-white/80">Platform</label>
+                <select name="provider" required className="w-full rounded-lg border border-black/20 dark:border-white/20 bg-white dark:bg-gray-800 text-[#111827] dark:text-white px-3 py-2">
+                  <option value="">— Select Platform —</option>
+                  {PLATFORMS.filter((p) => p.id !== "youtube").map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1 dark:text-white/80">Channel URL / ID</label>
+                <input
+                  name="channelId"
+                  type="text"
+                  placeholder="e.g. channel link or profile ID"
+                  required
+                  className="w-full rounded-lg border border-black/20 dark:border-white/20 bg-white dark:bg-gray-800 text-[#111827] dark:text-white px-3 py-2"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1 dark:text-white/80">Display Name (optional)</label>
+                <input
+                  name="displayName"
+                  type="text"
+                  placeholder="My Channel"
+                  className="w-full rounded-lg border border-black/20 dark:border-white/20 bg-white dark:bg-gray-800 text-[#111827] dark:text-white px-3 py-2"
+                />
+              </div>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowAddModal(false)}
+                  className="flex-1 rounded-lg border border-black/20 dark:border-white/20 px-4 py-2 text-sm hover:bg-black/5 dark:hover:bg-white/10"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={busy}
+                  className="flex-1 rounded-lg px-4 py-2 text-sm font-bold text-white hover:brightness-95 disabled:opacity-50"
+                  style={{ backgroundColor: "#2D89FF" }}
+                >
+                  Connect
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Limit Reached Modal */}
       {showLimitModal && (
