@@ -49,7 +49,17 @@ export async function getAutomationStats(): Promise<AutomationStats> {
 // Get all bot statuses
 export async function getBotStatus(): Promise<BotStatus[]> {
   const response = await api.get(`${AUTOMATION_BASE}/admin/bots/status`);
-  return response.data;
+  const data = response.data;
+
+  if (!data) return [];
+  // If backend already returning array, return it
+  if (Array.isArray(data)) return data;
+
+  // Otherwise convert map to array
+  return Object.entries(data).map(([name, statusData]: [string, any]) => ({
+    name,
+    ...statusData
+  }));
 }
 
 // Run a specific bot

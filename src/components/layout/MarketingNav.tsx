@@ -53,8 +53,11 @@ export default function MarketingNav() {
             </Link>
           ))}
         </nav>
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-3">
           <ThemeToggle />
+          <Link href="/login" className="text-sm font-medium text-[#111827]/80 dark:text-white/80 hover:text-[#111827] dark:hover:text-white transition-colors px-3 py-2">
+            Sign In
+          </Link>
           <Link href="/signup" className="inline-flex items-center rounded-full px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(108,99,255,0.5)]" style={{ backgroundImage: `linear-gradient(90deg, ${PRIMARY}, ${ACCENT})` }}>
             Start for Free
           </Link>
@@ -73,6 +76,9 @@ export default function MarketingNav() {
             ))}
             <div className="flex items-center gap-2">
               <ThemeToggle />
+              <Link href="/login" onClick={() => setIsOpen(false)} className="inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium text-[#111827] dark:text-white border border-black/20 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/10 transition-all">
+                Sign In
+              </Link>
               <Link href="/signup" onClick={() => setIsOpen(false)} className="inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(108,99,255,0.5)]" style={{ backgroundImage: `linear-gradient(90deg, ${PRIMARY}, ${ACCENT})` }}>
                 Start for Free
               </Link>

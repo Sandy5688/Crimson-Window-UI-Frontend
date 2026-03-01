@@ -10,6 +10,8 @@ import DnsIcon from "@mui/icons-material/Dns";
 import PeopleIcon from "@mui/icons-material/People";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
+import SettingsIcon from "@mui/icons-material/Settings";
+import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 import ThemeToggle from "@/components/ThemeToggle";
 import Logo from "@/components/Logo";
 
@@ -44,6 +46,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       items.push({ href: "/uploads", label: "Uploads", Icon: CloudUploadIcon });
       items.push({ href: "/automation", label: "Automation", Icon: SmartToyIcon });
       items.push({ href: "/monetization", label: "Plans", Icon: HomeIcon });
+      items.push({ href: "/status", label: "Status", Icon: MonitorHeartIcon });
+      items.push({ href: "/settings", label: "Settings", Icon: SettingsIcon });
     }
     return items;
   }, [role]);
@@ -57,12 +61,20 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-[#F5F5F5] dark:bg-[#0f172a] text-[#171717] dark:text-[#f1f5f9] transition-colors duration-300">
       <header className="sticky top-0 z-10 bg-white/80 dark:bg-gray-900/80 backdrop-blur border-b border-black/10 dark:border-white/10">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Logo href="/" width={160} height={45} priority />
+          {/* CR-5 fix: use full page reload so the homepage's logged-in redirect is bypassed.
+              Using a button instead of <a> to avoid nesting <a> inside Logo's own <Link> */}
+          <button
+            onClick={() => { window.location.href = "/"; }}
+            aria-label="Flowpload - Home"
+            className="focus:outline-none"
+          >
+            <Logo href={undefined} width={160} height={45} priority />
+          </button>
           <div className="flex items-center gap-3">
             <ThemeToggle />
             {authed && (
-              <button 
-                onClick={signOut} 
+              <button
+                onClick={signOut}
                 className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg bg-[#2D89FF] text-white hover:brightness-110 transition-all duration-200 shadow-md hover:shadow-lg"
               >
                 <LogoutIcon fontSize="small" /> Sign out
@@ -85,14 +97,13 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               nav.map(({ href, label, Icon }) => {
                 const active = pathname?.startsWith(href);
                 return (
-                  <Link 
-                    key={href} 
-                    href={href} 
-                    className={`flex items-center gap-3 px-4 py-3.5 text-sm font-medium transition-all duration-200 ${
-                      active 
-                        ? "bg-[#E8F2FF] dark:bg-[#2D89FF]/20 text-[#2D89FF] border-l-4 border-[#2D89FF]" 
-                        : "hover:bg-black/5 dark:hover:bg-white/5 dark:text-white/80 border-l-4 border-transparent"
-                    }`}
+                  <Link
+                    key={href}
+                    href={href}
+                    className={`flex items-center gap-3 px-4 py-3.5 text-sm font-medium transition-all duration-200 ${active
+                      ? "bg-[#E8F2FF] dark:bg-[#2D89FF]/20 text-[#2D89FF] border-l-4 border-[#2D89FF]"
+                      : "hover:bg-black/5 dark:hover:bg-white/5 dark:text-white/80 border-l-4 border-transparent"
+                      }`}
                   >
                     <Icon fontSize="small" />
                     <span>{label}</span>

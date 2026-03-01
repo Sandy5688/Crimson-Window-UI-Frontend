@@ -91,7 +91,8 @@ export function getUserName(): string | null {
   const saved = localStorage.getItem('gateway_user_name');
   if (saved && saved.trim()) return saved.trim();
   const claims = parseJwt();
-  return (claims?.name || null);
+  // A3 fix: fall back to email so we never show placeholder "User"
+  return (claims?.name || claims?.email || null);
 }
 
 // export function getUserDisplayName(): string {

@@ -23,87 +23,87 @@ import {
 
 // Platform icons/colors
 const platformConfig: Record<string, { color: string; icon: string; label: string }> = {
-  twitter:   { color: "#1DA1F2", icon: "𝕏",  label: "Twitter / X" },
+  twitter: { color: "#1DA1F2", icon: "𝕏", label: "Twitter / X" },
   instagram: { color: "#E4405F", icon: "📸", label: "Instagram" },
-  facebook:  { color: "#1877F2", icon: "📘", label: "Facebook" },
-  linkedin:  { color: "#0A66C2", icon: "💼", label: "LinkedIn" },
-  tiktok:    { color: "#000000", icon: "🎵", label: "TikTok" },
+  facebook: { color: "#1877F2", icon: "📘", label: "Facebook" },
+  linkedin: { color: "#0A66C2", icon: "💼", label: "LinkedIn" },
+  tiktok: { color: "#000000", icon: "🎵", label: "TikTok" },
   pinterest: { color: "#E60023", icon: "📌", label: "Pinterest" },
-  reddit:    { color: "#FF4500", icon: "🔴", label: "Reddit" },
-  telegram:  { color: "#0088CC", icon: "✈️", label: "Telegram" },
-  discord:   { color: "#5865F2", icon: "🎮", label: "Discord" },
-  quora:     { color: "#B92B27", icon: "❓", label: "Quora" },
-  snapchat:  { color: "#FFFC00", icon: "👻", label: "Snapchat" },
-  gmb:       { color: "#4285F4", icon: "📍", label: "Google My Business" },
+  reddit: { color: "#FF4500", icon: "🔴", label: "Reddit" },
+  telegram: { color: "#0088CC", icon: "✈️", label: "Telegram" },
+  discord: { color: "#5865F2", icon: "🎮", label: "Discord" },
+  quora: { color: "#B92B27", icon: "❓", label: "Quora" },
+  snapchat: { color: "#FFFC00", icon: "👻", label: "Snapchat" },
+  gmb: { color: "#4285F4", icon: "📍", label: "Google My Business" },
 };
 
 // Credential fields per platform
 const platformFields: Record<string, { key: string; label: string; type: string; placeholder: string }[]> = {
-  twitter:   [
-    { key: "apiKey",            label: "API Key (Consumer Key)",    type: "password", placeholder: "Enter Twitter API Key" },
-    { key: "apiSecret",         label: "API Secret",                type: "password", placeholder: "Enter Twitter API Secret" },
-    { key: "accessToken",       label: "Access Token",              type: "password", placeholder: "Enter Access Token" },
-    { key: "accessTokenSecret", label: "Access Token Secret",       type: "password", placeholder: "Enter Access Token Secret" },
+  twitter: [
+    { key: "apiKey", label: "API Key (Consumer Key)", type: "password", placeholder: "Enter Twitter API Key" },
+    { key: "apiSecret", label: "API Secret", type: "password", placeholder: "Enter Twitter API Secret" },
+    { key: "accessToken", label: "Access Token", type: "password", placeholder: "Enter Access Token" },
+    { key: "accessTokenSecret", label: "Access Token Secret", type: "password", placeholder: "Enter Access Token Secret" },
   ],
   instagram: [
-    { key: "username", label: "Username / Email", type: "text",     placeholder: "your@email.com" },
-    { key: "password", label: "Password",         type: "password", placeholder: "Enter password" },
-  ],
-  facebook:  [
-    { key: "email",       label: "Email",        type: "text",     placeholder: "your@email.com" },
-    { key: "password",    label: "Password",     type: "password", placeholder: "Enter password" },
-    { key: "pageId",      label: "Page ID",      type: "text",     placeholder: "Facebook Page ID (optional)" },
-  ],
-  linkedin:  [
-    { key: "email",    label: "Email",    type: "text",     placeholder: "your@email.com" },
+    { key: "username", label: "Username / Email", type: "text", placeholder: "your@email.com" },
     { key: "password", label: "Password", type: "password", placeholder: "Enter password" },
   ],
-  tiktok:    [
-    { key: "username", label: "Username", type: "text",     placeholder: "@yourhandle" },
+  facebook: [
+    { key: "email", label: "Email", type: "text", placeholder: "your@email.com" },
+    { key: "password", label: "Password", type: "password", placeholder: "Enter password" },
+    { key: "pageId", label: "Page ID", type: "text", placeholder: "Facebook Page ID (optional)" },
+  ],
+  linkedin: [
+    { key: "email", label: "Email", type: "text", placeholder: "your@email.com" },
+    { key: "password", label: "Password", type: "password", placeholder: "Enter password" },
+  ],
+  tiktok: [
+    { key: "username", label: "Username", type: "text", placeholder: "@yourhandle" },
     { key: "password", label: "Password", type: "password", placeholder: "Enter password" },
   ],
   pinterest: [
-    { key: "email",    label: "Email",    type: "text",     placeholder: "your@email.com" },
+    { key: "email", label: "Email", type: "text", placeholder: "your@email.com" },
     { key: "password", label: "Password", type: "password", placeholder: "Enter password" },
   ],
-  reddit:    [
-    { key: "username",     label: "Username",      type: "text",     placeholder: "u/yourname" },
-    { key: "password",     label: "Password",      type: "password", placeholder: "Enter password" },
-    { key: "clientId",     label: "Client ID",     type: "text",     placeholder: "Reddit App Client ID" },
+  reddit: [
+    { key: "username", label: "Username", type: "text", placeholder: "u/yourname" },
+    { key: "password", label: "Password", type: "password", placeholder: "Enter password" },
+    { key: "clientId", label: "Client ID", type: "text", placeholder: "Reddit App Client ID" },
     { key: "clientSecret", label: "Client Secret", type: "password", placeholder: "Reddit App Client Secret" },
   ],
-  telegram:  [
-    { key: "botToken", label: "Bot Token",  type: "password", placeholder: "Telegram bot token from @BotFather" },
-    { key: "chatId",   label: "Chat ID",    type: "text",     placeholder: "Channel or group chat ID" },
+  telegram: [
+    { key: "botToken", label: "Bot Token", type: "password", placeholder: "Telegram bot token from @BotFather" },
+    { key: "chatId", label: "Chat ID", type: "text", placeholder: "Channel or group chat ID" },
   ],
-  discord:   [
-    { key: "botToken",   label: "Bot Token",    type: "password", placeholder: "Discord bot token" },
-    { key: "channelId",  label: "Channel ID",   type: "text",     placeholder: "Discord channel ID" },
+  discord: [
+    { key: "botToken", label: "Bot Token", type: "password", placeholder: "Discord bot token" },
+    { key: "channelId", label: "Channel ID", type: "text", placeholder: "Discord channel ID" },
   ],
-  quora:     [
-    { key: "email",    label: "Email",    type: "text",     placeholder: "your@email.com" },
+  quora: [
+    { key: "email", label: "Email", type: "text", placeholder: "your@email.com" },
     { key: "password", label: "Password", type: "password", placeholder: "Enter password" },
   ],
-  snapchat:  [
-    { key: "username", label: "Username", type: "text",     placeholder: "@yourhandle" },
+  snapchat: [
+    { key: "username", label: "Username", type: "text", placeholder: "@yourhandle" },
     { key: "password", label: "Password", type: "password", placeholder: "Enter password" },
   ],
-  gmb:       [
-    { key: "email",      label: "Google Email",  type: "text",     placeholder: "your@gmail.com" },
-    { key: "locationId", label: "Location ID",   type: "text",     placeholder: "Google Business Location ID" },
+  gmb: [
+    { key: "email", label: "Google Email", type: "text", placeholder: "your@gmail.com" },
+    { key: "locationId", label: "Location ID", type: "text", placeholder: "Google Business Location ID" },
   ],
 };
 
 const statusColors: Record<string, string> = {
-  running:   "bg-green-500",
-  paused:    "bg-yellow-500",
-  stopped:   "bg-gray-500",
-  error:     "bg-red-500",
-  pending:   "bg-blue-500",
+  running: "bg-green-500",
+  paused: "bg-yellow-500",
+  stopped: "bg-gray-500",
+  error: "bg-red-500",
+  pending: "bg-blue-500",
   published: "bg-green-500",
-  failed:    "bg-red-500",
-  success:   "bg-green-500",
-  info:      "bg-blue-500",
+  failed: "bg-red-500",
+  success: "bg-green-500",
+  info: "bg-blue-500",
 };
 
 type SocialAccounts = Record<string, Record<string, string>>;
@@ -120,6 +120,7 @@ export default function AutomationPage() {
   const [connectModal, setConnectModal] = useState<{ platform: string } | null>(null);
   const [formValues, setFormValues] = useState<Record<string, string>>({});
   const [savingAccount, setSavingAccount] = useState(false);
+  const [accountError, setAccountError] = useState<string | null>(null);
 
   // Fetch data with SWR
   const { data: stats, isLoading: statsLoading, mutate: mutateStats } = useSWR<AutomationStats>(
@@ -217,23 +218,59 @@ export default function AutomationPage() {
   function openConnectModal(platform: string) {
     const existing = socialAccounts[platform] || {};
     setFormValues(existing);
+    setAccountError(null);
     setConnectModal({ platform });
+  }
+
+  // CR-3: Validate social account credentials before saving
+  function validateAccountFields(platform: string, values: Record<string, string>): string | null {
+    const fields = platformFields[platform] || [];
+    for (const field of fields) {
+      const val = (values[field.key] || "").trim();
+      // Skip optional fields (pageId, locationId etc.)
+      if (field.placeholder?.includes("optional")) continue;
+      if (!val) return `${field.label} is required.`;
+      // Email format check
+      if (field.type === "text" && field.label.toLowerCase().includes("email") && !field.label.toLowerCase().includes("username")) {
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val)) return `${field.label} must be a valid email address.`;
+      }
+      // Minimum password length
+      if (field.type === "password" && field.key === "password" && val.length < 6) {
+        return "Password must be at least 6 characters.";
+      }
+    }
+    return null;
   }
 
   async function handleSaveAccount() {
     if (!connectModal) return;
+    // CR-3: Validate before attempting to save
+    const validationMsg = validateAccountFields(connectModal.platform, formValues);
+    if (validationMsg) {
+      setAccountError(validationMsg);
+      return;
+    }
+    setAccountError(null);
     setSavingAccount(true);
     try {
       const updated: SocialAccounts = {
         ...socialAccounts,
         [connectModal.platform]: formValues,
       };
-      await saveSettings({ socialAccounts: updated });
+      // CR-3: Add timeout so we don't hang forever if automation service is unreachable
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error("timeout")), 8000)
+      );
+      await Promise.race([saveSettings({ socialAccounts: updated }), timeoutPromise]);
       setSocialAccounts(updated);
       setConnectModal(null);
       showNotification("success", `${platformConfig[connectModal.platform]?.label} account saved!`);
-    } catch {
-      showNotification("error", "Failed to save account. Check automation service.");
+    } catch (err: any) {
+      if (err?.message === "timeout") {
+        setAccountError("Automation service is unreachable. Please check the service is running and try again.");
+      } else {
+        setAccountError("Failed to save account. Please try again.");
+      }
     } finally {
       setSavingAccount(false);
     }
@@ -259,9 +296,8 @@ export default function AutomationPage() {
       {/* Notification Toast */}
       {notification && (
         <div
-          className={`fixed top-20 right-4 z-50 px-4 py-3 rounded-lg shadow-lg text-white ${
-            notification.type === "success" ? "bg-green-500" : "bg-red-500"
-          }`}
+          className={`fixed top-20 right-4 z-50 px-4 py-3 rounded-lg shadow-lg text-white ${notification.type === "success" ? "bg-green-500" : "bg-red-500"
+            }`}
         >
           {notification.message}
         </div>
@@ -282,13 +318,12 @@ export default function AutomationPage() {
             </p>
           </div>
           <span
-            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium self-start sm:self-auto ${
-              isHealthy === null
-                ? "bg-gray-500/30 text-white"
-                : isHealthy
+            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium self-start sm:self-auto ${isHealthy === null
+              ? "bg-gray-500/30 text-white"
+              : isHealthy
                 ? "bg-green-500/30 text-green-100"
                 : "bg-red-500/30 text-red-100"
-            }`}
+              }`}
           >
             <span className={`w-2 h-2 rounded-full ${isHealthy === null ? "bg-gray-400" : isHealthy ? "bg-green-400" : "bg-red-400"}`} />
             {isHealthy === null ? "Checking..." : isHealthy ? "Service Online" : "Service Offline"}
@@ -300,21 +335,19 @@ export default function AutomationPage() {
       <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 rounded-xl p-1 w-fit">
         <button
           onClick={() => setActiveTab("dashboard")}
-          className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
-            activeTab === "dashboard"
-              ? "bg-white dark:bg-gray-700 shadow text-gray-900 dark:text-white"
-              : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
-          }`}
+          className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === "dashboard"
+            ? "bg-white dark:bg-gray-700 shadow text-gray-900 dark:text-white"
+            : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+            }`}
         >
           📊 Dashboard
         </button>
         <button
           onClick={() => setActiveTab("social-accounts")}
-          className={`px-5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
-            activeTab === "social-accounts"
-              ? "bg-white dark:bg-gray-700 shadow text-gray-900 dark:text-white"
-              : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
-          }`}
+          className={`px-5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeTab === "social-accounts"
+            ? "bg-white dark:bg-gray-700 shadow text-gray-900 dark:text-white"
+            : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+            }`}
         >
           🔗 Social Accounts
           {Object.keys(socialAccounts).length > 0 && (
@@ -425,14 +458,21 @@ export default function AutomationPage() {
               {statsLoading ? (
                 [...Array(6)].map((_, i) => <Skeleton key={i} className="h-24" />)
               ) : stats ? (
-                <>
-                  <StatCard label="Total Posts"  value={stats.totalPosts || 0}       color="#8B5CF6" />
-                  <StatCard label="Posts Today"  value={stats.postsToday || 0}       color="#EC4899" />
-                  <StatCard label="This Week"    value={stats.postsThisWeek || 0}    color="#06B6D4" />
-                  <StatCard label="Engagements" value={stats.totalEngagements || 0} color="#F59E0B" />
-                  <StatCard label="Active Bots"  value={stats.activeBots || 0}       color="#10B981" />
-                  <StatCard label="Paused Bots"  value={stats.pausedBots || 0}       color="#6B7280" />
-                </>
+                (() => {
+                  // B3: Derive activeBots/pausedBots from actual bots array (overrides stale API stats)
+                  const realActive = bots ? bots.filter(b => b.status === "running").length : (stats.activeBots || 0);
+                  const realPaused = bots ? bots.filter(b => b.status === "paused").length : (stats.pausedBots || 0);
+                  return (
+                    <>
+                      <StatCard label="Total Posts" value={stats.totalPosts || 0} color="#8B5CF6" />
+                      <StatCard label="Posts Today" value={stats.postsToday || 0} color="#EC4899" />
+                      <StatCard label="This Week" value={stats.postsThisWeek || 0} color="#06B6D4" />
+                      <StatCard label="Engagements" value={stats.totalEngagements || 0} color="#F59E0B" />
+                      <StatCard label="Active Bots" value={realActive} color="#10B981" />
+                      <StatCard label="Paused Bots" value={realPaused} color="#6B7280" />
+                    </>
+                  );
+                })()
               ) : (
                 <div className="col-span-full text-center text-gray-500 dark:text-gray-400 py-8">
                   Unable to load stats. Make sure the automation service is running.
@@ -571,8 +611,8 @@ export default function AutomationPage() {
             {/* Fields */}
             <div className="space-y-3 mb-5">
               {(platformFields[connectModal.platform] || [
-                { key: "username", label: "Username / Email", type: "text",     placeholder: "Enter username or email" },
-                { key: "password", label: "Password",         type: "password", placeholder: "Enter password" },
+                { key: "username", label: "Username / Email", type: "text", placeholder: "Enter username or email" },
+                { key: "password", label: "Password", type: "password", placeholder: "Enter password" },
               ]).map((field) => (
                 <div key={field.key}>
                   <label className="block text-sm font-medium mb-1 dark:text-white/80">
@@ -591,15 +631,17 @@ export default function AutomationPage() {
               ))}
             </div>
 
-            {/* Security note */}
-            <p className="text-xs text-gray-400 dark:text-gray-500 mb-5">
-              🔒 Credentials are encrypted and stored securely. Only used for automated posting.
-            </p>
+            {/* CR-3: Inline validation / service error */}
+            {accountError && (
+              <p className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 rounded-lg px-3 py-2 mb-3 border border-red-200 dark:border-red-700">
+                ⚠️ {accountError}
+              </p>
+            )}
 
             {/* Buttons */}
             <div className="flex gap-3">
               <button
-                onClick={() => setConnectModal(null)}
+                onClick={() => { setConnectModal(null); setAccountError(null); }}
                 className="flex-1 rounded-lg border border-black/20 dark:border-white/20 px-4 py-2 text-sm hover:bg-black/5 dark:hover:bg-white/10 dark:text-white"
               >
                 Cancel
@@ -610,7 +652,7 @@ export default function AutomationPage() {
                 className="flex-1 rounded-lg px-4 py-2 text-sm font-bold text-white hover:brightness-95 disabled:opacity-50"
                 style={{ backgroundColor: "#8B5CF6" }}
               >
-                {savingAccount ? "Saving..." : "Save Account"}
+                {savingAccount ? "Saving…" : "Save Account"}
               </button>
             </div>
           </div>

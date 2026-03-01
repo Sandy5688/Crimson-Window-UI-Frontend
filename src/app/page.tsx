@@ -11,8 +11,6 @@ import MarketingFooter from "@/components/layout/MarketingFooter";
 import { getToken } from "@/lib/auth";
 
 // MUI Icons
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
 import LanguageIcon from "@mui/icons-material/Language";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
@@ -104,69 +102,9 @@ function AnimatedCounter({ end, duration = 2000, suffix = "" }: { end: number; d
   return <span ref={countRef}>{count.toLocaleString()}{suffix}</span>;
 }
 
-function Header() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
 
-  useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 6);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+// A5: Removed dead Header() function — page renders <MarketingNav /> directly
 
-  const links = [
-    { href: "/#home", label: "Home" },
-    { href: "/features", label: "Features" },
-    { href: "/how-it-works", label: "How It Works" },
-    { href: "/pricing", label: "Pricing" },
-    { href: "/blog", label: "Blog" },
-    { href: "/contact", label: "Contact" },
-  ];
-
-  return (
-    <header className={`sticky top-0 z-50 transition-shadow bg-white/90 dark:bg-gray-900/80 backdrop-blur ${isScrolled ? "shadow-sm" : "shadow-none"}`}>
-      <div className="container flex items-center justify-between h-16">
-        <Link href="#home" className="font-semibold text-lg tracking-tight text-[#111827] dark:text-white" aria-label="Flowpload - Home">
-          Flowpload
-        </Link>
-        <nav className="hidden md:flex items-center gap-8" aria-label="Main">
-          {links.map((l) => (
-            <a key={l.href} href={l.href} className="text-sm text-[#111827]/80 dark:text-white/80 hover:text-[#111827] dark:hover:text-white transition-colors">
-              {l.label}
-            </a>
-          ))}
-        </nav>
-        <div className="hidden md:flex items-center gap-2">
-          <ThemeToggle />
-          <Link href="/signup" className="inline-flex items-center rounded-full px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(108,99,255,0.5)]" style={{ backgroundImage: `linear-gradient(90deg, ${PRIMARY}, ${ACCENT})` }}>
-            Start for Free
-          </Link>
-        </div>
-        <button className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-md hover:bg-black/5 dark:hover:bg-white/10" aria-label="Toggle menu" onClick={() => setIsOpen((v) => !v)}>
-          {isOpen ? <CloseIcon /> : <MenuIcon />}
-        </button>
-      </div>
-      {isOpen && (
-        <div className="md:hidden border-t border-black/10 dark:border-white/10 bg-white dark:bg-gray-900" data-aos="fade-down">
-          <div className="container py-4 flex flex-col gap-4">
-            {links.map((l) => (
-              <a key={l.href} href={l.href} className="text-[#111827] dark:text-white" onClick={() => setIsOpen(false)}>
-                {l.label}
-              </a>
-            ))}
-            <div className="flex items-center gap-2">
-              <ThemeToggle />
-              <Link href="/signup" onClick={() => setIsOpen(false)} className="inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium text-white shadow-sm transition-all" style={{ backgroundImage: `linear-gradient(90deg, ${PRIMARY}, ${ACCENT})` }}>
-                Start for Free
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
-    </header>
-  );
-}
 
 function Hero() {
   // No mouse-parallax necessary if everything is "set"
@@ -279,11 +217,11 @@ function Problem() {
   return (
     <section className="bg-white dark:bg-gray-900 relative overflow-hidden" data-aos="fade-up">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5" style={{ 
+      <div className="absolute inset-0 opacity-5" style={{
         backgroundImage: `radial-gradient(circle, ${PRIMARY} 1px, transparent 1px)`,
         backgroundSize: '30px 30px'
       }} />
-      
+
       <div className="container py-16 grid lg:grid-cols-2 gap-10 items-center my-16 md:my-48 relative z-10">
         <div data-aos="fade-right">
           <div className="inline-flex items-center gap-2 rounded-full border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-900/20 px-4 py-2 text-xs text-purple-700 dark:text-purple-300 mb-6">
@@ -323,7 +261,7 @@ function Testimonials() {
     {
       name: "Sarah Chen",
       role: "Gaming YouTuber",
-      avatar: "https://i.pravatar.cc/150?img=1",
+      avatarColor: "#7C3AED",
       content: "Flowpload helped me reach 2M+ viewers across 15 countries. My content now feels native everywhere!",
       stats: "2M+ views",
       verified: true,
@@ -331,7 +269,7 @@ function Testimonials() {
     {
       name: "Marcus Johnson",
       role: "Music Producer",
-      avatar: "https://i.pravatar.cc/150?img=12",
+      avatarColor: "#DB2777",
       content: "I used to spend 10 hours a week on uploads. Now it's done in minutes. Game changer for independent artists.",
       stats: "10hrs → 10mins",
       verified: true,
@@ -339,7 +277,7 @@ function Testimonials() {
     {
       name: "Aisha Patel",
       role: "Tech Reviewer",
-      avatar: "https://i.pravatar.cc/150?img=5",
+      avatarColor: "#0284C7",
       content: "The AI localization is incredible. My tech reviews now rank in Japan, Brazil, and Germany without extra effort.",
       stats: "3x reach growth",
       verified: true,
@@ -347,12 +285,13 @@ function Testimonials() {
     {
       name: "Carlos Rodriguez",
       role: "Fitness Coach",
-      avatar: "https://i.pravatar.cc/150?img=8",
+      avatarColor: "#16A34A",
       content: "From 50K to 500K subs in 6 months. The automated optimization is like having a global marketing team.",
       stats: "500K subscribers",
       verified: true,
     },
   ];
+
 
   // Auto-slide logic
   useEffect(() => {
@@ -399,19 +338,27 @@ function Testimonials() {
 
               <div className="flex items-center gap-4 mb-6">
                 <div className="relative">
-                  <Image
-                    src={testimonials[activeIndex].avatar}
-                    alt={testimonials[activeIndex].name}
-                    width={64}
-                    height={64}
-                    className="rounded-full border-2 border-purple-500"
-                  />
+                  {/* A6: Self-hosted initials avatar — no external image dependency */}
+                  <svg width="64" height="64" viewBox="0 0 64 64" className="rounded-full border-2 border-purple-500">
+                    <circle cx="32" cy="32" r="32" fill={testimonials[activeIndex].avatarColor} />
+                    <text
+                      x="32" y="38"
+                      textAnchor="middle"
+                      fontSize="22"
+                      fontWeight="bold"
+                      fontFamily="Montserrat, sans-serif"
+                      fill="white"
+                    >
+                      {testimonials[activeIndex].name.split(" ").map((n: string) => n[0]).join("")}
+                    </text>
+                  </svg>
                   {testimonials[activeIndex].verified && (
                     <div className="absolute -bottom-1 -right-1 bg-purple-500 rounded-full p-1">
                       <VerifiedIcon className="text-white text-sm" />
                     </div>
                   )}
                 </div>
+
                 <div>
                   <h4 className="text-xl font-bold text-[#111827] dark:text-white">
                     {testimonials[activeIndex].name}
@@ -455,11 +402,10 @@ function Testimonials() {
                 <button
                   key={index}
                   onClick={() => setActiveIndex(index)}
-                  className={`h-2 rounded-full transition-all ${
-                    index === activeIndex
-                      ? "w-8 bg-gradient-to-r from-purple-500 to-pink-500"
-                      : "w-2 bg-gray-300 dark:bg-gray-600"
-                  }`}
+                  className={`h-2 rounded-full transition-all ${index === activeIndex
+                    ? "w-8 bg-gradient-to-r from-purple-500 to-pink-500"
+                    : "w-2 bg-gray-300 dark:bg-gray-600"
+                    }`}
                   aria-label={`Go to testimonial ${index + 1}`}
                 />
               ))}
@@ -480,25 +426,25 @@ function Testimonials() {
 }
 
 function HowItWorks() {
-  // ITEM 8 FIX: Replaced static text cards with AI Explainer Video
-  // Video ID can be easily swapped by changing the 'videoId' variable below
-  const videoId = "dQw4w9WgXcQ"; // Replace with your actual explainer video ID
-  const videoTitle = "How Flowpload Works - AI-Powered Content Distribution";
+  // CR-6: Explainer video section
+  // TODO: Replace with real YouTube video ID once available
+  // const videoId = "YOUR_VIDEO_ID_HERE";
+  // const videoTitle = "How Flowpload Works - AI-Powered Content Distribution";
 
   return (
     <section id="how-it-works" className="bg-[#F9FAFB] dark:bg-gray-950 relative overflow-hidden">
       {/* Decorative background elements */}
-      <div className="absolute inset-0 opacity-5" style={{ 
+      <div className="absolute inset-0 opacity-5" style={{
         backgroundImage: `radial-gradient(circle, ${PRIMARY} 1px, transparent 1px)`,
         backgroundSize: '30px 30px'
       }} />
-      
+
       <div className="container py-20 my-16 md:my-48 relative z-10">
         {/* Section Header */}
         <div className="text-center mb-12" data-aos="fade-up">
           <div className="inline-flex items-center gap-2 rounded-full border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-900/20 px-4 py-2 text-xs text-purple-700 dark:text-purple-300 mb-6">
             <PlayCircleOutlineIcon className="w-4 h-4" />
-            Watch How It Works
+            See It In Action
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#111827] dark:text-white">
             See Flowpload in{" "}
@@ -507,48 +453,34 @@ function HowItWorks() {
             </span>
           </h2>
           <p className="mt-4 text-lg text-[#111827]/70 dark:text-white/70 max-w-2xl mx-auto">
-            Watch our AI-powered explainer video to see how Flowpload transforms your content from upload to global distribution in minutes.
+            Watch how Flowpload transforms your content from a single upload to global distribution across 10+ platforms in minutes.
           </p>
         </div>
 
-        {/* Video Container */}
+        {/* CR-6: Branded placeholder until real video ID is set */}
         <div className="max-w-5xl mx-auto" data-aos="zoom-in" data-aos-delay="100">
           <div className="relative">
-            {/* Decorative gradient blur */}
             <div className="absolute -inset-4 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-purple-500/20 rounded-3xl blur-2xl" />
-            
-            {/* Video embed wrapper */}
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-purple-200/50 dark:border-purple-500/30 bg-black">
-              {/* Aspect ratio container for responsive video */}
-              <div className="relative w-full" style={{ paddingBottom: "56.25%" /* 16:9 aspect ratio */ }}>
-                <iframe
-                  src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&showinfo=0`}
-                  title={videoTitle}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                  className="absolute inset-0 w-full h-full"
-                  loading="lazy"
-                />
-              </div>
-              
-              {/* Fallback message if iframe fails to load */}
-              <noscript>
-                <div className="absolute inset-0 flex items-center justify-center bg-gray-900 text-white">
-                  <div className="text-center p-8">
-                    <PlayCircleOutlineIcon className="w-16 h-16 mb-4 mx-auto text-purple-400" />
-                    <p className="text-lg font-semibold">Enable JavaScript to watch this video</p>
-                    <p className="text-sm text-gray-400 mt-2">Or visit our YouTube channel directly</p>
-                  </div>
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-purple-200/50 dark:border-purple-500/30">
+              <div
+                className="w-full flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-purple-950 to-gray-900 text-white"
+                style={{ minHeight: "420px" }}
+              >
+                <div className="w-24 h-24 rounded-full bg-white/10 flex items-center justify-center mb-6 border-4 border-purple-400/30" style={{ backdropFilter: "blur(8px)" }}>
+                  <PlayCircleOutlineIcon style={{ fontSize: 56, color: "#a78bfa" }} />
                 </div>
-              </noscript>
-            </div>
-
-            {/* Floating badges */}
-            <div className="absolute -top-4 -right-4 bg-white dark:bg-gray-800 rounded-full p-3 shadow-xl border-2 border-purple-500 animate-bounce hidden md:block" style={{ animationDuration: "3s" }}>
-              <PlayCircleOutlineIcon className="text-purple-500 w-6 h-6" />
-            </div>
-            <div className="absolute -bottom-4 -left-4 bg-white dark:bg-gray-800 rounded-full p-3 shadow-xl border-2 border-pink-500 animate-bounce hidden md:block" style={{ animationDuration: "3s", animationDelay: "1s" }}>
-              <AutoGraphIcon className="text-pink-500 w-6 h-6" />
+                <h3 className="text-2xl font-bold mb-2" style={{ fontFamily: "Montserrat, sans-serif" }}>Explainer Video Coming Soon</h3>
+                <p className="text-white/60 text-sm max-w-sm text-center px-4">
+                  A full walkthrough of the Flowpload platform is being filmed. Sign up to get notified when it's live.
+                </p>
+                <Link
+                  href="/signup"
+                  className="mt-8 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition-all hover:scale-105"
+                  style={{ backgroundImage: `linear-gradient(90deg, ${PRIMARY}, ${ACCENT})` }}
+                >
+                  Get Early Access
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -561,7 +493,7 @@ function HowItWorks() {
             { icon: PublicIcon, text: "Global Reach" },
             { icon: AutoGraphIcon, text: "Auto Analytics" },
           ].map(({ icon: Icon, text }, idx) => (
-            <div 
+            <div
               key={text}
               className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white dark:bg-gray-800 border border-black/10 dark:border-white/10 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1"
               data-aos="fade-up"
@@ -598,7 +530,7 @@ function HowItWorks() {
 // Bento Grid Features Section
 function Features() {
   const [hoveredFeature, setHoveredFeature] = useState<string | null>(null);
-  
+
   const features = [
     {
       title: "Smart Localization",
@@ -692,7 +624,7 @@ function Features() {
               >
                 {/* Animated Background Gradient */}
                 <div className={`absolute inset-0 opacity-0 group-hover:opacity-8 transition-opacity duration-300 bg-gradient-to-br ${f.color}`} />
-                
+
                 {/* Top Border Accent */}
                 <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${f.color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left`} />
 
@@ -718,8 +650,8 @@ function Features() {
                   {/* Bullet Points with Animation */}
                   <ul className={`mt-4 space-y-2 transition-all duration-300 ${hoveredFeature === f.title ? 'opacity-100' : 'opacity-100'}`}>
                     {f.bullets.map((b, bulletIdx) => (
-                      <li 
-                        key={b} 
+                      <li
+                        key={b}
                         className="flex items-center gap-2 text-sm text-[#111827] dark:text-white/90 transform transition-all duration-300"
                         style={{
                           transitionDelay: hoveredFeature === f.title ? `${bulletIdx * 50}ms` : '0ms'
@@ -791,7 +723,7 @@ function PlatformCarousel() {
             <span className="text-xl">🚀</span>
             <span>Global Distribution Network</span>
           </div>
-          
+
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#111827] dark:text-white mb-6 leading-tight">
             Connect to{" "}
             <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 bg-clip-text text-transparent">
@@ -802,12 +734,12 @@ function PlatformCarousel() {
             One upload, unlimited reach across all your favorite streaming platforms
           </p>
         </div>
-        
+
         <div className="relative mb-16">
           {/* Stronger Gradient Fade on sides */}
           <div className="absolute left-0 top-0 bottom-0 w-32 md:w-48 bg-gradient-to-r from-purple-50 dark:from-gray-900 via-purple-50/80 dark:via-gray-900/80 to-transparent z-10" />
           <div className="absolute right-0 top-0 bottom-0 w-32 md:w-48 bg-gradient-to-l from-pink-50 dark:from-gray-900 via-pink-50/80 dark:via-gray-900/80 to-transparent z-10" />
-          
+
           {/* Scrolling Animation - Row 1 */}
           <div className="flex gap-6 md:gap-8 animate-scroll mb-6 md:mb-8">
             {[...platforms, ...platforms].map((platform, index) => (
@@ -819,16 +751,16 @@ function PlatformCarousel() {
                 }}
               >
                 {/* Gradient overlay on hover */}
-                <div 
+                <div
                   className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300"
                   style={{ background: `linear-gradient(135deg, ${platform.color}, transparent)` }}
                 />
-                
+
                 <span className="text-5xl md:text-6xl group-hover:scale-125 transition-transform duration-300">
                   {platform.icon}
                 </span>
-                <span 
-                  className="text-2xl md:text-3xl font-extrabold group-hover:scale-110 transition-transform duration-300 relative z-10" 
+                <span
+                  className="text-2xl md:text-3xl font-extrabold group-hover:scale-110 transition-transform duration-300 relative z-10"
                   style={{ color: platform.color }}
                 >
                   {platform.name}
@@ -848,16 +780,16 @@ function PlatformCarousel() {
                 }}
               >
                 {/* Gradient overlay on hover */}
-                <div 
+                <div
                   className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300"
                   style={{ background: `linear-gradient(135deg, ${platform.color}, transparent)` }}
                 />
-                
+
                 <span className="text-5xl md:text-6xl group-hover:scale-125 transition-transform duration-300">
                   {platform.icon}
                 </span>
-                <span 
-                  className="text-2xl md:text-3xl font-extrabold group-hover:scale-110 transition-transform duration-300 relative z-10" 
+                <span
+                  className="text-2xl md:text-3xl font-extrabold group-hover:scale-110 transition-transform duration-300 relative z-10"
                   style={{ color: platform.color }}
                 >
                   {platform.name}
@@ -895,7 +827,7 @@ function PlatformCarousel() {
           </div>
         </div>
       </div>
-      
+
       <style jsx>{`
         @keyframes scroll {
           0% { transform: translateX(0); }
@@ -993,7 +925,7 @@ function LiveActivity() {
             <div
               key={`${activity.user}-${activity.content}-${index}`}
               className="flex items-center gap-4 p-4 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-purple-200/50 dark:border-purple-500/30 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-x-2 animate-slideInFromRight"
-              style={{ 
+              style={{
                 animation: index === 0 ? 'slideInFromRight 0.5s ease-out' : 'none',
                 opacity: index === 4 ? 0.5 : 1,
               }}
@@ -1062,7 +994,7 @@ function WhyChooseUs() {
       {/* Animated background circles with gradient shift */}
       <div className="absolute top-0 left-[20%] w-64 h-64 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-0 right-[20%] w-64 h-64 bg-pink-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-      
+
       <div className="container py-20 my-16 md:my-48 relative z-10">
         <h2 className="text-3xl sm:text-5xl font-bold text-[#111827] dark:text-white text-center max-w-3xl mx-auto mb-4">
           Because our software doesn't just distribute — it{" "}
@@ -1070,7 +1002,7 @@ function WhyChooseUs() {
         </h2>
         <div className="grid gap-6 sm:grid-cols-2 max-w-3xl mx-auto mt-12">
           {bullets.map(({ text, icon: Icon, detail }, i) => (
-            <div 
+            <div
               key={text}
               onMouseEnter={() => setHoveredIndex(i)}
               onMouseLeave={() => setHoveredIndex(null)}
@@ -1098,7 +1030,7 @@ function WhyChooseUs() {
                 <span className="text-lg font-semibold text-[#111827] dark:text-white/90 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300 block">
                   {text}
                 </span>
-                
+
                 {/* Expandable detail section */}
                 <div className={`overflow-hidden transition-all duration-300 ${hoveredIndex === i ? 'max-h-20 opacity-100 mt-3' : 'max-h-0 opacity-0'}`}>
                   <p className="text-sm text-[#111827]/70 dark:text-white/70 leading-relaxed">
@@ -1133,10 +1065,10 @@ function UseCases() {
   ];
   return (
     <section className="bg-[#F9FAFB] dark:bg-gray-950 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-5" style={{ 
+      <div className="absolute inset-0 opacity-5" style={{
         backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236C63FF' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
       }} />
-      
+
       <div className="container py-20 my-16 md:my-48 relative z-10">
         <div className="text-center mb-16" data-aos="fade-up">
           <h2 className="text-3xl sm:text-5xl font-bold text-[#111827] dark:text-white mb-4">
@@ -1146,10 +1078,10 @@ function UseCases() {
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
           {cases.map(({ Icon, title, desc, color, bg, border }, i) => (
-            <div 
-              key={title} 
-              className={`group relative overflow-hidden rounded-3xl border-2 ${border} bg-gradient-to-br ${bg} p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2`} 
-              data-aos="zoom-in" 
+            <div
+              key={title}
+              className={`group relative overflow-hidden rounded-3xl border-2 ${border} bg-gradient-to-br ${bg} p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2`}
+              data-aos="zoom-in"
               data-aos-delay={i * 80}
             >
               <div className={`absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br ${color} rounded-full opacity-20 blur-2xl group-hover:opacity-30 transition-opacity`} />
@@ -1204,7 +1136,7 @@ function Pricing() {
       {/* Animated Background Elements */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-      
+
       <div className="container py-20 my-16 md:my-48 relative z-10">
         <div className="text-center mb-16" data-aos="fade-up">
           <h2 className="text-3xl sm:text-5xl font-bold text-[#111827] dark:text-white mb-4">
@@ -1214,9 +1146,9 @@ function Pricing() {
         </div>
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
           {tiers.map((t, index) => (
-            <div 
-              key={t.name} 
-              className={`group relative rounded-3xl border-2 ${t.popular ? 'border-purple-500 dark:border-purple-400' : 'border-gray-200 dark:border-gray-700'} bg-white dark:bg-gray-800 p-8 shadow-xl hover:shadow-2xl transition-all duration-300 ${t.popular ? 'scale-105 lg:scale-110' : 'hover:scale-105'}`} 
+            <div
+              key={t.name}
+              className={`group relative rounded-3xl border-2 ${t.popular ? 'border-purple-500 dark:border-purple-400' : 'border-gray-200 dark:border-gray-700'} bg-white dark:bg-gray-800 p-8 shadow-xl hover:shadow-2xl transition-all duration-300 ${t.popular ? 'scale-105 lg:scale-110' : 'hover:scale-105'}`}
               data-aos="zoom-in"
               data-aos-delay={index * 100}
             >
@@ -1226,18 +1158,18 @@ function Pricing() {
                   Most Popular
                 </div>
               )}
-              
+
               {/* Icon Badge */}
               <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl text-3xl mb-4 bg-gradient-to-br ${t.gradient} text-white shadow-lg group-hover:scale-110 transition-transform`}>
                 {t.icon}
               </div>
-              
+
               <h3 className="text-2xl font-bold text-[#111827] dark:text-white mb-2">{t.name}</h3>
               <div className="flex items-end gap-2 mb-6">
                 <span className="text-5xl font-extrabold text-[#111827] dark:text-white">{t.price}</span>
                 <span className="text-lg text-[#111827]/60 dark:text-white/60 pb-2">{t.period}</span>
               </div>
-              
+
               <ul className="space-y-4 mb-8">
                 {t.features.map((f) => (
                   <li key={f} className="flex items-center gap-3 text-base text-[#111827] dark:text-white/90">
@@ -1248,9 +1180,9 @@ function Pricing() {
                   </li>
                 ))}
               </ul>
-              
-              <Link 
-                href="/signup" 
+
+              <Link
+                href="/signup"
                 className={`group/btn inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-4 text-base font-bold text-white shadow-xl transition-all duration-300 hover:scale-105 ${t.popular ? 'bg-gradient-to-r from-purple-500 to-pink-500 hover:shadow-purple-500/50' : `bg-gradient-to-r ${t.gradient}`}`}
               >
                 <span>Get Started</span>
@@ -1259,7 +1191,7 @@ function Pricing() {
             </div>
           ))}
         </div>
-        
+
         {/* Trust Badges */}
         <div className="mt-16 text-center" data-aos="fade-up">
           <p className="text-sm text-[#111827]/70 dark:text-white/70 mb-4">Trusted by creators worldwide</p>
@@ -1288,13 +1220,13 @@ function FinalCTA() {
         <div className="absolute bottom-[10%] right-[5%] w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
         <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
       </div>
-      
+
       {/* Decorative Grid Pattern */}
-      <div className="absolute inset-0 opacity-10" style={{ 
+      <div className="absolute inset-0 opacity-10" style={{
         backgroundImage: `linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)`,
         backgroundSize: '50px 50px'
       }} />
-      
+
       <div className="container py-24 text-center my-16 md:my-36 relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Badge */}
@@ -1302,32 +1234,32 @@ function FinalCTA() {
             <RocketLaunchIcon className="text-sm" />
             <span>Join 15,000+ Creators Today</span>
           </div>
-          
+
           <h2 className="text-4xl sm:text-6xl font-extrabold text-white mb-6 leading-tight" data-aos="fade-up" data-aos-delay="100">
             Go Global in Minutes <br className="hidden sm:block" />— Not Months.
           </h2>
-          
+
           <p className="text-xl text-white/90 mb-10 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="200">
             Start reaching audiences worldwide with intelligent automation. No credit card required.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8" data-aos="zoom-in" data-aos-delay="300">
-            <Link 
-              href="/signup" 
+            <Link
+              href="/signup"
               className="group inline-flex items-center gap-3 rounded-full px-8 py-4 text-lg font-bold text-purple-600 bg-white shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-white/50"
             >
               <span>🌎 Start for Free</span>
               <RocketLaunchIcon className="group-hover:translate-x-1 transition-transform" />
             </Link>
-            <a 
-              href="#how-it-works" 
+            <a
+              href="#how-it-works"
               className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-semibold text-white bg-white/10 border-2 border-white/30 backdrop-blur hover:bg-white/20 transition-all duration-300"
             >
               <PlayCircleOutlineIcon />
               <span>Watch Demo</span>
             </a>
           </div>
-          
+
           <div className="flex items-center justify-center gap-8 text-white/80 text-sm" data-aos="fade-up" data-aos-delay="400">
             <div className="flex items-center gap-2">
               <CheckCircleIcon className="text-white" />
@@ -1342,7 +1274,7 @@ function FinalCTA() {
               <span>Setup in 2 minutes</span>
             </div>
           </div>
-          
+
           {/* Social Proof Stats */}
           <div className="grid grid-cols-3 gap-6 mt-16 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="500">
             <div className="text-center p-6 rounded-2xl bg-white/10 backdrop-blur border border-white/20">
@@ -1404,7 +1336,6 @@ export default function Home() {
       <FinalCTA />
       <MarketingFooter />
       <CookieConsent />
-      <div id="blog" className="sr-only" />
     </div>
   );
 }

@@ -89,7 +89,44 @@ export default function BillingPolicyPage() {
         </div>
       </section>
 
-      
+
+      <section className="container py-8 md:py-12" data-aos="fade-up">
+        <h2 className="text-2xl font-bold mb-6 text-center">Frequently Asked Billing Questions</h2>
+        <div className="grid gap-4 md:grid-cols-2">
+          {[
+            {
+              q: "Is there a free trial?",
+              a: "Yes — Flowpload's Free plan is available indefinitely with no credit card required. Upgrade only when you need more quota or platforms.",
+            },
+            {
+              q: "Are there refunds?",
+              a: "Payments are non-refundable once a billing cycle begins. If you cancel mid-cycle, you retain access until the period ends.",
+            },
+            {
+              q: "Can I upgrade or downgrade my plan?",
+              a: "Yes, at any time from your dashboard. Upgrades are prorated to the current billing period; downgrades take effect at the next renewal.",
+            },
+            {
+              q: "What happens if my payment fails?",
+              a: "Stripe will retry automatically over several days. If payment still fails, your account will revert to the Free plan until payment details are updated.",
+            },
+            {
+              q: "Can I get an invoice with my company name and VAT?",
+              a: "Yes — visit the Stripe customer portal from your dashboard settings to add billing name, address, and tax ID to all invoices.",
+            },
+            {
+              q: "Which currencies are supported?",
+              a: "Stripe supports 135+ currencies. Prices are billed in USD; Stripe converts at the current exchange rate based on your location.",
+            },
+          ].map(({ q, a }) => (
+            <div key={q} className="rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-gray-800 p-5 shadow-sm">
+              <p className="font-semibold text-sm mb-1">{q}</p>
+              <p className="text-sm text-black/70 dark:text-white/70">{a}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
 
       <section className="container py-8 md:py-12">
         <div className="rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-gray-800 p-6 shadow-sm" data-aos="fade-up">
